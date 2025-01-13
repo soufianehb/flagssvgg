@@ -10,11 +10,15 @@ export const Newsletter = () => (
         <Input
           type="email"
           placeholder="Enter your email"
-          className="bg-transparent border-primary-foreground/20 placeholder:text-primary-foreground/50 focus:border-accent font-open-sans"
+          className="bg-transparent border-primary-foreground/20 placeholder:text-primary-foreground/50 focus:border-accent focus:ring-accent focus:ring-offset-primary font-open-sans"
+          aria-label="Newsletter email input"
         />
-        <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-foreground/50" />
+        <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-foreground/50" aria-hidden="true" />
       </div>
-      <Button variant="outline" className="w-full hover:bg-accent hover:text-white font-open-sans">
+      <Button 
+        variant="outline" 
+        className="w-full hover:bg-accent hover:text-white font-open-sans focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
+      >
         Subscribe
       </Button>
     </div>

@@ -14,7 +14,7 @@ export const SocialIcons = () => (
         key={label}
         href={href}
         aria-label={label}
-        className="text-primary-foreground/80 hover:text-accent transition-colors duration-200"
+        className="text-primary-foreground/80 hover:text-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
       >
         <Icon className="w-5 h-5" />
       </a>
