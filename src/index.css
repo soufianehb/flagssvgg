@@ -2,7 +2,6 @@
 
 @tailwind base;
 @tailwind components;
-@tailwind components;
 @tailwind utilities;
 
 @layer base {
@@ -34,7 +33,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-open-sans;
+    @apply bg-background text-foreground font-open-sans antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -60,4 +59,21 @@
 
 .sheet-handle {
   @apply absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gray-300 rounded-full;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-all duration-200;
+}
+
+/* Responsive container for filters */
+.filters-scroll-container {
+  @apply overflow-x-auto md:overflow-visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filters-scroll-container::-webkit-scrollbar {
+  display: none;
 }
