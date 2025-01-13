@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { useCallback, useState } from "react";
+import debounce from "lodash/debounce";
 
 const countries = [
   { value: "us", label: "United States" },
@@ -25,6 +27,21 @@ interface FilterFormProps {
 
 export const FilterForm = ({ className }: FilterFormProps) => {
   const { t } = useTranslation();
+  const [keywords, setKeywords] = useState("");
+
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      console.log("Searching for:", value); // Replace with actual search logic
+    }, 300),
+    []
+  );
+
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setKeywords(value);
+    debouncedSearch(value);
+  };
 
   return (
     <form className={cn("space-y-4", className)}>
@@ -74,6 +91,8 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             id="keywords"
             className="pl-10"
             placeholder={t.filters.keywords.placeholder}
+            value={keywords}
+            onChange={handleKeywordsChange}
           />
         </div>
       </div>
