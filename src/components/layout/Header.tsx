@@ -16,7 +16,7 @@ export const Header = () => {
           <div className="flex-shrink-0 py-2">
             <Link 
               to="/" 
-              className="font-montserrat font-bold tracking-tight text-2xl md:text-3xl leading-[1.2] cursor-pointer transition-all duration-300"
+              className="font-montserrat font-bold tracking-tight text-2xl md:text-3xl leading-[1.2] cursor-pointer transition-all duration-200"
             >
               <span className="text-[#B08A38]">E</span>
               <span className="text-white">xporti</span>
