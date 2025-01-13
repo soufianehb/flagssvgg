@@ -1,11 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { FilterForm } from "@/components/filters/FilterForm";
+import { FilterSheet } from "@/components/filters/FilterSheet";
+import { useTranslation } from "@/lib/i18n";
 
 const Index = () => {
+  const { t } = useTranslation();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-secondary p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-primary">
+          {t.filters.title}
+        </h1>
+        
+        {/* Desktop Filters */}
+        <div className="hidden md:block bg-white rounded-lg shadow-sm p-6">
+          <FilterForm className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" />
+        </div>
+
+        {/* Mobile Sheet */}
+        <FilterSheet />
       </div>
     </div>
   );
