@@ -18,7 +18,7 @@ export const MobileNav = () => {
         {/* Mobile Menu Button */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 rounded-lg text-white transition-all duration-200 hover:bg-primary-foreground/10"
+          className="p-2 rounded-lg text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]"
         >
           {isOpen ? (
             <X className="h-6 w-6" />
@@ -36,7 +36,7 @@ export const MobileNav = () => {
         )}
       >
         {/* Search Bar */}
-        <div className="flex items-center gap-2 mx-4 px-4 py-2 bg-primary-foreground/5 rounded-lg border border-primary-foreground/10">
+        <div className="flex items-center gap-2 mx-4 px-4 py-2 bg-primary-foreground/5 rounded-lg border border-primary-foreground/10 transition-all duration-200 focus-within:border-primary-foreground/30">
           <Search className="h-5 w-5 text-white/70" />
           <input 
             type="text" 
@@ -46,7 +46,7 @@ export const MobileNav = () => {
         </div>
 
         {/* Language Selector */}
-        <button className="flex w-full items-center justify-between mx-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10">
+        <button className="flex w-full items-center justify-between mx-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]">
           <span>English</span>
           <Globe className="h-5 w-5" />
         </button>
@@ -54,7 +54,7 @@ export const MobileNav = () => {
         {/* Login Link */}
         <Link 
           to="/login" 
-          className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-[#B08A38]"
+          className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-[#B08A38] hover:opacity-90"
         >
           <User className="h-5 w-5" />
           <span>Login</span>
