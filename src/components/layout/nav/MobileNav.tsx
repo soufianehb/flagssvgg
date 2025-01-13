@@ -32,7 +32,7 @@ export const MobileNav = () => {
       <div
         className={cn(
           "absolute left-0 right-0 top-20 border-t border-primary-foreground/20 py-4 space-y-4 bg-[#0A1836] md:hidden transition-all duration-300",
-          isOpen ? "block opacity-100" : "hidden opacity-0"
+          isOpen ? "block opacity-100 translate-y-0" : "hidden opacity-0 -translate-y-2"
         )}
       >
         {/* Search Bar */}
