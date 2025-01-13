@@ -17,7 +17,7 @@ export const Newsletter = () => (
       </div>
       <Button 
         variant="outline" 
-        className="w-full hover:bg-accent hover:text-white font-open-sans focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
+        className="w-full font-open-sans transition-all duration-300 hover:bg-primary hover:text-white active:bg-accent focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
       >
         Subscribe
       </Button>
