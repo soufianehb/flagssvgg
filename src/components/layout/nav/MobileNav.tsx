@@ -22,6 +22,13 @@ export const MobileNav = () => {
     { code: 'es', label: t.nav.language.es }
   ];
 
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
   return (
     <>
       <div className="flex items-center gap-2 md:hidden">
@@ -68,7 +75,7 @@ export const MobileNav = () => {
                 <DropdownMenuItem
                   key={lang.code}
                   className="text-white hover:bg-primary-foreground/10 cursor-pointer flex items-center justify-between"
-                  onClick={() => setLanguage(lang.code)}
+                  onClick={() => handleLanguageChange(lang.code)}
                 >
                   {lang.label}
                   {language === lang.code && <Check className="h-4 w-4 ml-2" />}
