@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UserPlus, User, Key, Eye, EyeOff, Globe, ArrowLeft, LogIn } from "lucide-react";
-import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
+import { parsePhoneNumber, isValidPhoneNumber, CountryCode } from 'libphonenumber-js';
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
@@ -109,7 +109,7 @@ const Signup = () => {
   const validatePhoneNumber = (phone: string, country: string) => {
     try {
       if (!phone) return false;
-      return isValidPhoneNumber(phone, country);
+      return isValidPhoneNumber(phone, country as CountryCode);
     } catch (error) {
       return false;
     }
