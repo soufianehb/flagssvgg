@@ -7,6 +7,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { FilterX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const categories = [
@@ -48,6 +50,12 @@ export const CategoryFilters = () => {
     setSelectedSubSubcategory("");
   };
 
+  const handleClearFilters = () => {
+    setSelectedCategory("");
+    setSelectedSubcategory("");
+    setSelectedSubSubcategory("");
+  };
+
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
   const selectContentClasses = cn(
     "relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 shadow-md",
@@ -61,7 +69,7 @@ export const CategoryFilters = () => {
 
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-6">
         {/* Main Category */}
         <div className="space-y-4">
           <Label htmlFor="category" className="text-sm font-semibold text-gray-700 block">
@@ -129,6 +137,21 @@ export const CategoryFilters = () => {
                 )}
             </SelectContent>
           </Select>
+        </div>
+
+        {/* Clear Filters Button */}
+        <div className="space-y-4">
+          <Label className="text-sm font-semibold text-gray-700 block opacity-0">
+            Actions
+          </Label>
+          <Button
+            variant="outline"
+            onClick={handleClearFilters}
+            className="w-full bg-white hover:bg-[#0A1836] hover:text-white"
+          >
+            <FilterX className="mr-2 h-4 w-4" />
+            Clear Filters
+          </Button>
         </div>
       </div>
     </div>
