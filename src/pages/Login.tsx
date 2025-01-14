@@ -319,7 +319,7 @@ const Login = () => {
 
                 <Button
                   type="submit"
-                  className="w-full flex justify-center items-center transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
+                  className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   disabled={isLoading}
                   aria-label={isLoading ? "Connexion en cours..." : "Se connecter"}
                 >
@@ -336,7 +336,7 @@ const Login = () => {
                     Vous n'avez pas de compte ?{" "}
                     <Link
                       to="/signup"
-                      className="font-semibold text-accent hover:text-accent/80 transition-colors underline focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded"
+                      className="font-semibold bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                     >
                       S'inscrire
                     </Link>
