@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { FilterForm } from "./FilterForm";
 import { useTranslation } from "@/lib/i18n";
 
@@ -33,22 +33,12 @@ export const FilterSheet = ({ filters, onFilterChange }: FilterSheetProps) => {
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          className="md:hidden fixed bottom-4 right-4 shadow-lg bg-[#B08A38] text-white hover:bg-[#0A1836] hover:text-white rounded-full w-14 h-14 flex items-center justify-center"
+          className="md:hidden fixed bottom-4 right-4 shadow-lg bg-[#B08A38] text-white hover:bg-[#0A1836] hover:text-white rounded-full w-14 h-14 p-0"
         >
           <SlidersHorizontal className="h-6 w-6" />
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[80vh] flex flex-col">
-        <Button 
-          variant="ghost" 
-          className="absolute right-4 top-4 rounded-full p-2 hover:bg-transparent"
-          onClick={() => {
-            const closeButton = document.querySelector('[data-radix-collection-item]') as HTMLElement;
-            closeButton?.click();
-          }}
-        >
-          <X className="h-7 w-7 text-[#B08A38]" />
-        </Button>
         <div className="flex-1 overflow-auto pt-6">
           <FilterForm 
             className="flex flex-col gap-4" 
