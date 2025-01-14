@@ -14,9 +14,9 @@ export const DesktopNav = () => {
   const { t, language, setLanguage } = useTranslation();
 
   const languages: Array<{ code: Language; label: string }> = [
-    { code: 'en', label: 'English' },
-    { code: 'fr', label: 'Français' },
-    { code: 'es', label: 'Español' }
+    { code: 'en', label: t.nav.language.en },
+    { code: 'fr', label: t.nav.language.fr },
+    { code: 'es', label: t.nav.language.es }
   ];
 
   return (
