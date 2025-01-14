@@ -494,7 +494,7 @@ const Signup = () => {
                       type="button"
                       variant="outline"
                       onClick={previousStep}
-                      className="w-full"
+                      className="w-full hover:bg-accent/10 hover:text-accent border-accent text-accent"
                     >
                       Précédent
                     </Button>
@@ -504,7 +504,7 @@ const Signup = () => {
                     <Button
                       type="button"
                       onClick={nextStep}
-                      className="w-full"
+                      className="w-full bg-accent hover:bg-accent/90 text-white"
                     >
                       Suivant
                     </Button>
@@ -533,7 +533,7 @@ const Signup = () => {
               <Button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="w-full flex justify-center items-center bg-primary hover:bg-primary/90 text-white"
+                className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
               >
                 <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                 Connectez-vous
