@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UserPlus, User, Key, Eye, EyeOff, Globe, ArrowLeft, LogIn } from "lucide-react";
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,21 +106,59 @@ const Signup = () => {
     setLanguage(lang);
   };
 
+  const validatePhoneNumber = (phone: string, country: string) => {
+    try {
+      if (!phone) return false;
+      return isValidPhoneNumber(phone, country);
+    } catch (error) {
+      return false;
+    }
+  };
+
   const handleCountryChange = (value: string) => {
     form.setValue("country", value);
     const phoneCode = phoneCodes[value] || "";
     const currentPhone = form.getValues("businessPhone");
     
-    // Ne mettre à jour que si le champ est vide ou commence par un autre indicatif
     if (!currentPhone || /^\+\d{1,3}/.test(currentPhone)) {
       form.setValue("businessPhone", phoneCode + " ");
+    }
+
+    const newPhone = form.getValues("businessPhone");
+    if (newPhone) {
+      const isValid = validatePhoneNumber(newPhone, value);
+      if (!isValid) {
+        form.setError("businessPhone", {
+          type: "manual",
+          message: "Numéro de téléphone invalide pour ce pays"
+        });
+      } else {
+        form.clearErrors("businessPhone");
+      }
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    form.setValue("businessPhone", value);
+    
+    const country = form.getValues("country");
+    if (country && value) {
+      const isValid = validatePhoneNumber(value, country);
+      if (!isValid) {
+        form.setError("businessPhone", {
+          type: "manual",
+          message: "Format de numéro invalide"
+        });
+      } else {
+        form.clearErrors("businessPhone");
+      }
     }
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      // Simulation d'une requête API
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       toast({
@@ -303,7 +342,13 @@ const Signup = () => {
                     <FormItem>
                       <FormLabel>Téléphone professionnel</FormLabel>
                       <FormControl>
-                        <Input {...field} type="tel" placeholder="+33 1 23 45 67 89" />
+                        <Input 
+                          {...field}
+                          type="tel"
+                          placeholder="+33 1 23 45 67 89"
+                          onChange={handlePhoneChange}
+                          className={form.formState.errors.businessPhone ? "border-red-500" : ""}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
