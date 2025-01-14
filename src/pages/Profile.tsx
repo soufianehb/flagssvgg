@@ -4,6 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/lib/i18n";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { GeneralSettings } from "@/components/profile/GeneralSettings";
+import { SecuritySettings } from "@/components/profile/SecuritySettings";
+import { PreferenceSettings } from "@/components/profile/PreferenceSettings";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -35,24 +38,21 @@ const Profile = () => {
           <TabsContent value="general" className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">{t.profile.general.title}</h2>
-              {/* General profile settings will go here */}
-              <p className="text-gray-600">{t.profile.general.comingSoon}</p>
+              <GeneralSettings />
             </div>
           </TabsContent>
 
           <TabsContent value="security" className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">{t.profile.security.title}</h2>
-              {/* Security settings will go here */}
-              <p className="text-gray-600">{t.profile.security.comingSoon}</p>
+              <SecuritySettings />
             </div>
           </TabsContent>
 
           <TabsContent value="preferences" className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">{t.profile.preferences.title}</h2>
-              {/* Preferences settings will go here */}
-              <p className="text-gray-600">{t.profile.preferences.comingSoon}</p>
+              <PreferenceSettings />
             </div>
           </TabsContent>
         </Tabs>
