@@ -42,6 +42,8 @@ export const FilterForm = ({ className }: FilterFormProps) => {
     debouncedSearch(value);
   };
 
+  const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
+
   return (
     <form className={cn("space-y-8", className)}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6">
@@ -50,10 +52,10 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             {t.filters.country.label}
           </Label>
           <Select>
-            <SelectTrigger id="country" className="w-full bg-white">
+            <SelectTrigger id="country" className={selectClasses}>
               <SelectValue placeholder={t.filters.country.placeholder} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="animate-in fade-in-0 zoom-in-95">
               {countries.map((country) => (
                 <SelectItem key={country.value} value={country.value}>
                   {country.label}
@@ -68,10 +70,10 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             {t.filters.sort.label}
           </Label>
           <Select>
-            <SelectTrigger id="sort" className="w-full bg-white">
+            <SelectTrigger id="sort" className={selectClasses}>
               <SelectValue placeholder={t.filters.sort.placeholder} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="animate-in fade-in-0 zoom-in-95">
               <SelectItem value="newest">{t.filters.sort.newest}</SelectItem>
               <SelectItem value="oldest">{t.filters.sort.oldest}</SelectItem>
             </SelectContent>
