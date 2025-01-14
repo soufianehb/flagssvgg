@@ -30,7 +30,9 @@ export const DesktopNav = () => {
           <Globe className="h-5 w-5 group-hover:rotate-12 transition-transform duration-200" />
         </DropdownMenuTrigger>
         <DropdownMenuContent 
-          className="bg-primary border-primary-foreground/20 animate-in fade-in-80 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+          align="center"
+          sideOffset={5}
+          className="bg-primary border-primary-foreground/20 w-[140px] origin-top animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2"
         >
           {languages.map((lang) => (
             <DropdownMenuItem
