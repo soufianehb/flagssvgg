@@ -9,7 +9,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-// Temporary data structure until we connect to Supabase
 const categories = [
   "Architecture & Design",
   "Agriculture",
@@ -66,11 +65,11 @@ export const CategoryFilters = () => {
         {/* Main Category */}
         <div className="space-y-4">
           <Label htmlFor="category" className="text-sm font-semibold text-gray-700 block">
-            Catégorie
+            Category
           </Label>
           <Select value={selectedCategory} onValueChange={handleCategoryChange}>
             <SelectTrigger id="category" className={selectClasses}>
-              <SelectValue placeholder="Sélectionner une catégorie" />
+              <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {categories.map((category) => (
@@ -85,7 +84,7 @@ export const CategoryFilters = () => {
         {/* Subcategory */}
         <div className="space-y-4">
           <Label htmlFor="subcategory" className="text-sm font-semibold text-gray-700 block">
-            Sous-catégorie
+            Subcategory
           </Label>
           <Select
             value={selectedSubcategory}
@@ -93,7 +92,7 @@ export const CategoryFilters = () => {
             disabled={!selectedCategory}
           >
             <SelectTrigger id="subcategory" className={selectClasses}>
-              <SelectValue placeholder="Sélectionner une sous-catégorie" />
+              <SelectValue placeholder="Select a subcategory" />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedCategory &&
@@ -109,7 +108,7 @@ export const CategoryFilters = () => {
         {/* Sub-subcategory */}
         <div className="space-y-4">
           <Label htmlFor="subsubcategory" className="text-sm font-semibold text-gray-700 block">
-            Sous-sous-catégorie
+            Sub-subcategory
           </Label>
           <Select
             value={selectedSubSubcategory}
@@ -117,7 +116,7 @@ export const CategoryFilters = () => {
             disabled={!selectedSubcategory}
           >
             <SelectTrigger id="subsubcategory" className={selectClasses}>
-              <SelectValue placeholder="Sélectionner une sous-sous-catégorie" />
+              <SelectValue placeholder="Select a sub-subcategory" />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedSubcategory &&
