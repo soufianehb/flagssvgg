@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, User, Check } from "lucide-react";
+import { ArrowRight, Globe, LogOut, Check } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import {
   DropdownMenu,
@@ -59,8 +59,8 @@ export const DesktopNav = () => {
         to="/login" 
         className="flex items-center gap-2 text-white hover:text-accent"
       >
-        <User className="h-5 w-5" />
-        <span>{t.nav.login}</span>
+        <LogOut className="h-5 w-5" />
+        <span>{t.nav.logout}</span>
       </Link>
 
       <button className="flex items-center gap-2 rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white hover:opacity-90">

@@ -42,6 +42,7 @@ const translations = {
     },
     nav: {
       login: 'Login',
+      logout: 'Logout',
       post: 'Post',
       search: 'Search...',
       language: {
@@ -209,6 +210,7 @@ const translations = {
     },
     nav: {
       login: 'Connexion',
+      logout: 'Déconnexion',
       post: 'Publier',
       search: 'Rechercher...',
       language: {
@@ -376,6 +378,7 @@ const translations = {
     },
     nav: {
       login: 'Iniciar sesión',
+      logout: 'Cerrar sesión',
       post: 'Publicar',
       search: 'Buscar...',
       language: {
