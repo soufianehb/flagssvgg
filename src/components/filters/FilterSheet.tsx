@@ -42,7 +42,10 @@ export const FilterSheet = ({ filters, onFilterChange }: FilterSheetProps) => {
         <Button 
           variant="ghost" 
           className="absolute right-4 top-4 rounded-full p-2 hover:bg-transparent"
-          onClick={() => document.querySelector('[data-radix-collection-item]')?.click()}
+          onClick={() => {
+            const closeButton = document.querySelector('[data-radix-collection-item]') as HTMLElement;
+            closeButton?.click();
+          }}
         >
           <X className="h-7 w-7 text-[#B08A38]" />
         </Button>
