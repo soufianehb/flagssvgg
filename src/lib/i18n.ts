@@ -101,6 +101,36 @@ const translations = {
         terms: "Terms of Service",
         privacy: "Privacy Policy"
       }
+    },
+    signup: {
+      title: "Create an account",
+      subtitle: "Join our community",
+      form: {
+        firstName: "First name",
+        lastName: "Last name",
+        email: "Email",
+        password: "Password",
+        confirmPassword: "Confirm password",
+        terms: "I accept the terms of service and privacy policy",
+        submit: "Create account",
+        loading: "Creating account...",
+        success: "Account created successfully!",
+        error: "An error occurred while creating your account.",
+        login: "Already have an account? Log in",
+        backHome: "Back to home"
+      },
+      validation: {
+        firstName: "First name must be at least 2 characters long",
+        lastName: "Last name must be at least 2 characters long",
+        email: "Invalid email address",
+        password: {
+          length: "Password must be at least 8 characters long",
+          uppercase: "Password must contain at least one uppercase letter",
+          number: "Password must contain at least one number"
+        },
+        confirmPassword: "Passwords do not match",
+        terms: "You must accept the terms and conditions"
+      }
     }
   },
   fr: {
@@ -201,6 +231,36 @@ const translations = {
         terms: "Conditions générales d'utilisation",
         privacy: "Politique de confidentialité"
       }
+    },
+    signup: {
+      title: "Créer un compte",
+      subtitle: "Rejoignez notre communauté",
+      form: {
+        firstName: "Prénom",
+        lastName: "Nom",
+        email: "Email",
+        password: "Mot de passe",
+        confirmPassword: "Confirmer le mot de passe",
+        terms: "J'accepte les conditions d'utilisation et la politique de confidentialité",
+        submit: "Créer mon compte",
+        loading: "Création en cours...",
+        success: "Compte créé avec succès !",
+        error: "Une erreur est survenue lors de la création du compte.",
+        login: "Vous avez déjà un compte ? Connectez-vous",
+        backHome: "Retour à l'accueil"
+      },
+      validation: {
+        firstName: "Le prénom doit contenir au moins 2 caractères",
+        lastName: "Le nom doit contenir au moins 2 caractères",
+        email: "Adresse email invalide",
+        password: {
+          length: "Le mot de passe doit contenir au moins 8 caractères",
+          uppercase: "Le mot de passe doit contenir au moins une majuscule",
+          number: "Le mot de passe doit contenir au moins un chiffre"
+        },
+        confirmPassword: "Les mots de passe ne correspondent pas",
+        terms: "Vous devez accepter les conditions"
+      }
     }
   },
   es: {
@@ -300,6 +360,36 @@ const translations = {
       legal: {
         terms: "Términos de servicio",
         privacy: "Política de privacidad"
+      }
+    },
+    signup: {
+      title: "Crear una cuenta",
+      subtitle: "Únete a nuestra comunidad",
+      form: {
+        firstName: "Nombre",
+        lastName: "Apellido",
+        email: "Correo electrónico",
+        password: "Contraseña",
+        confirmPassword: "Confirmar contraseña",
+        terms: "Acepto los términos de servicio y la política de privacidad",
+        submit: "Crear cuenta",
+        loading: "Creando cuenta...",
+        success: "¡Cuenta creada con éxito!",
+        error: "Ocurrió un error al crear la cuenta.",
+        login: "¿Ya tienes una cuenta? Inicia sesión",
+        backHome: "Volver al inicio"
+      },
+      validation: {
+        firstName: "El nombre debe tener al menos 2 caracteres",
+        lastName: "El apellido debe tener al menos 2 caracteres",
+        email: "Dirección de correo electrónico inválida",
+        password: {
+          length: "La contraseña debe tener al menos 8 caracteres",
+          uppercase: "La contraseña debe contener al menos una mayúscula",
+          number: "La contraseña debe contener al menos un número"
+        },
+        confirmPassword: "Las contraseñas no coinciden",
+        terms: "Debes aceptar los términos y condiciones"
       }
     }
   }
