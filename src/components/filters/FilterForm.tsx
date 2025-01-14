@@ -12,6 +12,7 @@ import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 import debounce from "lodash/debounce";
+import { CategoryFilters } from "./CategoryFilters";
 
 const countries = [
   { value: "us", label: "United States" },
@@ -116,6 +117,11 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             />
           </div>
         </div>
+      </div>
+
+      {/* Add the new CategoryFilters component */}
+      <div className="border-t pt-8">
+        <CategoryFilters />
       </div>
     </form>
   );
