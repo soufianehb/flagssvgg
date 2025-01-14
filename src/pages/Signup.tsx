@@ -108,6 +108,9 @@ const Signup = () => {
 
   const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
     setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   const validatePhoneNumber = (phone: string, country: string) => {
@@ -516,7 +519,7 @@ const Signup = () => {
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => handleLanguageChange(lang.code as 'en' | 'fr' | 'es')}
+                    onClick={() => handleLanguageChange(lang.code)}
                   >
                     {lang.label}
                   </DropdownMenuItem>
