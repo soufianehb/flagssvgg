@@ -12,7 +12,7 @@ export const FilterSheet = () => {
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          className="md:hidden fixed bottom-4 right-4 shadow-lg bg-primary text-white hover:bg-[#1EAEDB] hover:text-white"
+          className="md:hidden fixed bottom-4 right-4 shadow-lg bg-[#B08A38] text-white hover:bg-[#1EAEDB] hover:text-white"
         >
           <SlidersHorizontal className="mr-2 h-4 w-4" />
           {t.filters.title}
