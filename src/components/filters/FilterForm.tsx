@@ -29,10 +29,9 @@ export const FilterForm = ({ className }: FilterFormProps) => {
   const { t } = useTranslation();
   const [keywords, setKeywords] = useState("");
 
-  // Debounced search function
   const debouncedSearch = useCallback(
     debounce((value: string) => {
-      console.log("Searching for:", value); // Replace with actual search logic
+      console.log("Searching for:", value);
     }, 300),
     []
   );
@@ -44,56 +43,66 @@ export const FilterForm = ({ className }: FilterFormProps) => {
   };
 
   return (
-    <form className={cn("space-y-4", className)}>
-      <div className="space-y-2">
-        <Label htmlFor="country">{t.filters.country.label}</Label>
-        <Select>
-          <SelectTrigger id="country">
-            <SelectValue placeholder={t.filters.country.placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country.value} value={country.value}>
-                {country.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <form className={cn("space-y-6", className)}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+        <div className="space-y-3">
+          <Label htmlFor="country" className="text-sm font-medium">
+            {t.filters.country.label}
+          </Label>
+          <Select>
+            <SelectTrigger id="country">
+              <SelectValue placeholder={t.filters.country.placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {countries.map((country) => (
+                <SelectItem key={country.value} value={country.value}>
+                  {country.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="sort">{t.filters.sort.label}</Label>
-        <Select>
-          <SelectTrigger id="sort">
-            <SelectValue placeholder={t.filters.sort.placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="newest">{t.filters.sort.newest}</SelectItem>
-            <SelectItem value="oldest">{t.filters.sort.oldest}</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-3">
+          <Label htmlFor="sort" className="text-sm font-medium">
+            {t.filters.sort.label}
+          </Label>
+          <Select>
+            <SelectTrigger id="sort">
+              <SelectValue placeholder={t.filters.sort.placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">{t.filters.sort.newest}</SelectItem>
+              <SelectItem value="oldest">{t.filters.sort.oldest}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="listingId">{t.filters.listingId.label}</Label>
-        <Input
-          id="listingId"
-          type="number"
-          placeholder={t.filters.listingId.placeholder}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="keywords">{t.filters.keywords.label}</Label>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+        <div className="space-y-3">
+          <Label htmlFor="listingId" className="text-sm font-medium">
+            {t.filters.listingId.label}
+          </Label>
           <Input
-            id="keywords"
-            className="pl-10"
-            placeholder={t.filters.keywords.placeholder}
-            value={keywords}
-            onChange={handleKeywordsChange}
+            id="listingId"
+            type="number"
+            placeholder={t.filters.listingId.placeholder}
           />
+        </div>
+
+        <div className="space-y-3">
+          <Label htmlFor="keywords" className="text-sm font-medium">
+            {t.filters.keywords.label}
+          </Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <Input
+              id="keywords"
+              className="pl-10"
+              placeholder={t.filters.keywords.placeholder}
+              value={keywords}
+              onChange={handleKeywordsChange}
+            />
+          </div>
         </div>
       </div>
     </form>

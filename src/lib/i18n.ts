@@ -12,9 +12,9 @@ const translations = {
       },
       sort: {
         label: 'Sort By',
-        newest: 'Newest',
-        oldest: 'Oldest',
-        placeholder: 'Sort by',
+        newest: 'Newest First',
+        oldest: 'Oldest First',
+        placeholder: 'Choose sorting',
       },
       listingId: {
         label: 'Listing ID',
@@ -41,17 +41,17 @@ const translations = {
       title: 'Filtres',
       country: {
         label: 'Pays d\'origine',
-        placeholder: 'Sélectionner un pays',
+        placeholder: 'Choisir un pays',
       },
       sort: {
         label: 'Trier par',
-        newest: 'Plus récent',
-        oldest: 'Plus ancien',
-        placeholder: 'Trier par',
+        newest: 'Plus récents',
+        oldest: 'Plus anciens',
+        placeholder: 'Choisir le tri',
       },
       listingId: {
-        label: 'ID de l\'annonce',
-        placeholder: 'Entrer l\'ID',
+        label: 'Numéro d\'annonce',
+        placeholder: 'Entrer le numéro',
       },
       keywords: {
         label: 'Mots-clés',
@@ -78,13 +78,13 @@ const translations = {
       },
       sort: {
         label: 'Ordenar por',
-        newest: 'Más reciente',
-        oldest: 'Más antiguo',
-        placeholder: 'Ordenar por',
+        newest: 'Más recientes',
+        oldest: 'Más antiguos',
+        placeholder: 'Elegir orden',
       },
       listingId: {
-        label: 'ID del anuncio',
-        placeholder: 'Introducir ID',
+        label: 'Número de anuncio',
+        placeholder: 'Introducir número',
       },
       keywords: {
         label: 'Palabras clave',
