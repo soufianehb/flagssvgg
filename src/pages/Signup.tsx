@@ -552,7 +552,7 @@ const Signup = () => {
                       type="button"
                       variant="outline"
                       onClick={previousStep}
-                      className="w-full md:w-1/3 hover:bg-accent/10 hover:text-accent border-accent text-accent"
+                      className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
                     >
                       Précédent
                     </Button>
@@ -562,14 +562,14 @@ const Signup = () => {
                     <Button
                       type="button"
                       onClick={nextStep}
-                      className="w-full md:w-2/3 flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                      className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       Suivant
                     </Button>
                   ) : (
                     <Button
                       type="submit"
-                      className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                      className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                       disabled={isLoading}
                     >
                       <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -591,7 +591,7 @@ const Signup = () => {
               <Button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
               >
                 <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                 Connectez-vous
