@@ -51,7 +51,6 @@ const formSchema = z.object({
   city: z.string().min(1, "La ville est requise"),
   country: z.string().min(1, "Le pays est requis"),
   businessPhone: z.string().min(1, "Le téléphone professionnel est requis"),
-  businessType: z.enum(["professional", "creation", "without"]),
   companyName: z.string().optional(),
   profession: z.string().min(1, "La profession est requise"),
   phoneNumber: z.string().min(1, "Le numéro de téléphone est requis"),
@@ -91,7 +90,6 @@ const Signup = () => {
       city: "",
       country: "",
       businessPhone: "",
-      businessType: "professional",
       companyName: "",
       profession: "",
       phoneNumber: "",
@@ -234,29 +232,6 @@ const Signup = () => {
                       <Input {...field} type="email" className="pl-10" placeholder="john.doe@example.com" />
                     </div>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="businessType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type d'activité</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez votre type d'activité" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="professional">Professionnel établi</SelectItem>
-                      <SelectItem value="creation">En cours de création</SelectItem>
-                      <SelectItem value="without">Sans activité</SelectItem>
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
