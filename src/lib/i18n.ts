@@ -69,6 +69,22 @@ const translations = {
         subscribe: "Subscribe"
       },
       copyright: "All rights reserved"
+    },
+    login: {
+      title: "Welcome back",
+      subtitle: "Please sign in to your account",
+      email: {
+        label: "Email",
+        placeholder: "Enter your email"
+      },
+      password: {
+        label: "Password",
+        placeholder: "Enter your password"
+      },
+      submit: "Sign in",
+      loading: "Signing in...",
+      success: "Logged in successfully",
+      error: "Invalid credentials"
     }
   },
   fr: {
@@ -137,6 +153,22 @@ const translations = {
         subscribe: "S'abonner"
       },
       copyright: "Tous droits réservés"
+    },
+    login: {
+      title: "Bienvenue",
+      subtitle: "Connectez-vous à votre compte",
+      email: {
+        label: "Email",
+        placeholder: "Entrez votre email"
+      },
+      password: {
+        label: "Mot de passe",
+        placeholder: "Entrez votre mot de passe"
+      },
+      submit: "Se connecter",
+      loading: "Connexion...",
+      success: "Connexion réussie",
+      error: "Identifiants invalides"
     }
   },
   es: {
@@ -205,6 +237,22 @@ const translations = {
         subscribe: "Suscribirse"
       },
       copyright: "Todos los derechos reservados"
+    },
+    login: {
+      title: "Bienvenido de nuevo",
+      subtitle: "Inicie sesión en su cuenta",
+      email: {
+        label: "Correo electrónico",
+        placeholder: "Ingrese su correo electrónico"
+      },
+      password: {
+        label: "Contraseña",
+        placeholder: "Ingrese su contraseña"
+      },
+      submit: "Iniciar sesión",
+      loading: "Iniciando sesión...",
+      success: "Sesión iniciada correctamente",
+      error: "Credenciales inválidas"
     }
   }
 };
