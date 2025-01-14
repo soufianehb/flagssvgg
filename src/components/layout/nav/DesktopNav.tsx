@@ -8,10 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type Language = 'en' | 'fr' | 'es';
+
 export const DesktopNav = () => {
   const { t, language, setLanguage } = useTranslation();
 
-  const languages = [
+  const languages: Array<{ code: Language; label: string }> = [
     { code: 'en', label: 'English' },
     { code: 'fr', label: 'Français' },
     { code: 'es', label: 'Español' }
