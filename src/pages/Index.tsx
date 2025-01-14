@@ -8,8 +8,27 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, MapPin, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 
+interface Filters {
+  country: string;
+  sort: string;
+  listingId: string;
+  keywords: string;
+  category: string;
+  subcategory: string;
+  subSubcategory: string;
+}
+
 const Index = () => {
   const { t } = useTranslation();
+  const [filters, setFilters] = useState<Filters>({
+    country: "",
+    sort: "",
+    listingId: "",
+    keywords: "",
+    category: "",
+    subcategory: "",
+    subSubcategory: ""
+  });
 
   // Sample announcements data
   const allAnnouncements = [
@@ -55,55 +74,49 @@ const Index = () => {
     },
   ];
 
-  // Filter states
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState("");
-  const [searchKeywords, setSearchKeywords] = useState("");
   const [filteredAnnouncements, setFilteredAnnouncements] = useState(allAnnouncements);
 
-  // Filter announcements in real-time whenever filters change
+  const handleFiltersChange = (newFilters: Partial<Filters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
+  // Apply all filters at once
   useEffect(() => {
     let filtered = allAnnouncements;
 
-    // Apply category filter
-    if (selectedCategory) {
-      filtered = filtered.filter(item => item.category === selectedCategory);
+    if (filters.country) {
+      filtered = filtered.filter(item => item.location.includes(filters.country));
     }
 
-    // Apply subcategory filter
-    if (selectedSubcategory) {
-      filtered = filtered.filter(item => item.subcategory === selectedSubcategory);
-    }
-
-    // Apply sub-subcategory filter
-    if (selectedSubSubcategory) {
-      filtered = filtered.filter(item => item.subsubcategory === selectedSubSubcategory);
-    }
-
-    // Apply keyword search
-    if (searchKeywords) {
-      const keywords = searchKeywords.toLowerCase();
+    if (filters.keywords) {
+      const keywords = filters.keywords.toLowerCase();
       filtered = filtered.filter(item =>
         item.title.toLowerCase().includes(keywords) ||
         item.description.toLowerCase().includes(keywords)
       );
     }
 
+    if (filters.category) {
+      filtered = filtered.filter(item => item.category === filters.category);
+    }
+
+    if (filters.subcategory) {
+      filtered = filtered.filter(item => item.subcategory === filters.subcategory);
+    }
+
+    if (filters.subSubcategory) {
+      filtered = filtered.filter(item => item.subsubcategory === filters.subSubcategory);
+    }
+
+    // Apply sorting
+    if (filters.sort === "newest") {
+      filtered = [...filtered].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else if (filters.sort === "oldest") {
+      filtered = [...filtered].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+
     setFilteredAnnouncements(filtered);
-  }, [selectedCategory, selectedSubcategory, selectedSubSubcategory, searchKeywords]);
-
-  // Handler for filter changes
-  const handleFilterChange = (category: string, subcategory: string, subSubcategory: string) => {
-    setSelectedCategory(category);
-    setSelectedSubcategory(subcategory);
-    setSelectedSubSubcategory(subSubcategory);
-  };
-
-  // Handler for search keywords
-  const handleSearch = (keywords: string) => {
-    setSearchKeywords(keywords);
-  };
+  }, [filters]);
 
   return (
     <div className="min-h-screen flex flex-col bg-secondary">
@@ -118,13 +131,16 @@ const Index = () => {
           {/* Desktop Filters */}
           <div className="hidden md:block bg-white rounded-lg shadow-md p-6 mb-8">
             <FilterForm 
-              onFilterChange={handleFilterChange}
-              onSearch={handleSearch}
+              filters={filters}
+              onFilterChange={handleFiltersChange}
             />
           </div>
 
           {/* Mobile Sheet */}
-          <FilterSheet />
+          <FilterSheet 
+            filters={filters}
+            onFilterChange={handleFiltersChange}
+          />
 
           {/* Announcements Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">

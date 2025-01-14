@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import debounce from "lodash/debounce";
 import { CategoryFilters } from "./CategoryFilters";
 
@@ -24,29 +24,43 @@ const countries = [
 
 interface FilterFormProps {
   className?: string;
-  onFilterChange?: (category: string, subcategory: string, subSubcategory: string) => void;
-  onSearch?: (keywords: string) => void;
+  filters: {
+    country: string;
+    sort: string;
+    listingId: string;
+    keywords: string;
+    category: string;
+    subcategory: string;
+    subSubcategory: string;
+  };
+  onFilterChange: (filters: Partial<{
+    country: string;
+    sort: string;
+    listingId: string;
+    keywords: string;
+    category: string;
+    subcategory: string;
+    subSubcategory: string;
+  }>) => void;
 }
 
-export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormProps) => {
+export const FilterForm = ({ className, filters, onFilterChange }: FilterFormProps) => {
   const { t } = useTranslation();
-  const [keywords, setKeywords] = useState("");
 
   const debouncedSearch = useCallback(
     debounce((value: string) => {
-      onSearch?.(value);
+      onFilterChange({ keywords: value });
     }, 300),
-    [onSearch]
+    [onFilterChange]
   );
 
   const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setKeywords(value);
     debouncedSearch(value);
   };
 
   const handleCategoryChange = (category: string, subcategory: string, subSubcategory: string) => {
-    onFilterChange?.(category, subcategory, subSubcategory);
+    onFilterChange({ category, subcategory, subSubcategory });
   };
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
@@ -67,7 +81,7 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
           <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
             {t.filters.country.label}
           </Label>
-          <Select>
+          <Select value={filters.country} onValueChange={(value) => onFilterChange({ country: value })}>
             <SelectTrigger id="country" className={selectClasses}>
               <SelectValue placeholder={t.filters.country.placeholder} />
             </SelectTrigger>
@@ -85,7 +99,7 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
           <Label htmlFor="sort" className="text-sm font-semibold text-gray-700 block">
             {t.filters.sort.label}
           </Label>
-          <Select>
+          <Select value={filters.sort} onValueChange={(value) => onFilterChange({ sort: value })}>
             <SelectTrigger id="sort" className={selectClasses}>
               <SelectValue placeholder={t.filters.sort.placeholder} />
             </SelectTrigger>
@@ -105,6 +119,8 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
             type="number"
             placeholder={t.filters.listingId.placeholder}
             className="w-full bg-white"
+            value={filters.listingId}
+            onChange={(e) => onFilterChange({ listingId: e.target.value })}
           />
         </div>
 
@@ -118,7 +134,7 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
               id="keywords"
               className="pl-10 w-full bg-white"
               placeholder={t.filters.keywords.placeholder}
-              value={keywords}
+              value={filters.keywords}
               onChange={handleKeywordsChange}
             />
           </div>
@@ -126,7 +142,12 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
       </div>
 
       <div className="pt-2">
-        <CategoryFilters onFilterChange={handleCategoryChange} />
+        <CategoryFilters 
+          selectedCategory={filters.category}
+          selectedSubcategory={filters.subcategory}
+          selectedSubSubcategory={filters.subSubcategory}
+          onFilterChange={handleCategoryChange} 
+        />
       </div>
     </form>
   );

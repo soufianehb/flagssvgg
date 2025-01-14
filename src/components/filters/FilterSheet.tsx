@@ -4,13 +4,29 @@ import { SlidersHorizontal } from "lucide-react";
 import { FilterForm } from "./FilterForm";
 import { useTranslation } from "@/lib/i18n";
 
-export const FilterSheet = () => {
-  const { t } = useTranslation();
-
-  const handleSearch = () => {
-    // La logique de recherche sera gérée par le FilterForm
-    // Cette fonction est juste pour fermer la feuille après la recherche
+interface FilterSheetProps {
+  filters: {
+    country: string;
+    sort: string;
+    listingId: string;
+    keywords: string;
+    category: string;
+    subcategory: string;
+    subSubcategory: string;
   };
+  onFilterChange: (filters: Partial<{
+    country: string;
+    sort: string;
+    listingId: string;
+    keywords: string;
+    category: string;
+    subcategory: string;
+    subSubcategory: string;
+  }>) => void;
+}
+
+export const FilterSheet = ({ filters, onFilterChange }: FilterSheetProps) => {
+  const { t } = useTranslation();
 
   return (
     <Sheet>
@@ -25,14 +41,17 @@ export const FilterSheet = () => {
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[80vh] flex flex-col">
         <div className="flex-1 overflow-auto pt-6">
-          <FilterForm className="flex flex-col gap-4" />
+          <FilterForm 
+            className="flex flex-col gap-4" 
+            filters={filters}
+            onFilterChange={onFilterChange}
+          />
         </div>
         <div className="py-4 mt-auto border-t">
           <Button 
             className="w-full bg-[#B08A38] text-white hover:bg-[#0A1836] h-11"
-            onClick={handleSearch}
           >
-            Rechercher
+            {t.filters.actions.search}
           </Button>
         </div>
       </SheetContent>

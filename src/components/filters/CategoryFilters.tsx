@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -34,38 +33,34 @@ const subSubcategories = {
 };
 
 interface CategoryFiltersProps {
-  onFilterChange?: (category: string, subcategory: string, subSubcategory: string) => void;
+  selectedCategory: string;
+  selectedSubcategory: string;
+  selectedSubSubcategory: string;
+  onFilterChange: (category: string, subcategory: string, subSubcategory: string) => void;
 }
 
-export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
+export const CategoryFilters = ({ 
+  selectedCategory,
+  selectedSubcategory,
+  selectedSubSubcategory,
+  onFilterChange 
+}: CategoryFiltersProps) => {
   const { t } = useTranslation();
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
-  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<string>("");
 
   const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value);
-    setSelectedSubcategory("");
-    setSelectedSubSubcategory("");
-    onFilterChange?.(value, "", "");
+    onFilterChange(value, "", "");
   };
 
   const handleSubcategoryChange = (value: string) => {
-    setSelectedSubcategory(value);
-    setSelectedSubSubcategory("");
-    onFilterChange?.(selectedCategory, value, "");
+    onFilterChange(selectedCategory, value, "");
   };
 
   const handleSubSubcategoryChange = (value: string) => {
-    setSelectedSubSubcategory(value);
-    onFilterChange?.(selectedCategory, selectedSubcategory, value);
+    onFilterChange(selectedCategory, selectedSubcategory, value);
   };
 
   const handleClearFilters = () => {
-    setSelectedCategory("");
-    setSelectedSubcategory("");
-    setSelectedSubSubcategory("");
-    onFilterChange?.("", "", "");
+    onFilterChange("", "", "");
   };
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
