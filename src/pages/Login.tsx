@@ -333,12 +333,13 @@ const Login = () => {
                   <p className="text-sm text-gray-600">
                     Vous n'avez pas de compte ?
                   </p>
-                  <Link
-                    to="/signup"
+                  <Button
+                    type="button"
+                    onClick={() => navigate('/signup')}
                     className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   >
                     S'inscrire
-                  </Link>
+                  </Button>
                 </div>
               </form>
             </FormProvider>
