@@ -338,6 +338,7 @@ const Login = () => {
                     onClick={() => navigate('/signup')}
                     className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   >
+                    <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                     S'inscrire
                   </Button>
                 </div>
