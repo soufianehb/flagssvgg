@@ -68,112 +68,119 @@ const Login = () => {
       <Header />
       
       <div className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-              {t.login.title}
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              {t.login.subtitle}
-            </p>
-          </div>
+        <div className="max-w-md w-full space-y-8 transform transition-all duration-300 hover:scale-[1.01]">
+          <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
+            <div className="text-center">
+              <h2 className="mt-2 text-3xl font-extrabold text-gray-900 animate-fade-in">
+                {t.login.title}
+              </h2>
+              <p className="mt-2 text-sm text-gray-600 animate-fade-in">
+                {t.login.subtitle}
+              </p>
+            </div>
 
-          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
-              <div className="rounded-md shadow-sm space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.login.email.label}</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                          <Input
-                            {...field}
-                            placeholder={t.login.email.placeholder}
-                            type="email"
-                            className="pl-10"
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+                <div className="rounded-md shadow-sm space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.login.email.label}</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            <Input
+                              {...field}
+                              placeholder={t.login.email.placeholder}
+                              type="email"
+                              className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.login.password.label}</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            <Input
+                              {...field}
+                              type="password"
+                              placeholder={t.login.password.placeholder}
+                              className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <FormField
+                    control={form.control}
+                    name="rememberMe"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="transition-all duration-200"
                           />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.login.password.label}</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                          <Input
-                            {...field}
-                            type="password"
-                            placeholder={t.login.password.placeholder}
-                            className="pl-10"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="rememberMe"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Remember me
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-                <Link
-                  to="/forgot-password"
-                  className="text-sm font-medium text-accent hover:text-accent/80"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full flex justify-center items-center"
-                disabled={isLoading}
-              >
-                <LogIn className="mr-2 h-5 w-5" />
-                {isLoading ? t.login.loading : t.login.submit}
-              </Button>
-
-              <div className="text-center mt-4">
-                <p className="text-sm text-gray-600">
-                  Don't have an account?{" "}
+                        </FormControl>
+                        <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          Remember me
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
                   <Link
-                    to="/signup"
-                    className="font-medium text-accent hover:text-accent/80"
+                    to="/forgot-password"
+                    className="text-sm font-medium text-accent hover:text-accent/80 transition-colors duration-200"
                   >
-                    Sign up
+                    Forgot password?
                   </Link>
-                </p>
-              </div>
-            </form>
-          </FormProvider>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full flex justify-center items-center transition-all duration-200 hover:scale-[1.02]"
+                  disabled={isLoading}
+                >
+                  <LogIn className="mr-2 h-5 w-5" />
+                  {isLoading ? (
+                    <div className="animate-pulse">{t.login.loading}</div>
+                  ) : (
+                    t.login.submit
+                  )}
+                </Button>
+
+                <div className="text-center mt-4">
+                  <p className="text-sm text-gray-600">
+                    Don't have an account?{" "}
+                    <Link
+                      to="/signup"
+                      className="font-medium text-accent hover:text-accent/80 transition-colors duration-200"
+                    >
+                      Sign up
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </FormProvider>
+          </div>
         </div>
       </div>
 
