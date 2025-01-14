@@ -331,16 +331,16 @@ const Login = () => {
                   )}
                 </Button>
 
-                <div className="text-center mt-4">
-                  <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
-                    Vous n'avez pas de compte ?{" "}
-                    <Link
-                      to="/signup"
-                      className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-                    >
-                      S'inscrire
-                    </Link>
+                <div className="text-center mt-4 space-y-3">
+                  <p className="text-sm text-gray-600">
+                    Vous n'avez pas de compte ?
                   </p>
+                  <Link
+                    to="/signup"
+                    className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent w-full"
+                  >
+                    S'inscrire
+                  </Link>
                 </div>
               </form>
             </FormProvider>
@@ -367,4 +367,3 @@ const Login = () => {
 };
 
 export default Login;
-
