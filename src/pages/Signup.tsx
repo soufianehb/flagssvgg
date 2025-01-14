@@ -53,6 +53,8 @@ const formSchema = z.object({
   businessPhone: z.string().min(1, "Le téléphone professionnel est requis"),
   businessType: z.enum(["professional", "creation", "without"]),
   companyName: z.string().optional(),
+  profession: z.string().min(1, "La profession est requise"),
+  phoneNumber: z.string().min(1, "Le numéro de téléphone est requis"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Les mots de passe ne correspondent pas",
   path: ["confirmPassword"],
@@ -91,6 +93,8 @@ const Signup = () => {
       businessPhone: "",
       businessType: "professional",
       companyName: "",
+      profession: "",
+      phoneNumber: "",
     },
   });
 
@@ -220,6 +224,20 @@ const Signup = () => {
 
             <FormField
               control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Numéro de téléphone</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="tel" placeholder="+33 6 12 34 56 78" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -229,6 +247,57 @@ const Signup = () => {
                       <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                       <Input {...field} type="email" className="pl-10" placeholder="john.doe@example.com" />
                     </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="profession"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Profession</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Votre profession" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="businessType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type d'activité</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionnez votre type d'activité" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="professional">Professionnel établi</SelectItem>
+                      <SelectItem value="creation">En cours de création</SelectItem>
+                      <SelectItem value="without">Sans activité</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom de l'entreprise</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Nom de votre entreprise (optionnel)" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
