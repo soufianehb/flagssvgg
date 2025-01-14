@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
-import { LogIn, User, Key, Eye, EyeOff, Twitter, Chrome, ArrowLeft, Globe } from "lucide-react";
+import { LogIn, User, Key, Eye, EyeOff, Globe } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,25 +75,6 @@ const Login = () => {
     if (password.match(/[^A-Za-z0-9]/)) strength += 20;
     if (password.length >= 10) strength += 20;
     setPasswordStrength(strength);
-  };
-
-  const handleSocialLogin = async (provider: 'google' | 'twitter') => {
-    setIsLoading(true);
-    try {
-      console.log(`Login with ${provider}`);
-      toast({
-        title: "Redirection en cours",
-        description: `Connexion avec ${provider} en cours...`,
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur de connexion",
-        description: "Une erreur est survenue lors de la connexion sociale.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -161,42 +141,6 @@ const Login = () => {
               <p className="mt-2 text-sm text-gray-600" tabIndex={0}>
                 Bienvenue ! Nous sommes ravis de vous revoir.
               </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4" role="group" aria-label="Options de connexion sociale">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-accent focus:outline-none"
-                onClick={() => handleSocialLogin('google')}
-                disabled={isLoading}
-                aria-label="Se connecter avec Google"
-              >
-                <Chrome className="h-5 w-5" aria-hidden="true" />
-                Google
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-accent focus:outline-none"
-                onClick={() => handleSocialLogin('twitter')}
-                disabled={isLoading}
-                aria-label="Se connecter avec Twitter"
-              >
-                <Twitter className="h-5 w-5" aria-hidden="true" />
-                Twitter
-              </Button>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500" aria-hidden="true">
-                  Ou continuez avec
-                </span>
-              </div>
             </div>
 
             <FormProvider {...form}>
