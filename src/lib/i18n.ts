@@ -105,21 +105,43 @@ const translations = {
     signup: {
       title: "Create an account",
       subtitle: "Join our community",
-      form: {
+      steps: {
+        step1: "Personal Information",
+        step2: "Contact Details",
+        step3: "Security",
+        progress: "Step {step} of {total}"
+      },
+      labels: {
         firstName: "First name",
         lastName: "Last name",
         email: "Email",
         password: "Password",
         confirmPassword: "Confirm password",
-        terms: "I accept the terms of service and privacy policy",
-        submit: "Create account",
-        loading: "Creating account...",
-        success: "Account created successfully!",
-        error: "An error occurred while creating your account.",
-        login: "Already have an account? Log in",
-        backHome: "Back to home"
+        address: "Address",
+        zipCode: "Zip code",
+        city: "City",
+        country: "Country",
+        phoneNumber: "Phone number",
+        businessPhone: "Business phone",
+        companyName: "Company name (optional)",
+        terms: "I accept the terms of service and privacy policy"
+      },
+      placeholders: {
+        firstName: "Enter your first name",
+        lastName: "Enter your last name",
+        email: "Enter your email",
+        password: "Enter your password",
+        confirmPassword: "Confirm your password",
+        address: "Enter your address",
+        zipCode: "Enter zip code",
+        city: "Enter city",
+        country: "Select your country",
+        phoneNumber: "Enter phone number",
+        businessPhone: "Enter business phone",
+        companyName: "Enter company name"
       },
       validation: {
+        required: "This field is required",
         firstName: "First name must be at least 2 characters long",
         lastName: "Last name must be at least 2 characters long",
         email: "Invalid email address",
@@ -129,7 +151,22 @@ const translations = {
           number: "Password must contain at least one number"
         },
         confirmPassword: "Passwords do not match",
-        terms: "You must accept the terms and conditions"
+        terms: "You must accept the terms and conditions",
+        phoneNumber: {
+          invalid: "Invalid phone number format",
+          countryMismatch: "Invalid phone number for this country"
+        }
+      },
+      buttons: {
+        previous: "Previous",
+        next: "Next",
+        submit: "Create account",
+        loading: "Creating account...",
+        login: "Already have an account? Log in"
+      },
+      messages: {
+        success: "Account created successfully!",
+        error: "An error occurred while creating your account"
       }
     }
   },
@@ -235,21 +272,43 @@ const translations = {
     signup: {
       title: "Créer un compte",
       subtitle: "Rejoignez notre communauté",
-      form: {
+      steps: {
+        step1: "Informations personnelles",
+        step2: "Coordonnées",
+        step3: "Sécurité",
+        progress: "Étape {step} sur {total}"
+      },
+      labels: {
         firstName: "Prénom",
         lastName: "Nom",
         email: "Email",
         password: "Mot de passe",
         confirmPassword: "Confirmer le mot de passe",
-        terms: "J'accepte les conditions d'utilisation et la politique de confidentialité",
-        submit: "Créer mon compte",
-        loading: "Création en cours...",
-        success: "Compte créé avec succès !",
-        error: "Une erreur est survenue lors de la création du compte.",
-        login: "Vous avez déjà un compte ? Connectez-vous",
-        backHome: "Retour à l'accueil"
+        address: "Adresse",
+        zipCode: "Code postal",
+        city: "Ville",
+        country: "Pays",
+        phoneNumber: "Numéro de téléphone",
+        businessPhone: "Téléphone professionnel",
+        companyName: "Nom de l'entreprise (optionnel)",
+        terms: "J'accepte les conditions d'utilisation et la politique de confidentialité"
+      },
+      placeholders: {
+        firstName: "Entrez votre prénom",
+        lastName: "Entrez votre nom",
+        email: "Entrez votre email",
+        password: "Entrez votre mot de passe",
+        confirmPassword: "Confirmez votre mot de passe",
+        address: "Entrez votre adresse",
+        zipCode: "Entrez le code postal",
+        city: "Entrez la ville",
+        country: "Sélectionnez votre pays",
+        phoneNumber: "Entrez votre numéro de téléphone",
+        businessPhone: "Entrez votre téléphone professionnel",
+        companyName: "Entrez le nom de l'entreprise"
       },
       validation: {
+        required: "Ce champ est requis",
         firstName: "Le prénom doit contenir au moins 2 caractères",
         lastName: "Le nom doit contenir au moins 2 caractères",
         email: "Adresse email invalide",
@@ -259,7 +318,22 @@ const translations = {
           number: "Le mot de passe doit contenir au moins un chiffre"
         },
         confirmPassword: "Les mots de passe ne correspondent pas",
-        terms: "Vous devez accepter les conditions"
+        terms: "Vous devez accepter les conditions",
+        phoneNumber: {
+          invalid: "Format de numéro invalide",
+          countryMismatch: "Numéro de téléphone invalide pour ce pays"
+        }
+      },
+      buttons: {
+        previous: "Précédent",
+        next: "Suivant",
+        submit: "Créer mon compte",
+        loading: "Création en cours...",
+        login: "Vous avez déjà un compte ? Connectez-vous"
+      },
+      messages: {
+        success: "Compte créé avec succès !",
+        error: "Une erreur est survenue lors de la création du compte"
       }
     }
   },
@@ -365,21 +439,43 @@ const translations = {
     signup: {
       title: "Crear una cuenta",
       subtitle: "Únete a nuestra comunidad",
-      form: {
+      steps: {
+        step1: "Información personal",
+        step2: "Datos de contacto",
+        step3: "Seguridad",
+        progress: "Paso {step} de {total}"
+      },
+      labels: {
         firstName: "Nombre",
         lastName: "Apellido",
         email: "Correo electrónico",
         password: "Contraseña",
         confirmPassword: "Confirmar contraseña",
-        terms: "Acepto los términos de servicio y la política de privacidad",
-        submit: "Crear cuenta",
-        loading: "Creando cuenta...",
-        success: "¡Cuenta creada con éxito!",
-        error: "Ocurrió un error al crear la cuenta.",
-        login: "¿Ya tienes una cuenta? Inicia sesión",
-        backHome: "Volver al inicio"
+        address: "Dirección",
+        zipCode: "Código postal",
+        city: "Ciudad",
+        country: "País",
+        phoneNumber: "Número de teléfono",
+        businessPhone: "Teléfono profesional",
+        companyName: "Nombre de la empresa (opcional)",
+        terms: "Acepto los términos de servicio y la política de privacidad"
+      },
+      placeholders: {
+        firstName: "Ingrese su nombre",
+        lastName: "Ingrese su apellido",
+        email: "Ingrese su correo electrónico",
+        password: "Ingrese su contraseña",
+        confirmPassword: "Confirme su contraseña",
+        address: "Ingrese su dirección",
+        zipCode: "Ingrese código postal",
+        city: "Ingrese ciudad",
+        country: "Seleccione su país",
+        phoneNumber: "Ingrese número de teléfono",
+        businessPhone: "Ingrese teléfono profesional",
+        companyName: "Ingrese nombre de la empresa"
       },
       validation: {
+        required: "Este campo es requerido",
         firstName: "El nombre debe tener al menos 2 caracteres",
         lastName: "El apellido debe tener al menos 2 caracteres",
         email: "Dirección de correo electrónico inválida",
@@ -389,7 +485,22 @@ const translations = {
           number: "La contraseña debe contener al menos un número"
         },
         confirmPassword: "Las contraseñas no coinciden",
-        terms: "Debes aceptar los términos y condiciones"
+        terms: "Debe aceptar los términos y condiciones",
+        phoneNumber: {
+          invalid: "Formato de número inválido",
+          countryMismatch: "Número de teléfono inválido para este país"
+        }
+      },
+      buttons: {
+        previous: "Anterior",
+        next: "Siguiente",
+        submit: "Crear cuenta",
+        loading: "Creando cuenta...",
+        login: "¿Ya tienes una cuenta? Inicia sesión"
+      },
+      messages: {
+        success: "¡Cuenta creada con éxito!",
+        error: "Ocurrió un error al crear la cuenta"
       }
     }
   }
