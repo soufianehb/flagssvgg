@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Menu, Search, User, X } from "lucide-react";
+import { ArrowRight, Globe, Menu, Search, User, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/lib/i18n";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type Language = 'en' | 'fr' | 'es';
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t, language, setLanguage } = useTranslation();
 
-  const handleLanguageChange = () => {
-    const nextLang = language === 'en' ? 'fr' : language === 'fr' ? 'es' : 'en';
-    setLanguage(nextLang);
-  };
+  const languages: Array<{ code: Language; label: string }> = [
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'Français' },
+    { code: 'es', label: 'Español' }
+  ];
 
   return (
     <>
@@ -52,14 +61,27 @@ export const MobileNav = () => {
           />
         </div>
 
-        {/* Language Selector */}
-        <button 
-          onClick={handleLanguageChange}
-          className="flex w-full items-center justify-between mx-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]"
-        >
-          <span>{t.nav.language[language]}</span>
-          <Globe className="h-5 w-5" />
-        </button>
+        {/* Language Selector Dropdown */}
+        <div className="mx-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex w-full items-center justify-between rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10">
+              <span>{t.nav.language[language]}</span>
+              <Globe className="h-5 w-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-primary border-primary-foreground/20 w-[calc(100vw-2rem)] mx-4">
+              {languages.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  className="text-white hover:bg-primary-foreground/10 cursor-pointer flex items-center justify-between"
+                  onClick={() => setLanguage(lang.code)}
+                >
+                  {lang.label}
+                  {language === lang.code && <Check className="h-4 w-4 ml-2" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         {/* Login Link */}
         <Link 
