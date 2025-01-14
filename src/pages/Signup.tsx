@@ -591,7 +591,7 @@ const Signup = () => {
               <Button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="w-full md:w-2/3 lg:w-1/2 flex justify-center items-center bg-accent hover:bg-accent/90 text-white mx-auto"
+                className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
               >
                 <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                 Connectez-vous
