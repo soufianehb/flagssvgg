@@ -20,21 +20,23 @@ const categories = [
   "Industry",
 ];
 
-// Example subcategories (to be replaced with dynamic data)
 const subcategories = {
   "Architecture & Design": ["Interior Design", "Urban Planning", "Landscape"],
   "Agriculture": ["Farming", "Livestock", "Forestry"],
   // ... other categories
 };
 
-// Example sub-subcategories (to be replaced with dynamic data)
 const subSubcategories = {
   "Interior Design": ["Residential", "Commercial", "Industrial"],
   "Farming": ["Organic", "Traditional", "Hydroponics"],
   // ... other subcategories
 };
 
-export const CategoryFilters = () => {
+interface CategoryFiltersProps {
+  onFilterChange?: (category: string, subcategory: string, subSubcategory: string) => void;
+}
+
+export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<string>("");
@@ -43,17 +45,25 @@ export const CategoryFilters = () => {
     setSelectedCategory(value);
     setSelectedSubcategory("");
     setSelectedSubSubcategory("");
+    onFilterChange?.(value, "", "");
   };
 
   const handleSubcategoryChange = (value: string) => {
     setSelectedSubcategory(value);
     setSelectedSubSubcategory("");
+    onFilterChange?.(selectedCategory, value, "");
+  };
+
+  const handleSubSubcategoryChange = (value: string) => {
+    setSelectedSubSubcategory(value);
+    onFilterChange?.(selectedCategory, selectedSubcategory, value);
   };
 
   const handleClearFilters = () => {
     setSelectedCategory("");
     setSelectedSubcategory("");
     setSelectedSubSubcategory("");
+    onFilterChange?.("", "", "");
   };
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
@@ -120,7 +130,7 @@ export const CategoryFilters = () => {
           </Label>
           <Select
             value={selectedSubSubcategory}
-            onValueChange={setSelectedSubSubcategory}
+            onValueChange={handleSubSubcategoryChange}
             disabled={!selectedSubcategory}
           >
             <SelectTrigger id="subsubcategory" className={selectClasses}>

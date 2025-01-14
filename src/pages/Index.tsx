@@ -6,11 +6,13 @@ import { useTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, MapPin, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Index = () => {
   const { t } = useTranslation();
 
-  const announcements = [
+  // Sample announcements data
+  const allAnnouncements = [
     {
       id: 1,
       title: "Modern Office Space",
@@ -53,6 +55,56 @@ const Index = () => {
     },
   ];
 
+  // Filter states
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState("");
+  const [searchKeywords, setSearchKeywords] = useState("");
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState(allAnnouncements);
+
+  // Filter announcements in real-time whenever filters change
+  useEffect(() => {
+    let filtered = allAnnouncements;
+
+    // Apply category filter
+    if (selectedCategory) {
+      filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+
+    // Apply subcategory filter
+    if (selectedSubcategory) {
+      filtered = filtered.filter(item => item.subcategory === selectedSubcategory);
+    }
+
+    // Apply sub-subcategory filter
+    if (selectedSubSubcategory) {
+      filtered = filtered.filter(item => item.subsubcategory === selectedSubSubcategory);
+    }
+
+    // Apply keyword search
+    if (searchKeywords) {
+      const keywords = searchKeywords.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.title.toLowerCase().includes(keywords) ||
+        item.description.toLowerCase().includes(keywords)
+      );
+    }
+
+    setFilteredAnnouncements(filtered);
+  }, [selectedCategory, selectedSubcategory, selectedSubSubcategory, searchKeywords]);
+
+  // Handler for filter changes
+  const handleFilterChange = (category: string, subcategory: string, subSubcategory: string) => {
+    setSelectedCategory(category);
+    setSelectedSubcategory(subcategory);
+    setSelectedSubSubcategory(subSubcategory);
+  };
+
+  // Handler for search keywords
+  const handleSearch = (keywords: string) => {
+    setSearchKeywords(keywords);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-secondary">
       <Header />
@@ -65,7 +117,10 @@ const Index = () => {
           
           {/* Desktop Filters */}
           <div className="hidden md:block bg-white rounded-lg shadow-md p-6 mb-8">
-            <FilterForm />
+            <FilterForm 
+              onFilterChange={handleFilterChange}
+              onSearch={handleSearch}
+            />
           </div>
 
           {/* Mobile Sheet */}
@@ -73,7 +128,7 @@ const Index = () => {
 
           {/* Announcements Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-            {announcements.map((announcement) => (
+            {filteredAnnouncements.map((announcement) => (
               <Card key={announcement.id} className="hover:shadow-lg transition-shadow duration-200">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold">{announcement.title}</CardTitle>

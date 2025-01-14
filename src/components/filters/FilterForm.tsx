@@ -24,23 +24,29 @@ const countries = [
 
 interface FilterFormProps {
   className?: string;
+  onFilterChange?: (category: string, subcategory: string, subSubcategory: string) => void;
+  onSearch?: (keywords: string) => void;
 }
 
-export const FilterForm = ({ className }: FilterFormProps) => {
+export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormProps) => {
   const { t } = useTranslation();
   const [keywords, setKeywords] = useState("");
 
   const debouncedSearch = useCallback(
     debounce((value: string) => {
-      console.log("Searching for:", value);
+      onSearch?.(value);
     }, 300),
-    []
+    [onSearch]
   );
 
   const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setKeywords(value);
     debouncedSearch(value);
+  };
+
+  const handleCategoryChange = (category: string, subcategory: string, subSubcategory: string) => {
+    onFilterChange?.(category, subcategory, subSubcategory);
   };
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
@@ -119,9 +125,8 @@ export const FilterForm = ({ className }: FilterFormProps) => {
         </div>
       </div>
 
-      {/* Add the new CategoryFilters component */}
       <div className="pt-4">
-        <CategoryFilters />
+        <CategoryFilters onFilterChange={handleCategoryChange} />
       </div>
     </form>
   );
