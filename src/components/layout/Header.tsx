@@ -17,7 +17,7 @@ export const Header = () => {
               <span className="text-white">xporti</span>
               <span className="text-[#B08A38]">T</span>
               <span className="text-white">rader</span>
-              <sup className="text-[#B08A38] text-sm -top-3 ml-0.5">.com</sup>
+              <sup className="text-[#B08A38] text-sm -top-2 ml-0.5">.com</sup>
             </Link>
           </div>
 
