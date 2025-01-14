@@ -1,25 +1,43 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, User } from "lucide-react";
+import { ArrowRight, Globe, User, Check } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const DesktopNav = () => {
   const { t, language, setLanguage } = useTranslation();
 
-  const handleLanguageChange = () => {
-    const nextLang = language === 'en' ? 'fr' : language === 'fr' ? 'es' : 'en';
-    setLanguage(nextLang);
-  };
+  const languages = [
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'Français' },
+    { code: 'es', label: 'Español' }
+  ];
 
   return (
     <div className="hidden md:flex items-center gap-6">
-      {/* Language Selector */}
-      <button 
-        onClick={handleLanguageChange}
-        className="flex w-[140px] items-center justify-between rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]"
-      >
-        <span>{t.nav.language[language]}</span>
-        <Globe className="h-5 w-5" />
-      </button>
+      {/* Language Selector Dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex w-[140px] items-center justify-between rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]">
+          <span>{t.nav.language[language]}</span>
+          <Globe className="h-5 w-5" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="bg-primary border-primary-foreground/20">
+          {languages.map((lang) => (
+            <DropdownMenuItem
+              key={lang.code}
+              className="text-white hover:bg-primary-foreground/10 cursor-pointer flex items-center justify-between"
+              onClick={() => setLanguage(lang.code)}
+            >
+              {lang.label}
+              {language === lang.code && <Check className="h-4 w-4 ml-2" />}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* Login Link */}
       <Link 
