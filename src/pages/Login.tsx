@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
-import { LogIn, User, Key, Eye, EyeOff, Facebook, Chrome } from "lucide-react";
+import { LogIn, User, Key, Eye, EyeOff, Twitter, Chrome } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,7 +59,7 @@ const Login = () => {
     setPasswordStrength(strength);
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'facebook') => {
+  const handleSocialLogin = async (provider: 'google' | 'twitter') => {
     setIsLoading(true);
     try {
       // TODO: Implement social login logic here
@@ -134,11 +134,11 @@ const Login = () => {
                 type="button"
                 variant="outline"
                 className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
-                onClick={() => handleSocialLogin('facebook')}
+                onClick={() => handleSocialLogin('twitter')}
                 disabled={isLoading}
               >
-                <Facebook className="h-5 w-5" />
-                Facebook
+                <Twitter className="h-5 w-5" />
+                Twitter
               </Button>
             </div>
 
