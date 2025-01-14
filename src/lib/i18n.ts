@@ -12,9 +12,9 @@ const translations = {
       },
       sort: {
         label: 'Sort By',
+        placeholder: 'Choose sorting',
         newest: 'Newest First',
         oldest: 'Oldest First',
-        placeholder: 'Choose sorting',
       },
       listingId: {
         label: 'Listing ID',
@@ -60,9 +60,9 @@ const translations = {
       },
       sort: {
         label: 'Trier par',
+        placeholder: 'Choisir le tri',
         newest: 'Plus récents',
         oldest: 'Plus anciens',
-        placeholder: 'Choisir le tri',
       },
       listingId: {
         label: 'Numéro d\'annonce',
@@ -108,9 +108,9 @@ const translations = {
       },
       sort: {
         label: 'Ordenar por',
+        placeholder: 'Elegir orden',
         newest: 'Más recientes',
         oldest: 'Más antiguos',
-        placeholder: 'Elegir orden',
       },
       listingId: {
         label: 'Número de anuncio',
