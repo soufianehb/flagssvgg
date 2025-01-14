@@ -81,10 +81,14 @@ const translations = {
         label: "Password",
         placeholder: "Enter your password"
       },
+      rememberMe: "Remember me",
+      forgotPassword: "Forgot password?",
       submit: "Sign in",
       loading: "Signing in...",
       success: "Logged in successfully",
-      error: "Invalid credentials"
+      error: "Invalid credentials",
+      noAccount: "Don't have an account?",
+      signUp: "Sign up"
     }
   },
   fr: {
@@ -165,10 +169,14 @@ const translations = {
         label: "Mot de passe",
         placeholder: "Entrez votre mot de passe"
       },
+      rememberMe: "Se souvenir de moi",
+      forgotPassword: "Mot de passe oublié ?",
       submit: "Se connecter",
       loading: "Connexion...",
       success: "Connexion réussie",
-      error: "Identifiants invalides"
+      error: "Identifiants invalides",
+      noAccount: "Vous n'avez pas de compte ?",
+      signUp: "S'inscrire"
     }
   },
   es: {
@@ -249,10 +257,14 @@ const translations = {
         label: "Contraseña",
         placeholder: "Ingrese su contraseña"
       },
+      rememberMe: "Recordarme",
+      forgotPassword: "¿Olvidó su contraseña?",
       submit: "Iniciar sesión",
       loading: "Iniciando sesión...",
       success: "Sesión iniciada correctamente",
-      error: "Credenciales inválidas"
+      error: "Credenciales inválidas",
+      noAccount: "¿No tiene una cuenta?",
+      signUp: "Registrarse"
     }
   }
 };

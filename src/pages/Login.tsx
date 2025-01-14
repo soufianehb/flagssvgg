@@ -16,10 +16,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  rememberMe: z.boolean().default(false),
 });
 
 const Login = () => {
@@ -33,6 +36,7 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
@@ -42,15 +46,15 @@ const Login = () => {
       // TODO: Implement actual login logic here
       console.log("Login attempt with:", values);
       toast({
-        title: "Success",
-        description: "Logged in successfully",
+        title: t.login.success,
+        description: "Welcome back!",
       });
       navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Invalid credentials",
+        title: t.login.error,
+        description: "Please check your credentials and try again.",
       });
     } finally {
       setIsLoading(false);
@@ -117,6 +121,32 @@ const Login = () => {
               />
             </div>
 
+            <div className="flex items-center justify-between">
+              <FormField
+                control={form.control}
+                name="rememberMe"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Remember me
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-accent hover:text-accent/80"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             <Button
               type="submit"
               className="w-full flex justify-center items-center"
@@ -125,6 +155,18 @@ const Login = () => {
               <LogIn className="mr-2 h-5 w-5" />
               {isLoading ? t.login.loading : t.login.submit}
             </Button>
+
+            <div className="text-center mt-4">
+              <p className="text-sm text-gray-600">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="font-medium text-accent hover:text-accent/80"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </form>
         </FormProvider>
       </div>
