@@ -7,6 +7,8 @@ import { UserPlus, User, Key, Eye, EyeOff, Globe, ArrowLeft, LogIn } from "lucid
 import { parsePhoneNumber, isValidPhoneNumber, CountryCode } from 'libphonenumber-js';
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import {
   Form,
   FormControl,
@@ -499,6 +501,8 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      
       <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="flex justify-between items-center">
@@ -600,6 +604,8 @@ const Signup = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
