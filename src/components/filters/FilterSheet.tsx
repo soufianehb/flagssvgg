@@ -7,6 +7,11 @@ import { useTranslation } from "@/lib/i18n";
 export const FilterSheet = () => {
   const { t } = useTranslation();
 
+  const handleSearch = () => {
+    // La logique de recherche sera gérée par le FilterForm
+    // Cette fonction est juste pour fermer la feuille après la recherche
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -18,9 +23,17 @@ export const FilterSheet = () => {
           {t.filters.title}
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[80vh]">
-        <div className="h-full overflow-auto pt-6">
+      <SheetContent side="bottom" className="h-[80vh] flex flex-col">
+        <div className="flex-1 overflow-auto pt-6">
           <FilterForm className="flex flex-col gap-4" />
+        </div>
+        <div className="py-4 mt-auto border-t">
+          <Button 
+            className="w-full bg-[#B08A38] text-white hover:bg-[#0A1836] h-11"
+            onClick={handleSearch}
+          >
+            Rechercher
+          </Button>
         </div>
       </SheetContent>
     </Sheet>
