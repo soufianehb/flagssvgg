@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
 import { LogIn, User, Key } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -62,17 +62,14 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Welcome back
-            <span className="relative">
-              <span className="text-sm text-accent font-semibold absolute -top-2 -right-6">.com</span>
-            </span>
+            {t.login.title}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Please sign in to your account
+            {t.login.subtitle}
           </p>
         </div>
 
-        <Form {...form}>
+        <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
             <div className="rounded-md shadow-sm space-y-4">
               <FormField
@@ -80,13 +77,13 @@ const Login = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t.login.email.label}</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                         <Input
                           {...field}
-                          placeholder="Enter your email"
+                          placeholder={t.login.email.placeholder}
                           type="email"
                           className="pl-10"
                         />
@@ -102,14 +99,14 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t.login.password.label}</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                         <Input
                           {...field}
                           type="password"
-                          placeholder="Enter your password"
+                          placeholder={t.login.password.placeholder}
                           className="pl-10"
                         />
                       </div>
@@ -126,10 +123,10 @@ const Login = () => {
               disabled={isLoading}
             >
               <LogIn className="mr-2 h-5 w-5" />
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? t.login.loading : t.login.submit}
             </Button>
           </form>
-        </Form>
+        </FormProvider>
       </div>
     </div>
   );
