@@ -41,7 +41,7 @@ export const Footer = () => {
       {/* Copyright Section */}
       <div className="border-t border-primary-foreground/20 py-6">
         <div className="container mx-auto text-center text-primary-foreground/80">
-          <p>&copy; {currentYear} ExportiTrader. {t.footer.copyright}</p>
+          <p>&copy; {currentYear} Exporti Trade Ltd. {t.footer.copyright}</p>
         </div>
       </div>
     </footer>
