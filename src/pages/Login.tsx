@@ -26,9 +26,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const { t, language, setLanguage } = useTranslation();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -81,13 +83,11 @@ const Login = () => {
     setIsLoading(true);
     try {
       console.log("Login attempt with:", values);
+      login(values.email, values.password);
       toast({
         title: t.login.success,
         description: t.login.success,
       });
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1500);
     } catch (error) {
       toast({
         variant: "destructive",

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Menu, Search, User, X, Check } from "lucide-react";
+import { ArrowRight, Globe, Menu, Search, User, LogOut, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/lib/i18n";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ type Language = 'en' | 'fr' | 'es';
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t, language, setLanguage } = useTranslation();
+  const { isAuthenticated, logout } = useAuth();
 
   const languages: Array<{ code: Language; label: string }> = [
     { code: 'en', label: t.nav.language.en },
@@ -85,13 +87,23 @@ export const MobileNav = () => {
           </DropdownMenu>
         </div>
 
-        <Link 
-          to="/login" 
-          className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
-        >
-          <User className="h-5 w-5" />
-          <span>{t.nav.login}</span>
-        </Link>
+        {isAuthenticated ? (
+          <button 
+            onClick={logout}
+            className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
+          >
+            <LogOut className="h-5 w-5" />
+            <span>{t.nav.logout}</span>
+          </button>
+        ) : (
+          <Link 
+            to="/login" 
+            className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
+          >
+            <User className="h-5 w-5" />
+            <span>{t.nav.login}</span>
+          </Link>
+        )}
 
         <button className="flex w-[calc(100%-2rem)] mx-4 items-center justify-center gap-2 rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
           <span>{t.nav.post}</span>

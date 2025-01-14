@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, LogOut, Check } from "lucide-react";
+import { ArrowRight, Globe, LogOut, User, Check } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ type Language = 'en' | 'fr' | 'es';
 
 export const DesktopNav = () => {
   const { t, language, setLanguage } = useTranslation();
+  const { isAuthenticated, logout } = useAuth();
 
   const languages: Array<{ code: Language; label: string }> = [
     { code: 'en', label: t.nav.language.en },
@@ -55,13 +57,23 @@ export const DesktopNav = () => {
         </DropdownMenu>
       </div>
 
-      <Link 
-        to="/login" 
-        className="flex items-center gap-2 text-white hover:text-accent"
-      >
-        <LogOut className="h-5 w-5" />
-        <span>{t.nav.logout}</span>
-      </Link>
+      {isAuthenticated ? (
+        <button 
+          onClick={logout}
+          className="flex items-center gap-2 text-white hover:text-accent"
+        >
+          <LogOut className="h-5 w-5" />
+          <span>{t.nav.logout}</span>
+        </button>
+      ) : (
+        <Link 
+          to="/login" 
+          className="flex items-center gap-2 text-white hover:text-accent"
+        >
+          <User className="h-5 w-5" />
+          <span>{t.nav.login}</span>
+        </Link>
+      )}
 
       <button className="flex items-center gap-2 rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white hover:opacity-90">
         <span>{t.nav.post}</span>
