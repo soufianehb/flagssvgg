@@ -75,12 +75,23 @@ export default {
           from: { transform: "translateY(0)" },
           to: { transform: "translateY(100%)" },
         },
+        "dropdown-in": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateY(-10px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "sheet-in": "sheet-in 0.2s ease-out",
         "sheet-out": "sheet-out 0.2s ease-out",
+        "dropdown-in": "dropdown-in 0.1s ease-out"
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],

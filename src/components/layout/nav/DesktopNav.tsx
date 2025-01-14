@@ -30,7 +30,7 @@ export const DesktopNav = () => {
           <DropdownMenuContent 
             align="center"
             sideOffset={5}
-            className="bg-primary border-primary-foreground/20 w-[140px]"
+            className="bg-primary border-primary-foreground/20 w-[140px] animate-dropdown-in"
           >
             {languages.map((lang) => (
               <DropdownMenuItem
