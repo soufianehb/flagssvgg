@@ -123,7 +123,6 @@ const Signup = () => {
     form.setValue("country", value);
     const phoneCode = phoneCodes[value] || "";
     
-    // Update both phone fields with the new country code
     const currentBusinessPhone = form.getValues("businessPhone");
     const currentPhoneNumber = form.getValues("phoneNumber");
     
@@ -135,7 +134,6 @@ const Signup = () => {
       form.setValue("phoneNumber", phoneCode + " ");
     }
 
-    // Validate phone numbers
     const validatePhone = (phone: string) => {
       try {
         if (!phone) return false;
@@ -477,6 +475,18 @@ const Signup = () => {
 
       default:
         return null;
+    }
+  };
+
+  const nextStep = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
     }
   };
 

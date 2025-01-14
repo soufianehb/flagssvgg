@@ -150,7 +150,8 @@ const translations = {
         password: {
           length: "Password must be at least 8 characters long",
           uppercase: "Password must contain at least one uppercase letter",
-          number: "Password must contain at least one number"
+          number: "Password must contain at least one number",
+          strength: "Password strength:"
         },
         confirmPassword: "Passwords do not match",
         terms: "You must accept the terms and conditions",
@@ -164,7 +165,8 @@ const translations = {
         next: "Next",
         submit: "Create account",
         loading: "Creating account...",
-        login: "Already have an account? Log in"
+        login: "Already have an account? Log in",
+        backHome: "Back to home"
       },
       messages: {
         success: "Account created successfully!",
@@ -339,7 +341,8 @@ const translations = {
         password: {
           length: "Le mot de passe doit contenir au moins 8 caractères",
           uppercase: "Le mot de passe doit contenir au moins une majuscule",
-          number: "Le mot de passe doit contenir au moins un chiffre"
+          number: "Le mot de passe doit contenir au moins un chiffre",
+          strength: "Force du mot de passe :"
         },
         confirmPassword: "Les mots de passe ne correspondent pas",
         terms: "Vous devez accepter les conditions",
@@ -353,7 +356,8 @@ const translations = {
         next: "Suivant",
         submit: "Créer mon compte",
         loading: "Création en cours...",
-        login: "Vous avez déjà un compte ? Connectez-vous"
+        login: "Vous avez déjà un compte ? Connectez-vous",
+        backHome: "Retour à l'accueil"
       },
       messages: {
         success: "Compte créé avec succès !",
@@ -528,7 +532,8 @@ const translations = {
         password: {
           length: "La contraseña debe tener al menos 8 caracteres",
           uppercase: "La contraseña debe contener al menos una mayúscula",
-          number: "La contraseña debe contener al menos un número"
+          number: "La contraseña debe contener al menos un número",
+          strength: "Fuerza de la contraseña:"
         },
         confirmPassword: "Las contraseñas no coinciden",
         terms: "Debe aceptar los términos y condiciones",
@@ -542,7 +547,8 @@ const translations = {
         next: "Siguiente",
         submit: "Crear cuenta",
         loading: "Creando cuenta...",
-        login: "¿Ya tienes una cuenta? Inicia sesión"
+        login: "¿Ya tienes una cuenta? Inicia sesión",
+        backHome: "Volver al inicio"
       },
       messages: {
         success: "¡Cuenta creada con éxito!",
