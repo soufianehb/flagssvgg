@@ -104,50 +104,52 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" role="main">
       <Header />
       
       <div className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6 transition-all duration-300 hover:shadow-xl">
             <div className="text-center">
-              <h2 className="text-3xl font-extrabold text-gray-900">
+              <h1 className="text-3xl font-extrabold text-gray-900" tabIndex={0}>
                 {t.login.title}
-              </h2>
-              <p className="mt-2 text-sm text-gray-600">
+              </h1>
+              <p className="mt-2 text-sm text-gray-600" tabIndex={0}>
                 {t.login.subtitle}
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4" role="group" aria-label="Options de connexion sociale">
               <Button
                 type="button"
                 variant="outline"
-                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-accent focus:outline-none"
                 onClick={() => handleSocialLogin('google')}
                 disabled={isLoading}
+                aria-label="Se connecter avec Google"
               >
-                <Chrome className="h-5 w-5" />
+                <Chrome className="h-5 w-5" aria-hidden="true" />
                 Google
               </Button>
               <Button
                 type="button"
                 variant="outline"
-                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-accent focus:outline-none"
                 onClick={() => handleSocialLogin('twitter')}
                 disabled={isLoading}
+                aria-label="Se connecter avec Twitter"
               >
-                <Twitter className="h-5 w-5" />
+                <Twitter className="h-5 w-5" aria-hidden="true" />
                 Twitter
               </Button>
             </div>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+                <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
+                <span className="px-2 bg-white text-gray-500" aria-hidden="true">
                   Ou continuez avec
                 </span>
               </div>
@@ -160,19 +162,24 @@ const Login = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.login.email.label}</FormLabel>
+                      <FormLabel htmlFor="email">Email</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                          <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                           <Input
                             {...field}
-                            placeholder={t.login.email.placeholder}
+                            id="email"
+                            placeholder="votre@email.com"
                             type="email"
+                            autoComplete="email"
                             className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
+                            aria-required="true"
+                            aria-invalid={!!form.formState.errors.email}
+                            aria-describedby={form.formState.errors.email ? "email-error" : undefined}
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage id="email-error" role="alert" aria-live="polite" />
                     </FormItem>
                   )}
                 />
@@ -182,38 +189,51 @@ const Login = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.login.password.label}</FormLabel>
+                      <FormLabel htmlFor="password">Mot de passe</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                          <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                           <Input
                             {...field}
+                            id="password"
                             type={showPassword ? "text" : "password"}
-                            placeholder={t.login.password.placeholder}
+                            placeholder="••••••••"
+                            autoComplete="current-password"
                             className="pl-10 pr-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
                             onChange={(e) => {
                               field.onChange(e);
                               calculatePasswordStrength(e.target.value);
                             }}
+                            aria-required="true"
+                            aria-invalid={!!form.formState.errors.password}
+                            aria-describedby={form.formState.errors.password ? "password-error" : "password-strength"}
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 transition-colors"
+                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                            aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                           >
                             {showPassword ? (
-                              <EyeOff className="h-5 w-5" />
+                              <EyeOff className="h-5 w-5" aria-hidden="true" />
                             ) : (
-                              <Eye className="h-5 w-5" />
+                              <Eye className="h-5 w-5" aria-hidden="true" />
                             )}
                           </button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage id="password-error" role="alert" aria-live="polite" />
                       {field.value && (
                         <div className="mt-2 space-y-1">
-                          <Progress value={passwordStrength} className="h-1" />
-                          <p className="text-xs text-gray-500">
+                          <Progress 
+                            value={passwordStrength} 
+                            className="h-1" 
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-valuenow={passwordStrength}
+                            aria-label="Force du mot de passe"
+                          />
+                          <p className="text-xs text-gray-500" id="password-strength">
                             Force du mot de passe: {passwordStrength}%
                           </p>
                         </div>
@@ -232,10 +252,12 @@ const Login = () => {
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="data-[state=checked]:bg-accent data-[state=checked]:border-accent"
+                            className="data-[state=checked]:bg-accent data-[state=checked]:border-accent focus:ring-2 focus:ring-accent"
+                            id="remember-me"
+                            aria-label="Se souvenir de moi"
                           />
                         </FormControl>
-                        <FormLabel className="text-sm font-medium leading-none cursor-pointer">
+                        <FormLabel htmlFor="remember-me" className="text-sm font-medium leading-none cursor-pointer">
                           Se souvenir de moi
                         </FormLabel>
                       </FormItem>
@@ -243,7 +265,7 @@ const Login = () => {
                   />
                   <Link
                     to="/forgot-password"
-                    className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors underline"
+                    className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors underline focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded"
                   >
                     Mot de passe oublié ?
                   </Link>
@@ -251,12 +273,13 @@ const Login = () => {
 
                 <Button
                   type="submit"
-                  className="w-full flex justify-center items-center transition-all duration-200 hover:scale-[1.02]"
+                  className="w-full flex justify-center items-center transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   disabled={isLoading}
+                  aria-label={isLoading ? "Connexion en cours..." : "Se connecter"}
                 >
-                  <LogIn className="mr-2 h-5 w-5" />
+                  <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                   {isLoading ? (
-                    <div className="animate-pulse">Connexion en cours...</div>
+                    <span className="animate-pulse">Connexion en cours...</span>
                   ) : (
                     "Se connecter"
                   )}
@@ -267,7 +290,7 @@ const Login = () => {
                     Vous n'avez pas de compte ?{" "}
                     <Link
                       to="/signup"
-                      className="font-semibold text-accent hover:text-accent/80 transition-colors underline"
+                      className="font-semibold text-accent hover:text-accent/80 transition-colors underline focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded"
                     >
                       S'inscrire
                     </Link>
