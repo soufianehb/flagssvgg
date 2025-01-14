@@ -125,7 +125,6 @@ const Login = () => {
       
       <div className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
-          {/* Back to Home Link */}
           <Link 
             to="/" 
             className="inline-flex items-center text-sm text-accent hover:text-accent/80 transition-colors mb-4"
@@ -135,7 +134,6 @@ const Login = () => {
             Retour à l'accueil
           </Link>
 
-          {/* Language Selector */}
           <div className="flex justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
@@ -337,7 +335,7 @@ const Login = () => {
                   </p>
                   <Link
                     to="/signup"
-                    className="inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent w-full"
+                    className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   >
                     S'inscrire
                   </Link>
