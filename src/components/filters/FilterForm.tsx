@@ -120,7 +120,7 @@ export const FilterForm = ({ className }: FilterFormProps) => {
       </div>
 
       {/* Add the new CategoryFilters component */}
-      <div className="border-t pt-8">
+      <div className="pt-8">
         <CategoryFilters />
       </div>
     </form>
