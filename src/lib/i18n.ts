@@ -25,6 +25,16 @@ const translations = {
         placeholder: 'Search keywords',
       },
     },
+    nav: {
+      login: 'Login',
+      post: 'Post',
+      search: 'Search...',
+      language: {
+        en: 'English',
+        fr: 'Français',
+        es: 'Español',
+      },
+    },
   },
   fr: {
     filters: {
@@ -45,7 +55,17 @@ const translations = {
       },
       keywords: {
         label: 'Mots-clés',
-        placeholder: 'Rechercher',
+        placeholder: 'Rechercher par mots-clés',
+      },
+    },
+    nav: {
+      login: 'Connexion',
+      post: 'Publier',
+      search: 'Rechercher...',
+      language: {
+        en: 'Anglais',
+        fr: 'Français',
+        es: 'Espagnol',
       },
     },
   },
@@ -68,7 +88,17 @@ const translations = {
       },
       keywords: {
         label: 'Palabras clave',
-        placeholder: 'Buscar',
+        placeholder: 'Buscar por palabras clave',
+      },
+    },
+    nav: {
+      login: 'Iniciar sesión',
+      post: 'Publicar',
+      search: 'Buscar...',
+      language: {
+        en: 'Inglés',
+        fr: 'Francés',
+        es: 'Español',
       },
     },
   },

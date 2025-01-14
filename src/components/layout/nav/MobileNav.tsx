@@ -2,16 +2,23 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Menu, Search, User, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n";
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, language, setLanguage } = useTranslation();
+
+  const handleLanguageChange = () => {
+    const nextLang = language === 'en' ? 'fr' : language === 'fr' ? 'es' : 'en';
+    setLanguage(nextLang);
+  };
 
   return (
     <>
       <div className="flex items-center gap-2 md:hidden">
         {/* Mobile Post Button */}
         <button className="flex items-center gap-1 rounded-lg bg-[#B08A38] px-3 py-1.5 text-sm text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
-          <span>Post</span>
+          <span>{t.nav.post}</span>
           <ArrowRight className="h-4 w-4" />
         </button>
 
@@ -40,14 +47,17 @@ export const MobileNav = () => {
           <Search className="h-5 w-5 text-white/70" />
           <input 
             type="text" 
-            placeholder="Search..." 
+            placeholder={t.nav.search}
             className="bg-transparent text-white placeholder-white/70 outline-none w-full"
           />
         </div>
 
         {/* Language Selector */}
-        <button className="flex w-full items-center justify-between mx-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]">
-          <span>English</span>
+        <button 
+          onClick={handleLanguageChange}
+          className="flex w-full items-center justify-between mx-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-white transition-all duration-200 hover:bg-primary-foreground/10 hover:scale-[0.98]"
+        >
+          <span>{t.nav.language[language]}</span>
           <Globe className="h-5 w-5" />
         </button>
 
@@ -57,12 +67,12 @@ export const MobileNav = () => {
           className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
         >
           <User className="h-5 w-5" />
-          <span>Login</span>
+          <span>{t.nav.login}</span>
         </Link>
 
         {/* Full Width Post Button */}
         <button className="flex w-[calc(100%-2rem)] mx-4 items-center justify-center gap-2 rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
-          <span>Post</span>
+          <span>{t.nav.post}</span>
           <ArrowRight className="h-5 w-5" />
         </button>
       </div>
