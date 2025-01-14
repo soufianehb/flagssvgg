@@ -19,7 +19,7 @@ export const Footer = () => {
               <span className="text-primary-foreground">xporti</span>
               <span className="text-accent">T</span>
               <span className="text-primary-foreground">rader</span>
-              <sup className="text-accent text-sm -top-3 ml-0.5">.com</sup>
+              <sup className="text-accent text-sm -top-2 ml-0.5">.com</sup>
             </h2>
             <p className="text-primary-foreground/80">
               {t.footer.tagline}
