@@ -78,7 +78,7 @@ export default {
         "dropdown-in": {
           "0%": { 
             opacity: "0",
-            transform: "translateY(-10px)"
+            transform: "translateY(-5px)"
           },
           "100%": {
             opacity: "1",
@@ -91,7 +91,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "sheet-in": "sheet-in 0.2s ease-out",
         "sheet-out": "sheet-out 0.2s ease-out",
-        "dropdown-in": "dropdown-in 0.1s ease-out"
+        "dropdown-in": "dropdown-in 0.05s ease-out"
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
