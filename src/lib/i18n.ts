@@ -170,6 +170,26 @@ const translations = {
         success: "Account created successfully!",
         error: "An error occurred while creating your account"
       }
+    },
+    profile: {
+      title: "Profile Settings",
+      tabs: {
+        general: "General",
+        security: "Security",
+        preferences: "Preferences"
+      },
+      general: {
+        title: "General Information",
+        comingSoon: "General settings coming soon"
+      },
+      security: {
+        title: "Security Settings",
+        comingSoon: "Security settings coming soon"
+      },
+      preferences: {
+        title: "Preferences",
+        comingSoon: "Preference settings coming soon"
+      }
     }
   },
   fr: {
@@ -339,6 +359,26 @@ const translations = {
         success: "Compte créé avec succès !",
         error: "Une erreur est survenue lors de la création du compte"
       }
+    },
+    profile: {
+      title: "Paramètres du profil",
+      tabs: {
+        general: "Général",
+        security: "Sécurité",
+        preferences: "Préférences"
+      },
+      general: {
+        title: "Informations générales",
+        comingSoon: "Paramètres généraux à venir"
+      },
+      security: {
+        title: "Paramètres de sécurité",
+        comingSoon: "Paramètres de sécurité à venir"
+      },
+      preferences: {
+        title: "Préférences",
+        comingSoon: "Paramètres des préférences à venir"
+      }
     }
   },
   es: {
@@ -507,6 +547,26 @@ const translations = {
       messages: {
         success: "¡Cuenta creada con éxito!",
         error: "Ocurrió un error al crear la cuenta"
+      }
+    },
+    profile: {
+      title: "Ajustes de perfil",
+      tabs: {
+        general: "General",
+        security: "Seguridad",
+        preferences: "Preferencias"
+      },
+      general: {
+        title: "Información general",
+        comingSoon: "Configuración general próximamente"
+      },
+      security: {
+        title: "Configuración de seguridad",
+        comingSoon: "Configuración de seguridad próximamente"
+      },
+      preferences: {
+        title: "Preferencias",
+        comingSoon: "Configuración de preferencias próximamente"
       }
     }
   }
