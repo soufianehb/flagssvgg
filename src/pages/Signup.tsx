@@ -24,6 +24,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
@@ -36,6 +43,13 @@ const formSchema = z.object({
     .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
   confirmPassword: z.string(),
   terms: z.boolean().refine((val) => val === true, "Vous devez accepter les conditions"),
+  address: z.string().min(1, "L'adresse est requise"),
+  zipCode: z.string().min(1, "Le code postal est requis"),
+  city: z.string().min(1, "La ville est requise"),
+  country: z.string().min(1, "Le pays est requis"),
+  businessPhone: z.string().min(1, "Le téléphone professionnel est requis"),
+  businessType: z.enum(["professional", "creation", "without"]),
+  companyName: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Les mots de passe ne correspondent pas",
   path: ["confirmPassword"],
@@ -65,6 +79,13 @@ const Signup = () => {
       password: "",
       confirmPassword: "",
       terms: false,
+      address: "",
+      zipCode: "",
+      city: "",
+      country: "",
+      businessPhone: "",
+      businessType: "professional",
+      companyName: "",
     },
   });
 
@@ -187,6 +208,115 @@ const Signup = () => {
                           <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                           <Input {...field} type="email" className="pl-10" placeholder="john.doe@example.com" />
                         </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Adresse physique</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="123 rue Example" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="zipCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Code postal</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="75000" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Ville</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Paris" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pays</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="France" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="businessPhone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Téléphone professionnel</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="tel" placeholder="+33 1 23 45 67 89" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="businessType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type d'activité</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez votre type d'activité" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="professional">Professionnel</SelectItem>
+                          <SelectItem value="creation">En création d'entreprise</SelectItem>
+                          <SelectItem value="without">Sans entreprise</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nom de l'entreprise (optionnel)</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Nom de votre entreprise" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
