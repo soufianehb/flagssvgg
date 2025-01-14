@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { countries } from "@/data/countries";
+import { phoneCodes } from "@/data/phoneCodes";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
@@ -102,6 +103,17 @@ const Signup = () => {
 
   const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
     setLanguage(lang);
+  };
+
+  const handleCountryChange = (value: string) => {
+    form.setValue("country", value);
+    const phoneCode = phoneCodes[value] || "";
+    const currentPhone = form.getValues("businessPhone");
+    
+    // Ne mettre à jour que si le champ est vide ou commence par un autre indicatif
+    if (!currentPhone || /^\+\d{1,3}/.test(currentPhone)) {
+      form.setValue("businessPhone", phoneCode + " ");
+    }
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -265,7 +277,7 @@ const Signup = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Pays</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={handleCountryChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez votre pays" />
