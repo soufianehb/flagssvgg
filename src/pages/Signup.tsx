@@ -301,11 +301,16 @@ const Signup = () => {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   disabled={isLoading}
+                  aria-label={isLoading ? "Création en cours..." : "Créer mon compte"}
                 >
-                  <UserPlus className="mr-2 h-5 w-5" />
-                  {isLoading ? "Création en cours..." : "Créer mon compte"}
+                  <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
+                  {isLoading ? (
+                    <span className="animate-pulse">Création en cours...</span>
+                  ) : (
+                    "Créer mon compte"
+                  )}
                 </Button>
 
                 <div className="text-center text-sm text-gray-600">
