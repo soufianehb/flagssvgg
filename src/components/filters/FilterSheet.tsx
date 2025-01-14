@@ -47,13 +47,6 @@ export const FilterSheet = ({ filters, onFilterChange }: FilterSheetProps) => {
             onFilterChange={onFilterChange}
           />
         </div>
-        <div className="py-4 mt-auto border-t">
-          <Button 
-            className="w-full bg-[#B08A38] text-white hover:bg-[#0A1836] h-11"
-          >
-            {t.filters.actions.search}
-          </Button>
-        </div>
       </SheetContent>
     </Sheet>
   );
