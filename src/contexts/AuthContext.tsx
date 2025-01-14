@@ -5,6 +5,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => void;
   logout: () => void;
+  signup: (data: { email: string; password: string }) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,8 +35,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     navigate('/login');
   };
 
+  const signup = (data: { email: string; password: string }) => {
+    console.log('Signing up with:', data.email);
+    // Simulate signup - in real app, this would be an API call
+    localStorage.setItem('auth_token', 'dummy_token');
+    setIsAuthenticated(true);
+    navigate('/');
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
