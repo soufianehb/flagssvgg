@@ -27,16 +27,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const formSchema = z.object({
-  email: z.string().email("Adresse email invalide"),
-  password: z
-    .string()
-    .min(6, "Le mot de passe doit contenir au moins 6 caractères")
-    .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
-    .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
-  rememberMe: z.boolean().default(false),
-});
-
 const Login = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
@@ -44,6 +34,16 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+
+  const formSchema = z.object({
+    email: z.string().email(t.login.email.invalid),
+    password: z
+      .string()
+      .min(6, t.login.password.requirements.minLength)
+      .regex(/[A-Z]/, t.login.password.requirements.uppercase)
+      .regex(/[0-9]/, t.login.password.requirements.number),
+    rememberMe: z.boolean().default(false),
+  });
 
   const languages = [
     { code: 'en', label: t.nav.language.en },
@@ -83,7 +83,7 @@ const Login = () => {
       console.log("Login attempt with:", values);
       toast({
         title: t.login.success,
-        description: "Bienvenue !",
+        description: t.login.success,
       });
       setTimeout(() => {
         navigate("/", { replace: true });
@@ -92,7 +92,7 @@ const Login = () => {
       toast({
         variant: "destructive",
         title: t.login.error,
-        description: "Veuillez vérifier vos identifiants et réessayer.",
+        description: t.login.error,
       });
     } finally {
       setIsLoading(false);
@@ -108,10 +108,10 @@ const Login = () => {
           <Link 
             to="/" 
             className="inline-flex items-center text-sm text-accent hover:text-accent/80 transition-colors mb-4"
-            aria-label="Retour à l'accueil"
+            aria-label={t.login.backHome}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Retour à l'accueil
+            {t.login.backHome}
           </Link>
 
           <div className="flex justify-end">
@@ -139,7 +139,7 @@ const Login = () => {
                 {t.login.title}
               </h1>
               <p className="mt-2 text-sm text-gray-600" tabIndex={0}>
-                Bienvenue ! Nous sommes ravis de vous revoir.
+                {t.login.subtitle}
               </p>
             </div>
 
@@ -150,14 +150,14 @@ const Login = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <FormLabel htmlFor="email">{t.login.email.label}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                           <Input
                             {...field}
                             id="email"
-                            placeholder="votre@email.com"
+                            placeholder={t.login.email.placeholder}
                             type="email"
                             autoComplete="email"
                             className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
@@ -177,7 +177,7 @@ const Login = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="password">Mot de passe</FormLabel>
+                      <FormLabel htmlFor="password">{t.login.password.label}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -185,7 +185,7 @@ const Login = () => {
                             {...field}
                             id="password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="••••••••"
+                            placeholder={t.login.password.placeholder}
                             autoComplete="current-password"
                             className="pl-10 pr-10 transition-all duration-200 focus:ring-2 focus:ring-accent focus:border-accent"
                             onChange={(e) => {
@@ -219,10 +219,10 @@ const Login = () => {
                             aria-valuemin={0}
                             aria-valuemax={100}
                             aria-valuenow={passwordStrength}
-                            aria-label="Force du mot de passe"
+                            aria-label={t.login.password.strength}
                           />
                           <p className="text-xs text-gray-500" id="password-strength">
-                            Force du mot de passe: {passwordStrength}%
+                            {t.login.password.strength} {passwordStrength}%
                           </p>
                         </div>
                       )}
@@ -242,11 +242,11 @@ const Login = () => {
                             onCheckedChange={field.onChange}
                             className="data-[state=checked]:bg-accent data-[state=checked]:border-accent focus:ring-2 focus:ring-accent"
                             id="remember-me"
-                            aria-label="Se souvenir de moi"
+                            aria-label={t.login.rememberMe}
                           />
                         </FormControl>
                         <FormLabel htmlFor="remember-me" className="text-sm font-medium leading-none cursor-pointer">
-                          Se souvenir de moi
+                          {t.login.rememberMe}
                         </FormLabel>
                       </FormItem>
                     )}
@@ -255,7 +255,7 @@ const Login = () => {
                     to="/forgot-password"
                     className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors underline focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded"
                   >
-                    Mot de passe oublié ?
+                    {t.login.password.forgot}
                   </Link>
                 </div>
 
@@ -263,19 +263,19 @@ const Login = () => {
                   type="submit"
                   className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   disabled={isLoading}
-                  aria-label={isLoading ? "Connexion en cours..." : "Se connecter"}
+                  aria-label={isLoading ? t.login.loading : t.login.submit}
                 >
                   <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                   {isLoading ? (
-                    <span className="animate-pulse">Connexion en cours...</span>
+                    <span className="animate-pulse">{t.login.loading}</span>
                   ) : (
-                    "Se connecter"
+                    t.login.submit
                   )}
                 </Button>
 
                 <div className="text-center mt-4 space-y-3">
                   <p className="text-sm text-gray-600">
-                    Vous n'avez pas de compte ?
+                    {t.login.noAccount}
                   </p>
                   <Button
                     type="button"
@@ -283,7 +283,7 @@ const Login = () => {
                     className="w-full flex justify-center items-center bg-accent hover:bg-accent/90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   >
                     <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
-                    S'inscrire
+                    {t.login.signUp}
                   </Button>
                 </div>
               </form>
@@ -292,12 +292,12 @@ const Login = () => {
             <div className="text-center space-y-2 text-sm text-gray-600">
               <p>
                 <Link to="/terms" className="text-accent hover:text-accent/80 underline">
-                  Conditions générales d'utilisation
+                  {t.login.legal.terms}
                 </Link>
               </p>
               <p>
                 <Link to="/privacy" className="text-accent hover:text-accent/80 underline">
-                  Politique de confidentialité
+                  {t.login.legal.privacy}
                 </Link>
               </p>
             </div>

@@ -72,23 +72,35 @@ const translations = {
     },
     login: {
       title: "Welcome back",
-      subtitle: "Please sign in to your account",
+      subtitle: "We're glad to see you again",
+      backHome: "Back to home",
       email: {
         label: "Email",
-        placeholder: "Enter your email"
+        placeholder: "Enter your email",
+        invalid: "Invalid email address"
       },
       password: {
         label: "Password",
-        placeholder: "Enter your password"
+        placeholder: "Enter your password",
+        requirements: {
+          minLength: "Password must be at least 6 characters long",
+          uppercase: "Password must contain at least one uppercase letter",
+          number: "Password must contain at least one number"
+        },
+        strength: "Password strength:",
+        forgot: "Forgot password?"
       },
       rememberMe: "Remember me",
-      forgotPassword: "Forgot password?",
       submit: "Sign in",
       loading: "Signing in...",
-      success: "Logged in successfully",
-      error: "Invalid credentials",
+      success: "Welcome!",
+      error: "Please check your credentials and try again",
       noAccount: "Don't have an account?",
-      signUp: "Sign up"
+      signUp: "Sign up",
+      legal: {
+        terms: "Terms of Service",
+        privacy: "Privacy Policy"
+      }
     }
   },
   fr: {
@@ -160,23 +172,35 @@ const translations = {
     },
     login: {
       title: "Bienvenue",
-      subtitle: "Connectez-vous à votre compte",
+      subtitle: "Nous sommes ravis de vous revoir",
+      backHome: "Retour à l'accueil",
       email: {
         label: "Email",
-        placeholder: "Entrez votre email"
+        placeholder: "Entrez votre email",
+        invalid: "Adresse email invalide"
       },
       password: {
         label: "Mot de passe",
-        placeholder: "Entrez votre mot de passe"
+        placeholder: "Entrez votre mot de passe",
+        requirements: {
+          minLength: "Le mot de passe doit contenir au moins 6 caractères",
+          uppercase: "Le mot de passe doit contenir au moins une majuscule",
+          number: "Le mot de passe doit contenir au moins un chiffre"
+        },
+        strength: "Force du mot de passe :",
+        forgot: "Mot de passe oublié ?"
       },
       rememberMe: "Se souvenir de moi",
-      forgotPassword: "Mot de passe oublié ?",
       submit: "Se connecter",
-      loading: "Connexion...",
-      success: "Connexion réussie",
-      error: "Identifiants invalides",
+      loading: "Connexion en cours...",
+      success: "Bienvenue !",
+      error: "Veuillez vérifier vos identifiants et réessayer",
       noAccount: "Vous n'avez pas de compte ?",
-      signUp: "S'inscrire"
+      signUp: "S'inscrire",
+      legal: {
+        terms: "Conditions générales d'utilisation",
+        privacy: "Politique de confidentialité"
+      }
     }
   },
   es: {
@@ -248,23 +272,35 @@ const translations = {
     },
     login: {
       title: "Bienvenido de nuevo",
-      subtitle: "Inicie sesión en su cuenta",
+      subtitle: "Nos alegra verte de nuevo",
+      backHome: "Volver al inicio",
       email: {
         label: "Correo electrónico",
-        placeholder: "Ingrese su correo electrónico"
+        placeholder: "Ingrese su correo electrónico",
+        invalid: "Dirección de correo electrónico inválida"
       },
       password: {
         label: "Contraseña",
-        placeholder: "Ingrese su contraseña"
+        placeholder: "Ingrese su contraseña",
+        requirements: {
+          minLength: "La contraseña debe tener al menos 6 caracteres",
+          uppercase: "La contraseña debe contener al menos una mayúscula",
+          number: "La contraseña debe contener al menos un número"
+        },
+        strength: "Fuerza de la contraseña:",
+        forgot: "¿Olvidó su contraseña?"
       },
       rememberMe: "Recordarme",
-      forgotPassword: "¿Olvidó su contraseña?",
       submit: "Iniciar sesión",
       loading: "Iniciando sesión...",
-      success: "Sesión iniciada correctamente",
-      error: "Credenciales inválidas",
+      success: "¡Bienvenido!",
+      error: "Por favor verifique sus credenciales e intente nuevamente",
       noAccount: "¿No tiene una cuenta?",
-      signUp: "Registrarse"
+      signUp: "Registrarse",
+      legal: {
+        terms: "Términos de servicio",
+        privacy: "Política de privacidad"
+      }
     }
   }
 };
