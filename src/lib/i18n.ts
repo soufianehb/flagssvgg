@@ -38,6 +38,7 @@ const translations = {
       },
       actions: {
         clearFilters: 'Clear Filters',
+        search: 'Search'
       },
     },
     nav: {
@@ -206,6 +207,7 @@ const translations = {
       },
       actions: {
         clearFilters: 'Effacer les filtres',
+        search: 'Rechercher'
       },
     },
     nav: {
@@ -305,8 +307,8 @@ const translations = {
         zipCode: "Entrez le code postal",
         city: "Entrez la ville",
         country: "Sélectionnez votre pays",
-        phoneNumber: "Entrez votre numéro de téléphone",
-        businessPhone: "Entrez votre téléphone professionnel",
+        phoneNumber: "Entrez numéro de téléphone",
+        businessPhone: "Entrez téléphone professionnel",
         companyName: "Entrez le nom de l'entreprise"
       },
       validation: {
@@ -374,6 +376,7 @@ const translations = {
       },
       actions: {
         clearFilters: 'Limpiar filtros',
+        search: 'Buscar'
       },
     },
     nav: {
