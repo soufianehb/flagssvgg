@@ -80,10 +80,10 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
   );
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-6">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-4">
         {/* Main Category */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <Label htmlFor="category" className="text-sm font-semibold text-gray-700 block">
             {t.filters.category.label}
           </Label>
@@ -102,7 +102,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         </div>
 
         {/* Subcategory */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <Label htmlFor="subcategory" className="text-sm font-semibold text-gray-700 block">
             {t.filters.subcategory.label}
           </Label>
@@ -126,7 +126,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         </div>
 
         {/* Sub-subcategory */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <Label htmlFor="subsubcategory" className="text-sm font-semibold text-gray-700 block">
             {t.filters.subsubcategory.label}
           </Label>
@@ -152,16 +152,16 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         </div>
 
         {/* Clear Filters Button */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700 block opacity-0">
             {t.filters.actions.clearFilters}
           </Label>
           <Button
             variant="outline"
             onClick={handleClearFilters}
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            className="w-full bg-[#B08A38] hover:bg-[#B08A38]/90 text-white border-[#B08A38]"
           >
-            <FilterX className="mr-2 h-4 w-4" />
+            <FilterX className="mr-2 h-5 w-5" />
             {t.filters.actions.clearFilters}
           </Button>
         </div>

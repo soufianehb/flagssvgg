@@ -61,7 +61,7 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
   );
 
   return (
-    <form className={cn("space-y-4", className)}>
+    <form className={cn("space-y-2", className)}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
         <div className="space-y-2">
           <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
@@ -125,7 +125,7 @@ export const FilterForm = ({ className, onFilterChange, onSearch }: FilterFormPr
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-2">
         <CategoryFilters onFilterChange={handleCategoryChange} />
       </div>
     </form>
