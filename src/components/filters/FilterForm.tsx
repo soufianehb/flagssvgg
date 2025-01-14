@@ -43,6 +43,7 @@ export const FilterForm = ({ className }: FilterFormProps) => {
   };
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
+  const selectContentClasses = "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95";
 
   return (
     <form className={cn("space-y-8", className)}>
@@ -55,7 +56,7 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             <SelectTrigger id="country" className={selectClasses}>
               <SelectValue placeholder={t.filters.country.placeholder} />
             </SelectTrigger>
-            <SelectContent className="animate-in fade-in-0 zoom-in-95">
+            <SelectContent className={selectContentClasses}>
               {countries.map((country) => (
                 <SelectItem key={country.value} value={country.value}>
                   {country.label}
@@ -73,7 +74,7 @@ export const FilterForm = ({ className }: FilterFormProps) => {
             <SelectTrigger id="sort" className={selectClasses}>
               <SelectValue placeholder={t.filters.sort.placeholder} />
             </SelectTrigger>
-            <SelectContent className="animate-in fade-in-0 zoom-in-95">
+            <SelectContent className={selectContentClasses}>
               <SelectItem value="newest">{t.filters.sort.newest}</SelectItem>
               <SelectItem value="oldest">{t.filters.sort.oldest}</SelectItem>
             </SelectContent>
