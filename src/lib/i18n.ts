@@ -31,8 +31,8 @@ const translations = {
       search: 'Search...',
       language: {
         en: 'English',
-        fr: 'Français',
-        es: 'Español',
+        fr: 'French',
+        es: 'Spanish',
       },
     },
   },
@@ -110,6 +110,7 @@ export const useTranslation = () => {
   useEffect(() => {
     const savedLang = localStorage.getItem('language') as Language;
     const browserLang = navigator.language.split('-')[0] as Language;
+    // Set English as default, only use browser/saved language if it's available
     const detectedLang = savedLang || (browserLang in translations ? browserLang : 'en');
     setLanguage(detectedLang);
   }, []);
