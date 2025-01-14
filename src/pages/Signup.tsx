@@ -221,9 +221,9 @@ const Signup = () => {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Prénom</FormLabel>
+                    <FormLabel>{t.signup.labels.firstName}</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="John" />
+                      <Input {...field} placeholder={t.signup.placeholders.firstName} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -235,9 +235,9 @@ const Signup = () => {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom</FormLabel>
+                    <FormLabel>{t.signup.labels.lastName}</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Doe" />
+                      <Input {...field} placeholder={t.signup.placeholders.lastName} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -250,11 +250,11 @@ const Signup = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t.signup.labels.email}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                      <Input {...field} type="email" className="pl-10" placeholder="john.doe@example.com" />
+                      <Input {...field} type="email" className="pl-10" placeholder={t.signup.placeholders.email} />
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -272,9 +272,9 @@ const Signup = () => {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Adresse physique</FormLabel>
+                  <FormLabel>{t.signup.labels.address}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="123 rue Example" />
+                    <Input {...field} placeholder={t.signup.placeholders.address} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -287,9 +287,9 @@ const Signup = () => {
                 name="zipCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Code postal</FormLabel>
+                    <FormLabel>{t.signup.labels.zipCode}</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="75000" />
+                      <Input {...field} placeholder={t.signup.placeholders.zipCode} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -301,9 +301,9 @@ const Signup = () => {
                 name="city"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Ville</FormLabel>
+                    <FormLabel>{t.signup.labels.city}</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Paris" />
+                      <Input {...field} placeholder={t.signup.placeholders.city} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -316,11 +316,11 @@ const Signup = () => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Pays</FormLabel>
+                  <FormLabel>{t.signup.labels.country}</FormLabel>
                   <Select onValueChange={handleCountryChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez votre pays" />
+                        <SelectValue placeholder={t.signup.placeholders.country} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -341,12 +341,12 @@ const Signup = () => {
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Numéro de téléphone</FormLabel>
+                  <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
                   <FormControl>
                     <Input 
                       {...field} 
                       type="tel" 
-                      placeholder="+33 6 12 34 56 78"
+                      placeholder={t.signup.placeholders.phoneNumber}
                       onChange={(e) => handlePhoneChange(e, "phoneNumber")}
                     />
                   </FormControl>
@@ -360,9 +360,9 @@ const Signup = () => {
               name="companyName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de l'entreprise</FormLabel>
+                  <FormLabel>{t.signup.labels.companyName}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Nom de votre entreprise (optionnel)" />
+                    <Input {...field} placeholder={t.signup.placeholders.companyName} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -379,7 +379,7 @@ const Signup = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
+                  <FormLabel>{t.signup.labels.password}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -387,7 +387,7 @@ const Signup = () => {
                         {...field}
                         type={showPassword ? "text" : "password"}
                         className="pl-10 pr-10"
-                        placeholder="••••••••"
+                        placeholder={t.signup.placeholders.password}
                         onChange={(e) => {
                           field.onChange(e);
                           calculatePasswordStrength(e.target.value);
@@ -410,7 +410,7 @@ const Signup = () => {
                     <div className="mt-2 space-y-1">
                       <Progress value={passwordStrength} className="h-1" />
                       <p className="text-xs text-gray-500">
-                        Force du mot de passe : {passwordStrength}%
+                        {t.signup.validation.password.strength}: {passwordStrength}%
                       </p>
                     </div>
                   )}
@@ -424,7 +424,7 @@ const Signup = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirmer le mot de passe</FormLabel>
+                  <FormLabel>{t.signup.labels.confirmPassword}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -432,7 +432,7 @@ const Signup = () => {
                         {...field}
                         type={showConfirmPassword ? "text" : "password"}
                         className="pl-10 pr-10"
-                        placeholder="••••••••"
+                        placeholder={t.signup.placeholders.confirmPassword}
                       />
                       <button
                         type="button"
@@ -465,14 +465,7 @@ const Signup = () => {
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>
-                      J'accepte les{" "}
-                      <Link to="/terms" className="text-primary hover:underline">
-                        conditions d'utilisation
-                      </Link>{" "}
-                      et la{" "}
-                      <Link to="/privacy" className="text-primary hover:underline">
-                        politique de confidentialité
-                      </Link>
+                      {t.signup.labels.terms}
                     </FormLabel>
                     <FormMessage />
                   </div>
@@ -484,18 +477,6 @@ const Signup = () => {
 
       default:
         return null;
-    }
-  };
-
-  const nextStep = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
     }
   };
 
@@ -511,7 +492,7 @@ const Signup = () => {
               className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
-              Retour à l'accueil
+              {t.signup.buttons.backHome}
             </Link>
 
             <DropdownMenu>
@@ -536,8 +517,10 @@ const Signup = () => {
 
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
             <div className="text-center">
-              <h1 className="text-3xl font-bold">Créer un compte</h1>
-              <p className="mt-2 text-gray-600">Étape {currentStep} sur {totalSteps}</p>
+              <h1 className="text-3xl font-bold">{t.signup.title}</h1>
+              <p className="mt-2 text-gray-600">
+                {t.signup.steps.progress.replace('{step}', currentStep.toString()).replace('{total}', totalSteps.toString())}
+              </p>
               <div className="w-full bg-gray-200 h-2 rounded-full mt-4">
                 <div 
                   className="bg-accent h-2 rounded-full transition-all duration-300 ease-in-out"
@@ -558,7 +541,7 @@ const Signup = () => {
                       onClick={previousStep}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
                     >
-                      Précédent
+                      {t.signup.buttons.previous}
                     </Button>
                   )}
                   
@@ -568,7 +551,7 @@ const Signup = () => {
                       onClick={nextStep}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
-                      Suivant
+                      {t.signup.buttons.next}
                     </Button>
                   ) : (
                     <Button
@@ -577,11 +560,7 @@ const Signup = () => {
                       disabled={isLoading}
                     >
                       <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
-                      {isLoading ? (
-                        <span className="animate-pulse">Création en cours...</span>
-                      ) : (
-                        "Créer mon compte"
-                      )}
+                      {isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
                     </Button>
                   )}
                 </div>
@@ -590,7 +569,7 @@ const Signup = () => {
 
             <div className="text-center mt-4 space-y-3">
               <p className="text-sm text-gray-600">
-                Vous avez déjà un compte ?
+                {t.signup.buttons.login}
               </p>
               <Button
                 type="button"
@@ -598,7 +577,7 @@ const Signup = () => {
                 className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
               >
                 <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
-                Connectez-vous
+                {t.login.submit}
               </Button>
             </div>
           </div>
