@@ -37,6 +37,14 @@ import {
 import { countries } from "@/data/countries";
 import { phoneCodes } from "@/data/phoneCodes";
 
+type Language = 'en' | 'fr' | 'es';
+
+const languages: Array<{ code: Language; label: string }> = [
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'Français' },
+  { code: 'es', label: 'Español' }
+];
+
 const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
   lastName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -71,11 +79,12 @@ const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
 
-  const languages = [
-    { code: 'en', label: t.nav.language.en },
-    { code: 'fr', label: t.nav.language.fr },
-    { code: 'es', label: t.nav.language.es }
-  ];
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -104,13 +113,6 @@ const Signup = () => {
     if (password.match(/[^A-Za-z0-9]/)) strength += 20;
     if (password.length >= 12) strength += 20;
     setPasswordStrength(strength);
-  };
-
-  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
-    setLanguage(lang);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
   };
 
   const validatePhoneNumber = (phone: string, country: string) => {
