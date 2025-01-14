@@ -54,7 +54,7 @@ export const MobileNav = () => {
         {/* Login Link */}
         <Link 
           to="/login" 
-          className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-[#B08A38] hover:opacity-90"
+          className="flex w-full items-center gap-2 px-4 mx-4 py-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
         >
           <User className="h-5 w-5" />
           <span>Login</span>

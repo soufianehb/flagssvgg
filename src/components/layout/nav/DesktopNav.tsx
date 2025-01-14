@@ -13,7 +13,7 @@ export const DesktopNav = () => {
       {/* Login Link */}
       <Link 
         to="/login" 
-        className="flex items-center gap-2 text-white transition-all duration-200 hover:text-[#B08A38] hover:opacity-90"
+        className="flex items-center gap-2 text-white transition-all duration-200 hover:text-accent hover:opacity-90"
       >
         <User className="h-5 w-5" />
         <span>Login</span>
