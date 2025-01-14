@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FilterX } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n";
 
 const categories = [
   "Architecture & Design",
@@ -37,6 +38,7 @@ interface CategoryFiltersProps {
 }
 
 export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
   const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<string>("");
@@ -83,11 +85,11 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         {/* Main Category */}
         <div className="space-y-4">
           <Label htmlFor="category" className="text-sm font-semibold text-gray-700 block">
-            Category
+            {t.filters.category.label}
           </Label>
           <Select value={selectedCategory} onValueChange={handleCategoryChange}>
             <SelectTrigger id="category" className={selectClasses}>
-              <SelectValue placeholder="Select a category" />
+              <SelectValue placeholder={t.filters.category.placeholder} />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {categories.map((category) => (
@@ -102,7 +104,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         {/* Subcategory */}
         <div className="space-y-4">
           <Label htmlFor="subcategory" className="text-sm font-semibold text-gray-700 block">
-            Subcategory
+            {t.filters.subcategory.label}
           </Label>
           <Select
             value={selectedSubcategory}
@@ -110,7 +112,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
             disabled={!selectedCategory}
           >
             <SelectTrigger id="subcategory" className={selectClasses}>
-              <SelectValue placeholder="Select a subcategory" />
+              <SelectValue placeholder={t.filters.subcategory.placeholder} />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedCategory &&
@@ -126,7 +128,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         {/* Sub-subcategory */}
         <div className="space-y-4">
           <Label htmlFor="subsubcategory" className="text-sm font-semibold text-gray-700 block">
-            Sub-subcategory
+            {t.filters.subsubcategory.label}
           </Label>
           <Select
             value={selectedSubSubcategory}
@@ -134,7 +136,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
             disabled={!selectedSubcategory}
           >
             <SelectTrigger id="subsubcategory" className={selectClasses}>
-              <SelectValue placeholder="Select a sub-subcategory" />
+              <SelectValue placeholder={t.filters.subsubcategory.placeholder} />
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedSubcategory &&
@@ -152,7 +154,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
         {/* Clear Filters Button */}
         <div className="space-y-4">
           <Label className="text-sm font-semibold text-gray-700 block opacity-0">
-            Actions
+            {t.filters.actions.clearFilters}
           </Label>
           <Button
             variant="outline"
@@ -160,7 +162,7 @@ export const CategoryFilters = ({ onFilterChange }: CategoryFiltersProps) => {
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
           >
             <FilterX className="mr-2 h-4 w-4" />
-            Clear Filters
+            {t.filters.actions.clearFilters}
           </Button>
         </div>
       </div>
