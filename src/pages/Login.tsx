@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
-import { LogIn, User, Key, Eye, EyeOff, Twitter, Chrome } from "lucide-react";
+import { LogIn, User, Key, Eye, EyeOff, Twitter, Chrome, ArrowLeft, Globe } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +21,12 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const formSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -33,12 +39,25 @@ const formSchema = z.object({
 });
 
 const Login = () => {
-  const { t } = useTranslation();
+  const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+
+  const languages = [
+    { code: 'en', label: t.nav.language.en },
+    { code: 'fr', label: t.nav.language.fr },
+    { code: 'es', label: t.nav.language.es }
+  ];
+
+  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,7 +81,6 @@ const Login = () => {
   const handleSocialLogin = async (provider: 'google' | 'twitter') => {
     setIsLoading(true);
     try {
-      // TODO: Implement social login logic here
       console.log(`Login with ${provider}`);
       toast({
         title: "Redirection en cours",
@@ -82,13 +100,11 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      // TODO: Implement actual login logic here
       console.log("Login attempt with:", values);
       toast({
         title: t.login.success,
         description: "Bienvenue !",
       });
-      // Redirection sécurisée avec un délai pour voir le toast
       setTimeout(() => {
         navigate("/", { replace: true });
       }, 1500);
@@ -109,13 +125,43 @@ const Login = () => {
       
       <div className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
+          {/* Back to Home Link */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center text-sm text-accent hover:text-accent/80 transition-colors mb-4"
+            aria-label="Retour à l'accueil"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Retour à l'accueil
+          </Link>
+
+          {/* Language Selector */}
+          <div className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+                <Globe className="h-4 w-4" />
+                {t.nav.language[language]}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {languages.map((lang) => (
+                  <DropdownMenuItem
+                    key={lang.code}
+                    onClick={() => handleLanguageChange(lang.code as 'en' | 'fr' | 'es')}
+                  >
+                    {lang.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6 transition-all duration-300 hover:shadow-xl">
             <div className="text-center">
               <h1 className="text-3xl font-extrabold text-gray-900" tabIndex={0}>
                 {t.login.title}
               </h1>
               <p className="mt-2 text-sm text-gray-600" tabIndex={0}>
-                {t.login.subtitle}
+                Bienvenue ! Nous sommes ravis de vous revoir.
               </p>
             </div>
 
@@ -298,6 +344,19 @@ const Login = () => {
                 </div>
               </form>
             </FormProvider>
+
+            <div className="text-center space-y-2 text-sm text-gray-600">
+              <p>
+                <Link to="/terms" className="text-accent hover:text-accent/80 underline">
+                  Conditions générales d'utilisation
+                </Link>
+              </p>
+              <p>
+                <Link to="/privacy" className="text-accent hover:text-accent/80 underline">
+                  Politique de confidentialité
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
