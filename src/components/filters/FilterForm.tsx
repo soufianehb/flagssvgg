@@ -43,14 +43,14 @@ export const FilterForm = ({ className }: FilterFormProps) => {
   };
 
   return (
-    <form className={cn("space-y-6", className)}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-        <div className="space-y-3">
-          <Label htmlFor="country" className="text-sm font-medium">
+    <form className={cn("space-y-8", className)}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6">
+        <div className="space-y-4">
+          <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
             {t.filters.country.label}
           </Label>
           <Select>
-            <SelectTrigger id="country">
+            <SelectTrigger id="country" className="w-full bg-white">
               <SelectValue placeholder={t.filters.country.placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -63,12 +63,12 @@ export const FilterForm = ({ className }: FilterFormProps) => {
           </Select>
         </div>
 
-        <div className="space-y-3">
-          <Label htmlFor="sort" className="text-sm font-medium">
+        <div className="space-y-4">
+          <Label htmlFor="sort" className="text-sm font-semibold text-gray-700 block">
             {t.filters.sort.label}
           </Label>
           <Select>
-            <SelectTrigger id="sort">
+            <SelectTrigger id="sort" className="w-full bg-white">
               <SelectValue placeholder={t.filters.sort.placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -78,26 +78,27 @@ export const FilterForm = ({ className }: FilterFormProps) => {
           </Select>
         </div>
 
-        <div className="space-y-3">
-          <Label htmlFor="listingId" className="text-sm font-medium">
+        <div className="space-y-4">
+          <Label htmlFor="listingId" className="text-sm font-semibold text-gray-700 block">
             {t.filters.listingId.label}
           </Label>
           <Input
             id="listingId"
             type="number"
             placeholder={t.filters.listingId.placeholder}
+            className="w-full bg-white"
           />
         </div>
 
-        <div className="space-y-3">
-          <Label htmlFor="keywords" className="text-sm font-medium">
+        <div className="space-y-4">
+          <Label htmlFor="keywords" className="text-sm font-semibold text-gray-700 block">
             {t.filters.keywords.label}
           </Label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
             <Input
               id="keywords"
-              className="pl-10"
+              className="pl-10 w-full bg-white"
               placeholder={t.filters.keywords.placeholder}
               value={keywords}
               onChange={handleKeywordsChange}
