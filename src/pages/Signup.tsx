@@ -52,7 +52,6 @@ const formSchema = z.object({
   country: z.string().min(1, "Le pays est requis"),
   businessPhone: z.string().min(1, "Le téléphone professionnel est requis"),
   companyName: z.string().optional(),
-  profession: z.string().min(1, "La profession est requise"),
   phoneNumber: z.string().min(1, "Le numéro de téléphone est requis"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Les mots de passe ne correspondent pas",
@@ -91,7 +90,6 @@ const Signup = () => {
       country: "",
       businessPhone: "",
       companyName: "",
-      profession: "",
       phoneNumber: "",
     },
   });
@@ -122,40 +120,65 @@ const Signup = () => {
   const handleCountryChange = (value: string) => {
     form.setValue("country", value);
     const phoneCode = phoneCodes[value] || "";
-    const currentPhone = form.getValues("businessPhone");
     
-    if (!currentPhone || /^\+\d{1,3}/.test(currentPhone)) {
+    // Update both phone fields with the new country code
+    const currentBusinessPhone = form.getValues("businessPhone");
+    const currentPhoneNumber = form.getValues("phoneNumber");
+    
+    if (!currentBusinessPhone || /^\+\d{1,3}/.test(currentBusinessPhone)) {
       form.setValue("businessPhone", phoneCode + " ");
     }
+    
+    if (!currentPhoneNumber || /^\+\d{1,3}/.test(currentPhoneNumber)) {
+      form.setValue("phoneNumber", phoneCode + " ");
+    }
 
-    const newPhone = form.getValues("businessPhone");
-    if (newPhone) {
-      const isValid = validatePhoneNumber(newPhone, value);
-      if (!isValid) {
-        form.setError("businessPhone", {
-          type: "manual",
-          message: "Numéro de téléphone invalide pour ce pays"
-        });
-      } else {
-        form.clearErrors("businessPhone");
+    // Validate phone numbers
+    const validatePhone = (phone: string) => {
+      try {
+        if (!phone) return false;
+        return isValidPhoneNumber(phone, value as CountryCode);
+      } catch (error) {
+        return false;
       }
+    };
+
+    const businessPhone = form.getValues("businessPhone");
+    const phoneNumber = form.getValues("phoneNumber");
+
+    if (businessPhone && !validatePhone(businessPhone)) {
+      form.setError("businessPhone", {
+        type: "manual",
+        message: "Numéro de téléphone invalide pour ce pays"
+      });
+    } else {
+      form.clearErrors("businessPhone");
+    }
+
+    if (phoneNumber && !validatePhone(phoneNumber)) {
+      form.setError("phoneNumber", {
+        type: "manual",
+        message: "Numéro de téléphone invalide pour ce pays"
+      });
+    } else {
+      form.clearErrors("phoneNumber");
     }
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
     const value = e.target.value;
-    form.setValue("businessPhone", value);
+    form.setValue(fieldName, value);
     
     const country = form.getValues("country");
     if (country && value) {
       const isValid = validatePhoneNumber(value, country);
       if (!isValid) {
-        form.setError("businessPhone", {
+        form.setError(fieldName, {
           type: "manual",
           message: "Format de numéro invalide"
         });
       } else {
-        form.clearErrors("businessPhone");
+        form.clearErrors(fieldName);
       }
     }
   };
@@ -318,21 +341,12 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>Numéro de téléphone</FormLabel>
                   <FormControl>
-                    <Input {...field} type="tel" placeholder="+33 6 12 34 56 78" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="profession"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profession</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Votre profession" />
+                    <Input 
+                      {...field} 
+                      type="tel" 
+                      placeholder="+33 6 12 34 56 78"
+                      onChange={(e) => handlePhoneChange(e, "phoneNumber")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
