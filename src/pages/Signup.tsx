@@ -552,7 +552,7 @@ const Signup = () => {
                       type="button"
                       variant="outline"
                       onClick={previousStep}
-                      className="w-full hover:bg-accent/10 hover:text-accent border-accent text-accent"
+                      className="w-full md:w-1/3 hover:bg-accent/10 hover:text-accent border-accent text-accent"
                     >
                       Précédent
                     </Button>
@@ -562,7 +562,7 @@ const Signup = () => {
                     <Button
                       type="button"
                       onClick={nextStep}
-                      className="w-full bg-accent hover:bg-accent/90 text-white"
+                      className="w-full md:w-2/3 flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       Suivant
                     </Button>
