@@ -147,7 +147,7 @@ export const CategoryFilters = () => {
           <Button
             variant="outline"
             onClick={handleClearFilters}
-            className="w-full bg-white hover:bg-[#0A1836] hover:text-white"
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
           >
             <FilterX className="mr-2 h-4 w-4" />
             Clear Filters
