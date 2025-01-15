@@ -73,44 +73,129 @@ const Signup = () => {
     resetForm,
   } = useSignupState();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      ...state.personal,
-      ...state.professional,
-      ...state.security,
-    },
-  });
-
-  const handlePersonalDataChange = (field: keyof typeof state.personal, value: string) => {
-    setPersonalData(field, value);
-    form.setValue(field as any, value);
-  };
-
-  const handleCountryChange = (value: string) => {
-    setProfessionalData("country", value);
-    form.setValue("country", value);
-    const phoneCode = phoneCodes[value] || "";
+  const validatePersonalStep = () => {
+    const errors: Record<string, string> = {};
     
-    setProfessionalData("businessPhone", phoneCode);
-    setProfessionalData("phoneNumber", phoneCode);
-    form.setValue("businessPhone", phoneCode);
-    form.setValue("phoneNumber", phoneCode);
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
-    const value = e.target.value;
-    const country = form.getValues("country");
-    const countryCode = phoneCodes[country] || "";
-    
-    if (!value.startsWith(countryCode)) {
-      setProfessionalData(fieldName, countryCode);
-      form.setValue(fieldName, countryCode);
-      return;
+    if (!state.personal.firstName.trim()) {
+      errors.firstName = t.signup.validation.required;
+    } else if (state.personal.firstName.length < 2) {
+      errors.firstName = t.signup.validation.firstName;
     }
 
-    setProfessionalData(fieldName, value);
-    form.setValue(fieldName, value);
+    if (!state.personal.lastName.trim()) {
+      errors.lastName = t.signup.validation.required;
+    } else if (state.personal.lastName.length < 2) {
+      errors.lastName = t.signup.validation.lastName;
+    }
+
+    if (!state.personal.email.trim()) {
+      errors.email = t.signup.validation.required;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.personal.email)) {
+      errors.email = t.signup.validation.email;
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  };
+
+  const validateProfessionalStep = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!state.professional.address.trim()) {
+      errors.address = t.signup.validation.address.required;
+    }
+    if (!state.professional.zipCode.trim()) {
+      errors.zipCode = t.signup.validation.zipCode.required;
+    }
+    if (!state.professional.city.trim()) {
+      errors.city = t.signup.validation.city.required;
+    }
+    if (!state.professional.country) {
+      errors.country = t.signup.validation.country.required;
+    }
+    if (!state.professional.companyName.trim()) {
+      errors.companyName = t.signup.validation.companyName.required;
+    }
+
+    if (state.professional.phoneNumber && state.professional.country) {
+      if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
+        errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+      }
+    }
+
+    if (state.professional.businessPhone && state.professional.country) {
+      if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
+        errors.businessPhone = t.signup.validation.businessPhone.invalid;
+      }
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  };
+
+  const validateSecurityStep = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!state.security.password) {
+      errors.password = t.signup.validation.required;
+    } else {
+      if (state.security.password.length < 8) {
+        errors.password = t.signup.validation.password.minLength;
+      }
+      if (!/[A-Z]/.test(state.security.password)) {
+        errors.password = t.signup.validation.password.uppercase;
+      }
+      if (!/[0-9]/.test(state.security.password)) {
+        errors.password = t.signup.validation.password.number;
+      }
+    }
+    
+    if (!state.security.confirmPassword) {
+      errors.confirmPassword = t.signup.validation.required;
+    } else if (state.security.password !== state.security.confirmPassword) {
+      errors.confirmPassword = t.signup.validation.confirmPassword;
+    }
+    
+    if (!state.security.terms) {
+      errors.terms = t.signup.validation.terms;
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  };
+
+  const clearStep = (step: 'personal' | 'professional' | 'security') => {
+    switch (step) {
+      case 'personal':
+        setPersonalData('firstName', '');
+        setPersonalData('lastName', '');
+        setPersonalData('email', '');
+        break;
+      case 'professional':
+        setProfessionalData('address', '');
+        setProfessionalData('zipCode', '');
+        setProfessionalData('city', '');
+        setProfessionalData('country', '');
+        setProfessionalData('companyName', '');
+        setProfessionalData('phoneNumber', '');
+        setProfessionalData('businessPhone', '');
+        break;
+      case 'security':
+        setSecurityData('password', '');
+        setSecurityData('confirmPassword', '');
+        setSecurityData('terms', false);
+        break;
+    }
+  };
+
+  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
+    setLanguage(lang);
   };
 
   const getCurrentStepValidation = () => {
