@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 interface NavigationState {
@@ -22,10 +22,18 @@ export const useSignupNavigation = (
   });
   
   const { toast } = useToast();
+  const validateRef = useRef(validateCurrentStep);
+  const onStepChangeRef = useRef(onStepChange);
+  const onErrorRef = useRef(onError);
+
+  // Mettre à jour les refs quand les callbacks changent
+  validateRef.current = validateCurrentStep;
+  onStepChangeRef.current = onStepChange;
+  onErrorRef.current = onError;
 
   const goToStep = useCallback(async (step: number) => {
     try {
-      const validation = validateCurrentStep();
+      const validation = validateRef.current();
       
       if (!validation.isValid) {
         const errorMessages = Object.values(validation.errors).join('\n');
@@ -42,8 +50,8 @@ export const useSignupNavigation = (
         history: [...prevState.history, step]
       }));
 
-      if (onStepChange) {
-        await onStepChange(step);
+      if (onStepChangeRef.current) {
+        await onStepChangeRef.current(step);
       }
       
       return true;
@@ -54,12 +62,12 @@ export const useSignupNavigation = (
         description: "Une erreur est survenue, retour à l'étape précédente"
       });
       
-      if (onError) {
-        onError(state.currentStep);
+      if (onErrorRef.current) {
+        onErrorRef.current(state.currentStep);
       }
       return false;
     }
-  }, [validateCurrentStep, toast, onStepChange, onError, state.currentStep]);
+  }, [toast]); // Seule dépendance nécessaire car on utilise des refs pour le reste
 
   const goBack = useCallback(() => {
     setState(prevState => {
@@ -67,8 +75,8 @@ export const useSignupNavigation = (
       newHistory.pop();
       const previousStep = newHistory[newHistory.length - 1] || 1;
       
-      if (onStepChange) {
-        onStepChange(previousStep);
+      if (onStepChangeRef.current) {
+        onStepChangeRef.current(previousStep);
       }
       
       return {
@@ -76,7 +84,7 @@ export const useSignupNavigation = (
         history: newHistory
       };
     });
-  }, [onStepChange]);
+  }, []); // Pas de dépendances car on utilise setState avec callback et ref
 
   return {
     currentStep: state.currentStep,

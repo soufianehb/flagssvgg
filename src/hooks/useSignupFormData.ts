@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import type { CountryCode } from 'libphonenumber-js';
@@ -9,6 +9,7 @@ interface StepValidation {
 }
 
 const STORAGE_KEY = 'signup_form_data';
+const DEBOUNCE_DELAY = 500; // 500ms debounce pour localStorage
 
 export const useSignupFormData = () => {
   const [personalData, setPersonalData] = useState<PersonalData>(() => {
@@ -38,17 +39,60 @@ export const useSignupFormData = () => {
     };
   });
 
-  // Sauvegarde automatique des données avec persistance
+  // Utilisation de useRef pour stocker les timeouts
+  const personalTimeoutRef = useRef<NodeJS.Timeout>();
+  const professionalTimeoutRef = useRef<NodeJS.Timeout>();
+  const securityTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Sauvegarde avec debounce pour personalData
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
+    if (personalTimeoutRef.current) {
+      clearTimeout(personalTimeoutRef.current);
+    }
+    
+    personalTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
+    }, DEBOUNCE_DELAY);
+
+    return () => {
+      if (personalTimeoutRef.current) {
+        clearTimeout(personalTimeoutRef.current);
+      }
+    };
   }, [personalData]);
 
+  // Sauvegarde avec debounce pour professionalData
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(professionalData));
+    if (professionalTimeoutRef.current) {
+      clearTimeout(professionalTimeoutRef.current);
+    }
+    
+    professionalTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(professionalData));
+    }, DEBOUNCE_DELAY);
+
+    return () => {
+      if (professionalTimeoutRef.current) {
+        clearTimeout(professionalTimeoutRef.current);
+      }
+    };
   }, [professionalData]);
 
+  // Sauvegarde avec debounce pour securityData
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
+    if (securityTimeoutRef.current) {
+      clearTimeout(securityTimeoutRef.current);
+    }
+    
+    securityTimeoutRef.current = setTimeout(() => {
+      localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
+    }, DEBOUNCE_DELAY);
+
+    return () => {
+      if (securityTimeoutRef.current) {
+        clearTimeout(securityTimeoutRef.current);
+      }
+    };
   }, [securityData]);
 
   const validatePersonalStep = (): StepValidation => {
@@ -152,7 +196,7 @@ export const useSignupFormData = () => {
     };
   };
 
-  const clearStep = (step: 'personal' | 'professional' | 'security') => {
+  const clearStep = useCallback((step: 'personal' | 'professional' | 'security') => {
     switch (step) {
       case 'personal':
         setPersonalData({ firstName: '', lastName: '', email: '' });
@@ -175,7 +219,7 @@ export const useSignupFormData = () => {
         localStorage.removeItem(`${STORAGE_KEY}_security`);
         break;
     }
-  };
+  }, []);
 
   return {
     personalData,

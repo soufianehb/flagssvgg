@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
 
 type StepData = PersonalData | ProfessionalData | SecurityData;
@@ -16,16 +16,14 @@ interface BackupState {
 export const useFormIntegrity = () => {
   const [backupData, setBackupData] = useState<BackupState>({});
 
-  const validateStepIntegrity = (step: StepType, data: StepData): ValidationResult => {
+  const validateStepIntegrity = useCallback((step: StepType, data: StepData): ValidationResult => {
     const errors: string[] = [];
 
-    // Vérification de l'intégrité des données
     if (!data || typeof data !== 'object') {
       errors.push('Les données sont invalides ou corrompues');
       return { isValid: false, errors };
     }
 
-    // Vérifications spécifiques par étape
     switch (step) {
       case 'personal':
         const personalData = data as PersonalData;
@@ -53,22 +51,22 @@ export const useFormIntegrity = () => {
       isValid: errors.length === 0,
       errors
     };
-  };
+  }, []);
 
-  const backupStepData = (step: StepType, data: StepData) => {
+  const backupStepData = useCallback((step: StepType, data: StepData) => {
     setBackupData(prev => ({
       ...prev,
-      [step]: JSON.parse(JSON.stringify(data)) // Deep copy to prevent contamination
+      [step]: JSON.parse(JSON.stringify(data))
     }));
-  };
+  }, []);
 
-  const rollbackStep = (step: StepType): StepData | null => {
+  const rollbackStep = useCallback((step: StepType): StepData | null => {
     return backupData[step] || null;
-  };
+  }, [backupData]);
 
-  const preventDataContamination = (data: StepData): StepData => {
+  const preventDataContamination = useCallback((data: StepData): StepData => {
     return JSON.parse(JSON.stringify(data));
-  };
+  }, []);
 
   return {
     validateStepIntegrity,
