@@ -16,7 +16,7 @@ export const useSignupNavigation = (
   onStepChange?: (step: number) => void,
   onError?: (step: number) => void
 ) => {
-  const [navigationState, setNavigationState] = useState<NavigationState>({
+  const [state, setState] = useState<NavigationState>({
     currentStep: 1,
     history: [1]
   });
@@ -37,7 +37,7 @@ export const useSignupNavigation = (
         return false;
       }
 
-      setNavigationState(prevState => ({
+      setState(prevState => ({
         currentStep: step,
         history: [...prevState.history, step]
       }));
@@ -55,14 +55,14 @@ export const useSignupNavigation = (
       });
       
       if (onError) {
-        onError(navigationState.currentStep);
+        onError(state.currentStep);
       }
       return false;
     }
-  }, [validateCurrentStep, toast, onStepChange, onError, navigationState.currentStep]);
+  }, [validateCurrentStep, toast, onStepChange, onError, state.currentStep]);
 
   const goBack = useCallback(() => {
-    setNavigationState(prevState => {
+    setState(prevState => {
       const newHistory = [...prevState.history];
       newHistory.pop();
       const previousStep = newHistory[newHistory.length - 1] || 1;
@@ -79,9 +79,9 @@ export const useSignupNavigation = (
   }, [onStepChange]);
 
   return {
-    currentStep: navigationState.currentStep,
+    currentStep: state.currentStep,
     goToStep,
     goBack,
-    canGoBack: navigationState.history.length > 1
+    canGoBack: state.history.length > 1
   };
 };
