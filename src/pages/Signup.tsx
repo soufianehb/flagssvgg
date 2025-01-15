@@ -186,130 +186,27 @@ const Signup = () => {
   };
 
   const validateCurrentStep = () => {
-    let isValid = true;
     const currentValues = form.getValues();
-    const errors: { [key: string]: string } = {};
-
+    
+    // Vérification basique que les champs requis sont remplis
     switch (currentStep) {
       case 1:
-        if (!currentValues.firstName || currentValues.firstName.length < 2) {
-          errors.firstName = t.signup.validation.firstName;
-          isValid = false;
-        }
-        if (!currentValues.lastName || currentValues.lastName.length < 2) {
-          errors.lastName = t.signup.validation.lastName;
-          isValid = false;
-        }
-        if (!currentValues.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentValues.email)) {
-          errors.email = t.signup.validation.email;
-          isValid = false;
-        }
-        break;
-
+        return currentValues.firstName && currentValues.lastName && currentValues.email;
       case 2:
-        if (!currentValues.address) {
-          errors.address = t.signup.validation.address.required;
-          isValid = false;
-        }
-        if (!currentValues.zipCode) {
-          errors.zipCode = t.signup.validation.zipCode.required;
-          isValid = false;
-        }
-        if (!currentValues.city) {
-          errors.city = t.signup.validation.city.required;
-          isValid = false;
-        }
-        if (!currentValues.country) {
-          errors.country = t.signup.validation.country.required;
-          isValid = false;
-        }
-        if (!currentValues.companyName) {
-          errors.companyName = t.signup.validation.companyName.required;
-          isValid = false;
-        }
-
-        // Validation des numéros de téléphone uniquement si un pays est sélectionné
-        if (currentValues.country) {
-          // Validation du numéro de téléphone personnel
-          if (!currentValues.phoneNumber) {
-            errors.phoneNumber = t.signup.validation.phoneNumber.required;
-            isValid = false;
-          } else {
-            try {
-              const isValidPersonal = validatePhoneNumber(currentValues.phoneNumber, currentValues.country);
-              if (!isValidPersonal) {
-                errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
-                isValid = false;
-              }
-            } catch (error) {
-              errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
-              isValid = false;
-            }
-          }
-
-          // Validation du numéro de téléphone professionnel
-          if (!currentValues.businessPhone) {
-            errors.businessPhone = t.signup.validation.businessPhone.required;
-            isValid = false;
-          } else {
-            try {
-              const isValidBusiness = validatePhoneNumber(currentValues.businessPhone, currentValues.country);
-              if (!isValidBusiness) {
-                errors.businessPhone = t.signup.validation.businessPhone.invalid;
-                isValid = false;
-              }
-            } catch (error) {
-              errors.businessPhone = t.signup.validation.businessPhone.invalid;
-              isValid = false;
-            }
-          }
-        }
-        break;
-
+        return currentValues.address && 
+               currentValues.zipCode && 
+               currentValues.city && 
+               currentValues.country && 
+               currentValues.companyName && 
+               currentValues.phoneNumber && 
+               currentValues.businessPhone;
       case 3:
-        if (!currentValues.password || currentValues.password.length < 8) {
-          errors.password = t.signup.validation.password.length;
-          isValid = false;
-        }
-        if (!currentValues.password.match(/[A-Z]/)) {
-          errors.password = t.signup.validation.password.uppercase;
-          isValid = false;
-        }
-        if (!currentValues.password.match(/[0-9]/)) {
-          errors.password = t.signup.validation.password.number;
-          isValid = false;
-        }
-        if (currentValues.password !== currentValues.confirmPassword) {
-          errors.confirmPassword = t.signup.validation.confirmPassword;
-          isValid = false;
-        }
-        if (!currentValues.terms) {
-          errors.terms = t.signup.validation.terms;
-          isValid = false;
-        }
-        break;
+        return currentValues.password && 
+               currentValues.confirmPassword && 
+               currentValues.terms;
+      default:
+        return true;
     }
-
-    // Set errors in form if any
-    if (!isValid) {
-      Object.keys(errors).forEach((key) => {
-        form.setError(key as any, {
-          type: 'manual',
-          message: errors[key]
-        });
-      });
-
-      // Show toast with error message
-      toast({
-        variant: "destructive",
-        title: t.signup.validation.error.title,
-        description: t.signup.validation.error.description,
-      });
-
-      console.log("Validation errors:", errors);
-    }
-
-    return isValid;
   };
 
   const nextStep = () => {
