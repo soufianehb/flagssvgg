@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
-import { phoneCodes } from '@/data/phoneCodes';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import type { CountryCode } from 'libphonenumber-js';
 
 interface StepValidation {
@@ -38,7 +38,7 @@ export const useSignupFormData = () => {
     };
   });
 
-  // Sauvegarde automatique des données
+  // Sauvegarde automatique des données avec persistance
   useEffect(() => {
     localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
   }, [personalData]);
@@ -55,15 +55,21 @@ export const useSignupFormData = () => {
     const errors: Record<string, string> = {};
     
     if (!personalData.firstName.trim()) {
-      errors.firstName = 'Le prénom est requis';
+      errors.firstName = 'Veuillez entrer votre prénom';
+    } else if (personalData.firstName.length < 2) {
+      errors.firstName = 'Le prénom doit contenir au moins 2 caractères';
     }
+
     if (!personalData.lastName.trim()) {
-      errors.lastName = 'Le nom est requis';
+      errors.lastName = 'Veuillez entrer votre nom';
+    } else if (personalData.lastName.length < 2) {
+      errors.lastName = 'Le nom doit contenir au moins 2 caractères';
     }
+
     if (!personalData.email.trim()) {
-      errors.email = 'L\'email est requis';
+      errors.email = 'Veuillez entrer votre adresse email';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personalData.email)) {
-      errors.email = 'L\'email n\'est pas valide';
+      errors.email = 'Veuillez entrer une adresse email valide (exemple: nom@domaine.com)';
     }
 
     return {
@@ -75,27 +81,36 @@ export const useSignupFormData = () => {
   const validateProfessionalStep = (): StepValidation => {
     const errors: Record<string, string> = {};
     
-    // Validation simplifiée - vérifie uniquement si les champs sont vides
-    if (!professionalData.address) {
-      errors.address = 'L\'adresse est requise';
+    if (!professionalData.address.trim()) {
+      errors.address = 'Veuillez entrer votre adresse';
     }
-    if (!professionalData.zipCode) {
-      errors.zipCode = 'Le code postal est requis';
+
+    if (!professionalData.zipCode.trim()) {
+      errors.zipCode = 'Veuillez entrer votre code postal';
     }
-    if (!professionalData.city) {
-      errors.city = 'La ville est requise';
+
+    if (!professionalData.city.trim()) {
+      errors.city = 'Veuillez entrer votre ville';
     }
+
     if (!professionalData.country) {
-      errors.country = 'Le pays est requis';
+      errors.country = 'Veuillez sélectionner votre pays';
     }
-    if (!professionalData.companyName) {
-      errors.companyName = 'Le nom de l\'entreprise est requis';
+
+    if (!professionalData.companyName.trim()) {
+      errors.companyName = 'Veuillez entrer le nom de votre entreprise';
     }
-    if (!professionalData.phoneNumber) {
-      errors.phoneNumber = 'Le numéro de téléphone est requis';
+    
+    if (professionalData.phoneNumber) {
+      if (professionalData.country && !isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
+        errors.phoneNumber = 'Veuillez entrer un numéro de téléphone valide pour le pays sélectionné';
+      }
     }
-    if (!professionalData.businessPhone) {
-      errors.businessPhone = 'Le numéro professionnel est requis';
+    
+    if (professionalData.businessPhone) {
+      if (professionalData.country && !isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
+        errors.businessPhone = 'Veuillez entrer un numéro de téléphone professionnel valide pour le pays sélectionné';
+      }
     }
 
     return {
@@ -108,19 +123,27 @@ export const useSignupFormData = () => {
     const errors: Record<string, string> = {};
     
     if (!securityData.password) {
-      errors.password = 'Le mot de passe est requis';
-    } else if (securityData.password.length < 8) {
-      errors.password = 'Le mot de passe doit contenir au moins 8 caractères';
+      errors.password = 'Veuillez entrer un mot de passe';
+    } else {
+      if (securityData.password.length < 8) {
+        errors.password = 'Le mot de passe doit contenir au moins 8 caractères';
+      }
+      if (!/[A-Z]/.test(securityData.password)) {
+        errors.password = 'Le mot de passe doit contenir au moins une majuscule';
+      }
+      if (!/[0-9]/.test(securityData.password)) {
+        errors.password = 'Le mot de passe doit contenir au moins un chiffre';
+      }
     }
     
     if (!securityData.confirmPassword) {
-      errors.confirmPassword = 'La confirmation du mot de passe est requise';
+      errors.confirmPassword = 'Veuillez confirmer votre mot de passe';
     } else if (securityData.password !== securityData.confirmPassword) {
       errors.confirmPassword = 'Les mots de passe ne correspondent pas';
     }
     
     if (!securityData.terms) {
-      errors.terms = 'Vous devez accepter les conditions';
+      errors.terms = 'Vous devez accepter les conditions d\'utilisation pour continuer';
     }
 
     return {
