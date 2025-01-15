@@ -227,24 +227,41 @@ const Signup = () => {
           errors.companyName = t.signup.validation.companyName.required;
           isValid = false;
         }
-        if (!currentValues.phoneNumber) {
-          errors.phoneNumber = t.signup.validation.phoneNumber.required;
-          isValid = false;
-        }
-        if (!currentValues.businessPhone) {
-          errors.businessPhone = t.signup.validation.businessPhone.required;
-          isValid = false;
-        }
 
-        // Validate phone numbers if country is selected
+        // Validation des numéros de téléphone uniquement si un pays est sélectionné
         if (currentValues.country) {
-          if (!validatePhoneNumber(currentValues.phoneNumber, currentValues.country)) {
-            errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+          // Validation du numéro de téléphone personnel
+          if (!currentValues.phoneNumber) {
+            errors.phoneNumber = t.signup.validation.phoneNumber.required;
             isValid = false;
+          } else {
+            try {
+              const isValidPersonal = validatePhoneNumber(currentValues.phoneNumber, currentValues.country);
+              if (!isValidPersonal) {
+                errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+                isValid = false;
+              }
+            } catch (error) {
+              errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+              isValid = false;
+            }
           }
-          if (!validatePhoneNumber(currentValues.businessPhone, currentValues.country)) {
-            errors.businessPhone = t.signup.validation.businessPhone.invalid;
+
+          // Validation du numéro de téléphone professionnel
+          if (!currentValues.businessPhone) {
+            errors.businessPhone = t.signup.validation.businessPhone.required;
             isValid = false;
+          } else {
+            try {
+              const isValidBusiness = validatePhoneNumber(currentValues.businessPhone, currentValues.country);
+              if (!isValidBusiness) {
+                errors.businessPhone = t.signup.validation.businessPhone.invalid;
+                isValid = false;
+              }
+            } catch (error) {
+              errors.businessPhone = t.signup.validation.businessPhone.invalid;
+              isValid = false;
+            }
           }
         }
         break;
@@ -288,6 +305,8 @@ const Signup = () => {
         title: t.signup.validation.error.title,
         description: t.signup.validation.error.description,
       });
+
+      console.log("Validation errors:", errors);
     }
 
     return isValid;
