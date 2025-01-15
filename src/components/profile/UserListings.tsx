@@ -94,7 +94,7 @@ export const UserListings = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <Input
-          placeholder={t.profile.listings.filters.search}
+          placeholder={t.profile.tabs.listings.filters.search}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="max-w-xs"
@@ -102,24 +102,24 @@ export const UserListings = () => {
         <div className="flex gap-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t.profile.listings.filters.all} />
+              <SelectValue placeholder={t.profile.tabs.listings.filters.all} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t.profile.listings.filters.all}</SelectItem>
-              <SelectItem value="active">{t.profile.listings.filters.active}</SelectItem>
-              <SelectItem value="pending">{t.profile.listings.filters.pending}</SelectItem>
-              <SelectItem value="expired">{t.profile.listings.filters.expired}</SelectItem>
+              <SelectItem value="all">{t.profile.tabs.listings.filters.all}</SelectItem>
+              <SelectItem value="active">{t.profile.tabs.listings.filters.active}</SelectItem>
+              <SelectItem value="pending">{t.profile.tabs.listings.filters.pending}</SelectItem>
+              <SelectItem value="expired">{t.profile.tabs.listings.filters.expired}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t.profile.listings.sort.newest} />
+              <SelectValue placeholder={t.profile.tabs.listings.sort.newest} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">{t.profile.listings.sort.newest}</SelectItem>
-              <SelectItem value="oldest">{t.profile.listings.sort.oldest}</SelectItem>
-              <SelectItem value="mostViewed">{t.profile.listings.sort.mostViewed}</SelectItem>
+              <SelectItem value="newest">{t.profile.tabs.listings.sort.newest}</SelectItem>
+              <SelectItem value="oldest">{t.profile.tabs.listings.sort.oldest}</SelectItem>
+              <SelectItem value="mostViewed">{t.profile.tabs.listings.sort.mostViewed}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -127,7 +127,7 @@ export const UserListings = () => {
 
       {filteredListings.length === 0 ? (
         <div className="text-center py-8 text-muted-foreground">
-          {t.profile.listings.empty}
+          {t.profile.tabs.listings.empty}
         </div>
       ) : (
         <Table>
@@ -159,7 +159,7 @@ export const UserListings = () => {
                     listing.status === "pending" ? "bg-yellow-100 text-yellow-800" :
                     "bg-red-100 text-red-800"
                   }`}>
-                    {t.profile.listings.status[listing.status]}
+                    {t.profile.tabs.listings.status[listing.status]}
                   </span>
                 </TableCell>
                 <TableCell>

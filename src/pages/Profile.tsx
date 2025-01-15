@@ -34,7 +34,7 @@ const Profile = () => {
             <TabsTrigger value="general">{t.profile.tabs.general}</TabsTrigger>
             <TabsTrigger value="security">{t.profile.tabs.security}</TabsTrigger>
             <TabsTrigger value="preferences">{t.profile.tabs.preferences}</TabsTrigger>
-            <TabsTrigger value="listings">{t.profile.listings.title}</TabsTrigger>
+            <TabsTrigger value="listings">{t.profile.tabs.listings.title}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="general" className="space-y-6">
@@ -60,7 +60,7 @@ const Profile = () => {
 
           <TabsContent value="listings" className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">{t.profile.listings.title}</h2>
+              <h2 className="text-xl font-semibold mb-4">{t.profile.tabs.listings.title}</h2>
               <UserListings />
             </div>
           </TabsContent>
