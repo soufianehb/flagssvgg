@@ -6,31 +6,44 @@ interface NavigationState {
   history: number[];
 }
 
+interface StepValidation {
+  isValid: boolean;
+  errors: Record<string, string>;
+}
+
 export const useSignupNavigation = (
-  validateCurrentStep: () => { isValid: boolean; errors: Record<string, string> }
+  validateCurrentStep: () => StepValidation,
+  onStepChange?: (step: number) => void
 ) => {
   const [navigationState, setNavigationState] = useState<NavigationState>({
     currentStep: 1,
     history: [1]
   });
+  
   const { toast } = useToast();
 
   const goToStep = (step: number) => {
     const validation = validateCurrentStep();
     
     if (!validation.isValid) {
+      // Afficher les erreurs de validation
+      const errorMessages = Object.values(validation.errors).join('\n');
       toast({
         variant: "destructive",
         title: "Erreur de validation",
-        description: "Veuillez corriger les erreurs avant de continuer"
+        description: errorMessages
       });
       return false;
     }
 
+    // Sauvegarder l'état actuel dans l'historique
     setNavigationState(prev => ({
       currentStep: step,
       history: [...prev.history, step]
     }));
+
+    // Notifier le changement d'étape
+    onStepChange?.(step);
     return true;
   };
 
@@ -39,6 +52,9 @@ export const useSignupNavigation = (
       const newHistory = [...prev.history];
       newHistory.pop(); // Retire l'étape actuelle
       const previousStep = newHistory[newHistory.length - 1] || 1;
+      
+      // Notifier le changement d'étape
+      onStepChange?.(previousStep);
       
       return {
         currentStep: previousStep,

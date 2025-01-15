@@ -10,8 +10,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import type { CountryCode } from "libphonenumber-js";
+import { useSignupFormData } from "@/hooks/useSignupFormData";
+import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +21,6 @@ import {
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
-import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
-import { phoneCodes } from "@/data/phoneCodes";
 
 type Language = 'en' | 'fr' | 'es';
 
@@ -63,30 +61,41 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3;
 
-  const [personalData, setPersonalData] = useState<PersonalData>({
-    firstName: '',
-    lastName: '',
-    email: ''
-  });
+  const {
+    personalData,
+    setPersonalData,
+    professionalData,
+    setProfessionalData,
+    securityData,
+    setSecurityData,
+    validatePersonalStep,
+    validateProfessionalStep,
+    validateSecurityStep,
+    clearStep
+  } = useSignupFormData();
 
-  const [professionalData, setProfessionalData] = useState<ProfessionalData>({
-    address: '',
-    zipCode: '',
-    city: '',
-    country: '',
-    companyName: '',
-    phoneNumber: '',
-    businessPhone: ''
-  });
+  const getCurrentStepValidation = () => {
+    switch (currentStep) {
+      case 1:
+        return validatePersonalStep();
+      case 2:
+        return validateProfessionalStep();
+      case 3:
+        return validateSecurityStep();
+      default:
+        return { isValid: true, errors: {} };
+    }
+  };
 
-  const [securityData, setSecurityData] = useState<SecurityData>({
-    password: '',
-    confirmPassword: '',
-    terms: false
-  });
+  const { currentStep, goToStep, goBack, canGoBack } = useSignupNavigation(
+    getCurrentStepValidation,
+    (step) => {
+      if (step < currentStep) {
+        clearStep(step === 1 ? 'personal' : step === 2 ? 'professional' : 'security');
+      }
+    }
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -96,25 +105,6 @@ const Signup = () => {
       ...securityData
     },
   });
-
-  const calculatePasswordStrength = (password: string) => {
-    let strength = 0;
-    if (password.length >= 8) strength += 20;
-    if (password.match(/[A-Z]/)) strength += 20;
-    if (password.match(/[0-9]/)) strength += 20;
-    if (password.match(/[^A-Za-z0-9]/)) strength += 20;
-    if (password.length >= 12) strength += 20;
-    setPasswordStrength(strength);
-  };
-
-  const validatePhoneNumber = (phone: string, country: string) => {
-    try {
-      if (!phone) return false;
-      return isValidPhoneNumber(phone, country as CountryCode);
-    } catch (error) {
-      return false;
-    }
-  };
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
@@ -159,37 +149,22 @@ const Signup = () => {
     }
   };
 
-  const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
-    setPersonalData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    form.setValue(field, value);
-  };
-
-  const handleProfessionalDataChange = (field: keyof ProfessionalData, value: string) => {
-    setProfessionalData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    form.setValue(field, value);
-  };
-
-  const handleSecurityDataChange = (field: keyof SecurityData, value: string | boolean) => {
-    setSecurityData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    form.setValue(field, value);
-    if (field === 'password') {
-      calculatePasswordStrength(value as string);
-    }
-  };
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
+      const personalValidation = validatePersonalStep();
+      const professionalValidation = validateProfessionalStep();
+      const securityValidation = validateSecurityStep();
+
+      if (!personalValidation.isValid || !professionalValidation.isValid || !securityValidation.isValid) {
+        throw new Error("Veuillez vérifier tous les champs");
+      }
+
       await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      clearStep('personal');
+      clearStep('professional');
+      clearStep('security');
       
       toast({
         title: "Compte créé avec succès !",
@@ -201,45 +176,10 @@ const Signup = () => {
       toast({
         variant: "destructive",
         title: "Erreur",
-        description: "Une erreur est survenue lors de la création du compte.",
+        description: error instanceof Error ? error.message : "Une erreur est survenue lors de la création du compte.",
       });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const validateCurrentStep = () => {
-    const currentValues = form.getValues();
-    
-    switch (currentStep) {
-      case 1:
-        return currentValues.firstName && currentValues.lastName && currentValues.email;
-      case 2:
-        return currentValues.address && 
-               currentValues.zipCode && 
-               currentValues.city && 
-               currentValues.country && 
-               currentValues.companyName && 
-               currentValues.phoneNumber && 
-               currentValues.businessPhone;
-      case 3:
-        return currentValues.password && 
-               currentValues.confirmPassword && 
-               currentValues.terms;
-      default:
-        return true;
-    }
-  };
-
-  const nextStep = () => {
-    if (currentStep < totalSteps && validateCurrentStep()) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
     }
   };
 
@@ -338,7 +278,7 @@ const Signup = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={previousStep}
+                      onClick={goBack}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
                     >
                       {t.signup.buttons.previous}
@@ -348,7 +288,7 @@ const Signup = () => {
                   {currentStep < totalSteps ? (
                     <Button
                       type="button"
-                      onClick={nextStep}
+                      onClick={goToStep(currentStep + 1)}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       {t.signup.buttons.next}
