@@ -61,7 +61,7 @@ const formSchema = z.object({
   city: z.string().min(1, "La ville est requise"),
   country: z.string().min(1, "Le pays est requis"),
   businessPhone: z.string().min(1, "Le téléphone professionnel est requis"),
-  companyName: z.string().optional(),
+  companyName: z.string().min(1, "Le nom de l'entreprise est requis"),
   phoneNumber: z.string().min(1, "Le numéro de téléphone est requis"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Les mots de passe ne correspondent pas",
