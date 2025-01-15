@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,7 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { useSignupFormData } from "@/hooks/useSignupFormData";
+import { useSignupState } from "@/hooks/useSignupState";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import type { CountryCode } from "libphonenumber-js";
@@ -62,29 +61,56 @@ const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
-
   const {
-    personalData,
+    state,
     setPersonalData,
-    professionalData,
     setProfessionalData,
-    securityData,
     setSecurityData,
-    validatePersonalStep,
-    validateProfessionalStep,
-    validateSecurityStep,
-    clearStep
-  } = useSignupFormData();
+    setLoading,
+    setPasswordVisibility,
+    setConfirmPasswordVisibility,
+    setPasswordStrength,
+    resetForm,
+  } = useSignupState();
 
-  const handlePersonalDataChange = (field: keyof typeof personalData, value: string) => {
-    setPersonalData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      ...state.personal,
+      ...state.professional,
+      ...state.security,
+    },
+  });
+
+  const handlePersonalDataChange = (field: keyof typeof state.personal, value: string) => {
+    setPersonalData(field, value);
+    form.setValue(field as any, value);
+  };
+
+  const handleCountryChange = (value: string) => {
+    setProfessionalData("country", value);
+    form.setValue("country", value);
+    const phoneCode = phoneCodes[value] || "";
+    
+    setProfessionalData("businessPhone", phoneCode);
+    setProfessionalData("phoneNumber", phoneCode);
+    form.setValue("businessPhone", phoneCode);
+    form.setValue("phoneNumber", phoneCode);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
+    const value = e.target.value;
+    const country = form.getValues("country");
+    const countryCode = phoneCodes[country] || "";
+    
+    if (!value.startsWith(countryCode)) {
+      setProfessionalData(fieldName, countryCode);
+      form.setValue(fieldName, countryCode);
+      return;
+    }
+
+    setProfessionalData(fieldName, value);
+    form.setValue(fieldName, value);
   };
 
   const getCurrentStepValidation = () => {
@@ -109,80 +135,15 @@ const Signup = () => {
     }
   );
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      ...personalData,
-      ...professionalData,
-      ...securityData
-    },
-  });
-
-  const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-  };
-
-  const handleCountryChange = (value: string) => {
-    form.setValue("country", value);
-    const phoneCode = phoneCodes[value] || "";
-    
-    form.setValue("businessPhone", phoneCode);
-    form.setValue("phoneNumber", phoneCode);
-
-    form.clearErrors("businessPhone");
-    form.clearErrors("phoneNumber");
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
-    const value = e.target.value;
-    const country = form.getValues("country");
-    const countryCode = phoneCodes[country] || "";
-    
-    if (!value.startsWith(countryCode)) {
-      form.setValue(fieldName, countryCode);
-      return;
-    }
-
-    form.setValue(fieldName, value);
-    
-    if (country && value) {
-      const isValid = isValidPhoneNumber(value, country as CountryCode);
-      if (!isValid) {
-        form.setError(fieldName, {
-          type: "manual",
-          message: t.signup.validation[fieldName].invalid
-        });
-      } else {
-        form.clearErrors(fieldName);
-      }
-    }
-  };
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
-      const personalValidation = validatePersonalStep();
-      const professionalValidation = validateProfessionalStep();
-      const securityValidation = validateSecurityStep();
-
-      if (!personalValidation.isValid || !professionalValidation.isValid || !securityValidation.isValid) {
-        throw new Error("Veuillez vérifier tous les champs");
-      }
-
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      clearStep('personal');
-      clearStep('professional');
-      clearStep('security');
-      
+      resetForm();
       toast({
         title: "Compte créé avec succès !",
         description: "Vous pouvez maintenant vous connecter.",
       });
-      
       navigate("/login");
     } catch (error) {
       toast({
@@ -191,7 +152,7 @@ const Signup = () => {
         description: error instanceof Error ? error.message : "Une erreur est survenue lors de la création du compte.",
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -202,7 +163,7 @@ const Signup = () => {
           <PersonalInfoStep 
             form={form} 
             t={t} 
-            data={personalData}
+            data={state.personal}
             onChange={handlePersonalDataChange}
           />
         );
@@ -220,11 +181,11 @@ const Signup = () => {
           <SecurityStep
             form={form}
             t={t}
-            showPassword={showPassword}
-            showConfirmPassword={showConfirmPassword}
-            passwordStrength={passwordStrength}
-            setShowPassword={setShowPassword}
-            setShowConfirmPassword={setShowConfirmPassword}
+            showPassword={state.ui.showPassword}
+            showConfirmPassword={state.ui.showConfirmPassword}
+            passwordStrength={state.ui.passwordStrength}
+            setShowPassword={setPasswordVisibility}
+            setShowConfirmPassword={setConfirmPasswordVisibility}
           />
         );
       default:
@@ -309,10 +270,10 @@ const Signup = () => {
                     <Button
                       type="submit"
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                      disabled={isLoading}
+                      disabled={state.ui.isLoading}
                     >
                       <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
-                      {isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
+                      {state.ui.isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
                     </Button>
                   )}
                 </div>
