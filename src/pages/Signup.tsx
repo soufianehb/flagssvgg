@@ -218,15 +218,15 @@ const Signup = () => {
     switch (currentStep) {
       case 1:
         if (!currentValues.firstName || currentValues.firstName.length < 2) {
-          errors.firstName = t.signup.validation.firstName.required;
+          errors.firstName = t.signup.validation.firstName;
           isValid = false;
         }
         if (!currentValues.lastName || currentValues.lastName.length < 2) {
-          errors.lastName = t.signup.validation.lastName.required;
+          errors.lastName = t.signup.validation.lastName;
           isValid = false;
         }
         if (!currentValues.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentValues.email)) {
-          errors.email = t.signup.validation.email.invalid;
+          errors.email = t.signup.validation.email;
           isValid = false;
         }
         break;
@@ -276,7 +276,7 @@ const Signup = () => {
 
       case 3:
         if (!currentValues.password || currentValues.password.length < 8) {
-          errors.password = t.signup.validation.password.minLength;
+          errors.password = t.signup.validation.password.length;
           isValid = false;
         }
         if (!currentValues.password.match(/[A-Z]/)) {
@@ -288,11 +288,11 @@ const Signup = () => {
           isValid = false;
         }
         if (currentValues.password !== currentValues.confirmPassword) {
-          errors.confirmPassword = t.signup.validation.confirmPassword.match;
+          errors.confirmPassword = t.signup.validation.confirmPassword;
           isValid = false;
         }
         if (!currentValues.terms) {
-          errors.terms = t.signup.validation.terms.required;
+          errors.terms = t.signup.validation.terms;
           isValid = false;
         }
         break;
@@ -740,3 +740,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

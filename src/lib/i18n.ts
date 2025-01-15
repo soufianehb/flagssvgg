@@ -149,6 +149,7 @@ const translations = {
         email: "Invalid email address",
         password: {
           length: "Password must be at least 8 characters long",
+          minLength: "Password must be at least 8 characters long",
           uppercase: "Password must contain at least one uppercase letter",
           number: "Password must contain at least one number",
           strength: "Password strength:"
@@ -157,20 +158,33 @@ const translations = {
         terms: "You must accept the terms and conditions",
         phoneNumber: {
           invalid: "Invalid phone number format",
+          countryMismatch: "Invalid phone number for this country",
+          required: "Phone number is required"
+        },
+        address: {
+          required: "Address is required"
+        },
+        zipCode: {
+          required: "Zip code is required"
+        },
+        city: {
+          required: "City is required"
+        },
+        country: {
+          required: "Country is required"
+        },
+        companyName: {
+          required: "Company name is required"
+        },
+        businessPhone: {
+          required: "Business phone is required",
+          invalid: "Invalid phone number format",
           countryMismatch: "Invalid phone number for this country"
+        },
+        error: {
+          title: "Validation Error",
+          description: "Please fix the errors before continuing"
         }
-      },
-      buttons: {
-        previous: "Previous",
-        next: "Next",
-        submit: "Create account",
-        loading: "Creating account...",
-        login: "Already have an account? Log in",
-        backHome: "Back to home"
-      },
-      messages: {
-        success: "Account created successfully!",
-        error: "An error occurred while creating your account"
       }
     },
     profile: {
@@ -367,6 +381,7 @@ const translations = {
         email: "Adresse email invalide",
         password: {
           length: "Le mot de passe doit contenir au moins 8 caractères",
+          minLength: "Le mot de passe doit contenir au moins 8 caractères",
           uppercase: "Le mot de passe doit contenir au moins une majuscule",
           number: "Le mot de passe doit contenir au moins un chiffre",
           strength: "Force du mot de passe :"
@@ -375,21 +390,34 @@ const translations = {
         terms: "Vous devez accepter les conditions",
         phoneNumber: {
           invalid: "Format de numéro invalide",
+          countryMismatch: "Numéro de téléphone invalide pour ce pays",
+          required: "Le numéro de téléphone est requis"
+        },
+        address: {
+          required: "L'adresse est requise"
+        },
+        zipCode: {
+          required: "Le code postal est requis"
+        },
+        city: {
+          required: "La ville est requise"
+        },
+        country: {
+          required: "Le pays est requis"
+        },
+        companyName: {
+          required: "Le nom de l'entreprise est requis"
+        },
+        businessPhone: {
+          required: "Le téléphone professionnel est requis",
+          invalid: "Format de numéro invalide",
           countryMismatch: "Numéro de téléphone invalide pour ce pays"
+        },
+        error: {
+          title: "Erreur de validation",
+          description: "Veuillez corriger les erreurs avant de continuer"
         }
       },
-      buttons: {
-        previous: "Précédent",
-        next: "Suivant",
-        submit: "Créer mon compte",
-        loading: "Création en cours...",
-        login: "Vous avez déjà un compte ? Connectez-vous",
-        backHome: "Retour à l'accueil"
-      },
-      messages: {
-        success: "Compte créé avec succès !",
-        error: "Une erreur est survenue lors de la création du compte"
-      }
     },
     profile: {
       title: "Paramètres du profil",
@@ -585,6 +613,7 @@ const translations = {
         email: "Dirección de correo electrónico inválida",
         password: {
           length: "La contraseña debe tener al menos 8 caracteres",
+          minLength: "La contraseña debe tener al menos 8 caracteres",
           uppercase: "La contraseña debe contener al menos una mayúscula",
           number: "La contraseña debe contener al menos un número",
           strength: "Fuerza de la contraseña:"
@@ -593,21 +622,34 @@ const translations = {
         terms: "Debe aceptar los términos y condiciones",
         phoneNumber: {
           invalid: "Formato de número inválido",
+          countryMismatch: "Número de teléfono inválido para este país",
+          required: "El número de teléfono es requerido"
+        },
+        address: {
+          required: "La dirección es requerida"
+        },
+        zipCode: {
+          required: "El código postal es requerido"
+        },
+        city: {
+          required: "La ciudad es requerida"
+        },
+        country: {
+          required: "El país es requerido"
+        },
+        companyName: {
+          required: "El nombre de la empresa es requerido"
+        },
+        businessPhone: {
+          required: "El teléfono profesional es requerido",
+          invalid: "Formato de número inválido",
           countryMismatch: "Número de teléfono inválido para este país"
+        },
+        error: {
+          title: "Error de validación",
+          description: "Por favor, corrija los errores antes de continuar"
         }
       },
-      buttons: {
-        previous: "Anterior",
-        next: "Siguiente",
-        submit: "Crear cuenta",
-        loading: "Creando cuenta...",
-        login: "¿Ya tienes una cuenta? Inicia sesión",
-        backHome: "Volver al inicio"
-      },
-      messages: {
-        success: "¡Cuenta creada con éxito!",
-        error: "Ocurrió un error al crear la cuenta"
-      }
     },
     profile: {
       title: "Ajustes de perfil",
