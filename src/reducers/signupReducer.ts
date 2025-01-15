@@ -8,6 +8,7 @@ export type SignupState = {
     isLoading: boolean;
     showPassword: boolean;
     showConfirmPassword: boolean;
+    passwordStrength: number;
   };
 };
 
@@ -18,6 +19,7 @@ export type SignupAction =
   | { type: "SET_LOADING"; value: boolean }
   | { type: "SET_PASSWORD_VISIBILITY"; value: boolean }
   | { type: "SET_CONFIRM_PASSWORD_VISIBILITY"; value: boolean }
+  | { type: "SET_PASSWORD_STRENGTH"; value: number }
   | { type: "RESET_FORM" };
 
 export const initialState: SignupState = {
@@ -44,6 +46,7 @@ export const initialState: SignupState = {
     isLoading: false,
     showPassword: false,
     showConfirmPassword: false,
+    passwordStrength: 0,
   },
 };
 
@@ -95,6 +98,14 @@ export const signupReducer = (state: SignupState, action: SignupAction): SignupS
         ui: {
           ...state.ui,
           showConfirmPassword: action.value,
+        },
+      };
+    case "SET_PASSWORD_STRENGTH":
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          passwordStrength: action.value,
         },
       };
     case "RESET_FORM":

@@ -11,6 +11,7 @@ interface SecurityStepProps {
   showConfirmPassword: boolean;
   setShowPassword: (show: boolean) => void;
   setShowConfirmPassword: (show: boolean) => void;
+  passwordStrength?: number;
 }
 
 const SecurityStep = ({ 
@@ -19,7 +20,8 @@ const SecurityStep = ({
   showPassword, 
   showConfirmPassword,
   setShowPassword,
-  setShowConfirmPassword 
+  setShowConfirmPassword,
+  passwordStrength = 0
 }: SecurityStepProps) => {
   return (
     <div className="space-y-6 animate-fade-in">
