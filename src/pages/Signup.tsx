@@ -3,42 +3,23 @@ import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { UserPlus, User, Key, Eye, EyeOff, Globe, ArrowLeft, LogIn } from "lucide-react";
-import { parsePhoneNumber, isValidPhoneNumber, CountryCode } from 'libphonenumber-js';
+import { UserPlus, Globe, ArrowLeft, LogIn } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { countries } from "@/data/countries";
-import { phoneCodes } from "@/data/phoneCodes";
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
+import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
 
 type Language = 'en' | 'fr' | 'es';
 
@@ -82,6 +63,29 @@ const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
 
+  // Nouveaux états spécifiques pour chaque étape
+  const [personalData, setPersonalData] = useState<PersonalData>({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+
+  const [professionalData, setProfessionalData] = useState<ProfessionalData>({
+    address: '',
+    zipCode: '',
+    city: '',
+    country: '',
+    companyName: '',
+    phoneNumber: '',
+    businessPhone: ''
+  });
+
+  const [securityData, setSecurityData] = useState<SecurityData>({
+    password: '',
+    confirmPassword: '',
+    terms: false
+  });
+
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
     setTimeout(() => {
@@ -92,19 +96,9 @@ const Signup = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      terms: false,
-      address: "",
-      zipCode: "",
-      city: "",
-      country: "",
-      businessPhone: "",
-      companyName: "",
-      phoneNumber: "",
+      ...personalData,
+      ...professionalData,
+      ...securityData
     },
   });
 
@@ -116,6 +110,33 @@ const Signup = () => {
     if (password.match(/[^A-Za-z0-9]/)) strength += 20;
     if (password.length >= 12) strength += 20;
     setPasswordStrength(strength);
+  };
+
+  const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
+    setPersonalData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    form.setValue(field, value);
+  };
+
+  const handleProfessionalDataChange = (field: keyof ProfessionalData, value: string) => {
+    setProfessionalData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    form.setValue(field, value);
+  };
+
+  const handleSecurityDataChange = (field: keyof SecurityData, value: string | boolean) => {
+    setSecurityData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    form.setValue(field, value);
+    if (field === 'password') {
+      calculatePasswordStrength(value as string);
+    }
   };
 
   const validatePhoneNumber = (phone: string, country: string) => {
@@ -191,7 +212,6 @@ const Signup = () => {
   const validateCurrentStep = () => {
     const currentValues = form.getValues();
     
-    // Vérification basique que les champs requis sont remplis
     switch (currentStep) {
       case 1:
         return currentValues.firstName && currentValues.lastName && currentValues.email;
@@ -227,12 +247,21 @@ const Signup = () => {
   const renderFormStep = (step: number) => {
     switch (step) {
       case 1:
-        return <PersonalInfoStep form={form} t={t} />;
+        return (
+          <PersonalInfoStep 
+            form={form} 
+            t={t} 
+            data={personalData}
+            onChange={handlePersonalDataChange}
+          />
+        );
       case 2:
         return (
           <ProfessionalInfoStep
             form={form}
             t={t}
+            data={professionalData}
+            onChange={handleProfessionalDataChange}
             handleCountryChange={handleCountryChange}
             handlePhoneChange={handlePhoneChange}
           />
@@ -242,6 +271,8 @@ const Signup = () => {
           <SecurityStep
             form={form}
             t={t}
+            data={securityData}
+            onChange={handleSecurityDataChange}
             showPassword={showPassword}
             showConfirmPassword={showConfirmPassword}
             passwordStrength={passwordStrength}
