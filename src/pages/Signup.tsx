@@ -210,6 +210,126 @@ const Signup = () => {
     }
   };
 
+  const validateCurrentStep = () => {
+    let isValid = true;
+    const currentValues = form.getValues();
+    const errors: { [key: string]: string } = {};
+
+    switch (currentStep) {
+      case 1:
+        if (!currentValues.firstName || currentValues.firstName.length < 2) {
+          errors.firstName = t.signup.validation.firstName.required;
+          isValid = false;
+        }
+        if (!currentValues.lastName || currentValues.lastName.length < 2) {
+          errors.lastName = t.signup.validation.lastName.required;
+          isValid = false;
+        }
+        if (!currentValues.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentValues.email)) {
+          errors.email = t.signup.validation.email.invalid;
+          isValid = false;
+        }
+        break;
+
+      case 2:
+        if (!currentValues.address) {
+          errors.address = t.signup.validation.address.required;
+          isValid = false;
+        }
+        if (!currentValues.zipCode) {
+          errors.zipCode = t.signup.validation.zipCode.required;
+          isValid = false;
+        }
+        if (!currentValues.city) {
+          errors.city = t.signup.validation.city.required;
+          isValid = false;
+        }
+        if (!currentValues.country) {
+          errors.country = t.signup.validation.country.required;
+          isValid = false;
+        }
+        if (!currentValues.companyName) {
+          errors.companyName = t.signup.validation.companyName.required;
+          isValid = false;
+        }
+        if (!currentValues.phoneNumber) {
+          errors.phoneNumber = t.signup.validation.phoneNumber.required;
+          isValid = false;
+        }
+        if (!currentValues.businessPhone) {
+          errors.businessPhone = t.signup.validation.businessPhone.required;
+          isValid = false;
+        }
+
+        // Validate phone numbers if country is selected
+        if (currentValues.country) {
+          if (!validatePhoneNumber(currentValues.phoneNumber, currentValues.country)) {
+            errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+            isValid = false;
+          }
+          if (!validatePhoneNumber(currentValues.businessPhone, currentValues.country)) {
+            errors.businessPhone = t.signup.validation.businessPhone.invalid;
+            isValid = false;
+          }
+        }
+        break;
+
+      case 3:
+        if (!currentValues.password || currentValues.password.length < 8) {
+          errors.password = t.signup.validation.password.minLength;
+          isValid = false;
+        }
+        if (!currentValues.password.match(/[A-Z]/)) {
+          errors.password = t.signup.validation.password.uppercase;
+          isValid = false;
+        }
+        if (!currentValues.password.match(/[0-9]/)) {
+          errors.password = t.signup.validation.password.number;
+          isValid = false;
+        }
+        if (currentValues.password !== currentValues.confirmPassword) {
+          errors.confirmPassword = t.signup.validation.confirmPassword.match;
+          isValid = false;
+        }
+        if (!currentValues.terms) {
+          errors.terms = t.signup.validation.terms.required;
+          isValid = false;
+        }
+        break;
+    }
+
+    // Set errors in form if any
+    if (!isValid) {
+      Object.keys(errors).forEach((key) => {
+        form.setError(key as any, {
+          type: 'manual',
+          message: errors[key]
+        });
+      });
+
+      // Show toast with error message
+      toast({
+        variant: "destructive",
+        title: t.signup.validation.error.title,
+        description: t.signup.validation.error.description,
+      });
+    }
+
+    return isValid;
+  };
+
+  const nextStep = () => {
+    if (currentStep < totalSteps && validateCurrentStep()) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   const renderFormStep = (step: number) => {
     const baseClasses = "space-y-6 transition-all duration-300";
     const animationClasses = "animate-fade-in";
@@ -487,18 +607,6 @@ const Signup = () => {
     }
   };
 
-  const nextStep = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -609,4 +717,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
