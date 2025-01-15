@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import type { CountryCode } from 'libphonenumber-js';
+import { useFormIntegrity } from './useFormIntegrity';
 
 const STORAGE_KEY = 'signup_form_data';
 
@@ -52,8 +53,28 @@ export const useSignupFormData = () => {
     localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
   }, [securityData]);
 
-  // Validation par étape
+  const {
+    validateStepIntegrity,
+    backupStepData,
+    rollbackStep,
+    preventDataContamination
+  } = useFormIntegrity();
+
+  // Validation par étape avec intégrité
   const validatePersonalStep = (): StepValidation => {
+    const integrityCheck = validateStepIntegrity('personal', personalData);
+    if (!integrityCheck.isValid) {
+      return {
+        isValid: false,
+        errors: {
+          integrity: integrityCheck.errors.join(', ')
+        }
+      };
+    }
+
+    const cleanData = preventDataContamination('personal', personalData) as PersonalData;
+    backupStepData('personal', cleanData);
+
     const errors: Record<string, string> = {};
     
     if (!personalData.firstName.trim()) {
@@ -75,6 +96,19 @@ export const useSignupFormData = () => {
   };
 
   const validateProfessionalStep = (): StepValidation => {
+    const integrityCheck = validateStepIntegrity('professional', professionalData);
+    if (!integrityCheck.isValid) {
+      return {
+        isValid: false,
+        errors: {
+          integrity: integrityCheck.errors.join(', ')
+        }
+      };
+    }
+
+    const cleanData = preventDataContamination('professional', professionalData) as ProfessionalData;
+    backupStepData('professional', cleanData);
+
     const errors: Record<string, string> = {};
     
     if (!professionalData.address.trim()) {
@@ -112,6 +146,19 @@ export const useSignupFormData = () => {
   };
 
   const validateSecurityStep = (): StepValidation => {
+    const integrityCheck = validateStepIntegrity('security', securityData);
+    if (!integrityCheck.isValid) {
+      return {
+        isValid: false,
+        errors: {
+          integrity: integrityCheck.errors.join(', ')
+        }
+      };
+    }
+
+    const cleanData = preventDataContamination('security', securityData) as SecurityData;
+    backupStepData('security', cleanData);
+
     const errors: Record<string, string> = {};
     
     if (!securityData.password) {
@@ -162,6 +209,23 @@ export const useSignupFormData = () => {
     }
   };
 
+  const handleStepError = (step: 'personal' | 'professional' | 'security') => {
+    const previousData = rollbackStep(step);
+    if (previousData) {
+      switch (step) {
+        case 'personal':
+          setPersonalData(previousData);
+          break;
+        case 'professional':
+          setProfessionalData(previousData);
+          break;
+        case 'security':
+          setSecurityData(previousData);
+          break;
+      }
+    }
+  };
+
   return {
     personalData,
     setPersonalData,
@@ -172,6 +236,7 @@ export const useSignupFormData = () => {
     validatePersonalStep,
     validateProfessionalStep,
     validateSecurityStep,
-    clearStep
+    clearStep,
+    handleStepError
   };
 };
