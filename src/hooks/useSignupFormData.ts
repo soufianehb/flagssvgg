@@ -1,15 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
-import { isValidPhoneNumber } from 'libphonenumber-js';
-import type { CountryCode } from 'libphonenumber-js';
-
-interface StepValidation {
-  isValid: boolean;
-  errors: Record<string, string>;
-}
 
 const STORAGE_KEY = 'signup_form_data';
-const DEBOUNCE_DELAY = 500; // 500ms debounce pour localStorage
 
 export const useSignupFormData = () => {
   const [personalData, setPersonalData] = useState<PersonalData>(() => {
@@ -39,164 +31,7 @@ export const useSignupFormData = () => {
     };
   });
 
-  // Utilisation de useRef pour stocker les timeouts
-  const personalTimeoutRef = useRef<NodeJS.Timeout>();
-  const professionalTimeoutRef = useRef<NodeJS.Timeout>();
-  const securityTimeoutRef = useRef<NodeJS.Timeout>();
-
-  // Sauvegarde avec debounce pour personalData
-  useEffect(() => {
-    if (personalTimeoutRef.current) {
-      clearTimeout(personalTimeoutRef.current);
-    }
-    
-    personalTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
-    }, DEBOUNCE_DELAY);
-
-    return () => {
-      if (personalTimeoutRef.current) {
-        clearTimeout(personalTimeoutRef.current);
-      }
-    };
-  }, [personalData]);
-
-  // Sauvegarde avec debounce pour professionalData
-  useEffect(() => {
-    if (professionalTimeoutRef.current) {
-      clearTimeout(professionalTimeoutRef.current);
-    }
-    
-    professionalTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(professionalData));
-    }, DEBOUNCE_DELAY);
-
-    return () => {
-      if (professionalTimeoutRef.current) {
-        clearTimeout(professionalTimeoutRef.current);
-      }
-    };
-  }, [professionalData]);
-
-  // Sauvegarde avec debounce pour securityData
-  useEffect(() => {
-    if (securityTimeoutRef.current) {
-      clearTimeout(securityTimeoutRef.current);
-    }
-    
-    securityTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
-    }, DEBOUNCE_DELAY);
-
-    return () => {
-      if (securityTimeoutRef.current) {
-        clearTimeout(securityTimeoutRef.current);
-      }
-    };
-  }, [securityData]);
-
-  const validatePersonalStep = (): StepValidation => {
-    const errors: Record<string, string> = {};
-    
-    if (!personalData.firstName.trim()) {
-      errors.firstName = 'Veuillez entrer votre prénom';
-    } else if (personalData.firstName.length < 2) {
-      errors.firstName = 'Le prénom doit contenir au moins 2 caractères';
-    }
-
-    if (!personalData.lastName.trim()) {
-      errors.lastName = 'Veuillez entrer votre nom';
-    } else if (personalData.lastName.length < 2) {
-      errors.lastName = 'Le nom doit contenir au moins 2 caractères';
-    }
-
-    if (!personalData.email.trim()) {
-      errors.email = 'Veuillez entrer votre adresse email';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personalData.email)) {
-      errors.email = 'Veuillez entrer une adresse email valide (exemple: nom@domaine.com)';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const validateProfessionalStep = (): StepValidation => {
-    const errors: Record<string, string> = {};
-    
-    if (!professionalData.address.trim()) {
-      errors.address = 'Veuillez entrer votre adresse';
-    }
-
-    if (!professionalData.zipCode.trim()) {
-      errors.zipCode = 'Veuillez entrer votre code postal';
-    }
-
-    if (!professionalData.city.trim()) {
-      errors.city = 'Veuillez entrer votre ville';
-    }
-
-    if (!professionalData.country) {
-      errors.country = 'Veuillez sélectionner votre pays';
-    }
-
-    if (!professionalData.companyName.trim()) {
-      errors.companyName = 'Veuillez entrer le nom de votre entreprise';
-    }
-    
-    if (professionalData.phoneNumber) {
-      if (professionalData.country && !isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
-        errors.phoneNumber = 'Veuillez entrer un numéro de téléphone valide pour le pays sélectionné';
-      }
-    }
-    
-    if (professionalData.businessPhone) {
-      if (professionalData.country && !isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
-        errors.businessPhone = 'Veuillez entrer un numéro de téléphone professionnel valide pour le pays sélectionné';
-      }
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const validateSecurityStep = (): StepValidation => {
-    const errors: Record<string, string> = {};
-    
-    if (!securityData.password) {
-      errors.password = 'Veuillez entrer un mot de passe';
-    } else {
-      if (securityData.password.length < 8) {
-        errors.password = 'Le mot de passe doit contenir au moins 8 caractères';
-      }
-      if (!/[A-Z]/.test(securityData.password)) {
-        errors.password = 'Le mot de passe doit contenir au moins une majuscule';
-      }
-      if (!/[0-9]/.test(securityData.password)) {
-        errors.password = 'Le mot de passe doit contenir au moins un chiffre';
-      }
-    }
-    
-    if (!securityData.confirmPassword) {
-      errors.confirmPassword = 'Veuillez confirmer votre mot de passe';
-    } else if (securityData.password !== securityData.confirmPassword) {
-      errors.confirmPassword = 'Les mots de passe ne correspondent pas';
-    }
-    
-    if (!securityData.terms) {
-      errors.terms = 'Vous devez accepter les conditions d\'utilisation pour continuer';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const clearStep = useCallback((step: 'personal' | 'professional' | 'security') => {
+  const clearStep = (step: 'personal' | 'professional' | 'security') => {
     switch (step) {
       case 'personal':
         setPersonalData({ firstName: '', lastName: '', email: '' });
@@ -219,7 +54,7 @@ export const useSignupFormData = () => {
         localStorage.removeItem(`${STORAGE_KEY}_security`);
         break;
     }
-  }, []);
+  };
 
   return {
     personalData,
@@ -228,9 +63,6 @@ export const useSignupFormData = () => {
     setProfessionalData,
     securityData,
     setSecurityData,
-    validatePersonalStep,
-    validateProfessionalStep,
-    validateSecurityStep,
     clearStep
   };
 };

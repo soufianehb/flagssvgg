@@ -1,7 +1,6 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
 import { Key, Eye, EyeOff } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -10,7 +9,6 @@ interface SecurityStepProps {
   t: any;
   showPassword: boolean;
   showConfirmPassword: boolean;
-  passwordStrength: number;
   setShowPassword: (show: boolean) => void;
   setShowConfirmPassword: (show: boolean) => void;
 }
@@ -19,8 +17,7 @@ const SecurityStep = ({
   form, 
   t, 
   showPassword, 
-  showConfirmPassword, 
-  passwordStrength,
+  showConfirmPassword,
   setShowPassword,
   setShowConfirmPassword 
 }: SecurityStepProps) => {
@@ -54,15 +51,6 @@ const SecurityStep = ({
                 </button>
               </div>
             </FormControl>
-            {field.value && (
-              <div className="mt-2 space-y-1">
-                <Progress value={passwordStrength} className="h-1" />
-                <p className="text-xs text-gray-500">
-                  {t.signup.validation.password.strength}: {passwordStrength}%
-                </p>
-              </div>
-            )}
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -95,7 +83,6 @@ const SecurityStep = ({
                 </button>
               </div>
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -115,7 +102,6 @@ const SecurityStep = ({
               <FormLabel>
                 {t.signup.labels.terms}
               </FormLabel>
-              <FormMessage />
             </div>
           </FormItem>
         )}
