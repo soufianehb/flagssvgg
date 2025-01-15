@@ -113,6 +113,14 @@ const translations = {
         step3: "Security",
         progress: "Step {step} of {total}"
       },
+      buttons: {
+        next: "Next",
+        previous: "Previous",
+        submit: "Create Account",
+        loading: "Creating account...",
+        login: "Already have an account?",
+        backHome: "Back to home"
+      },
       labels: {
         firstName: "First name",
         lastName: "Last name",
@@ -345,6 +353,14 @@ const translations = {
         step3: "Sécurité",
         progress: "Étape {step} sur {total}"
       },
+      buttons: {
+        next: "Suivant",
+        previous: "Précédent",
+        submit: "Créer le compte",
+        loading: "Création du compte...",
+        login: "Vous avez déjà un compte ?",
+        backHome: "Retour à l'accueil"
+      },
       labels: {
         firstName: "Prénom",
         lastName: "Nom",
@@ -576,6 +592,14 @@ const translations = {
         step2: "Datos de contacto",
         step3: "Seguridad",
         progress: "Paso {step} de {total}"
+      },
+      buttons: {
+        next: "Siguiente",
+        previous: "Anterior",
+        submit: "Crear cuenta",
+        loading: "Creando cuenta...",
+        login: "¿Ya tienes una cuenta?",
+        backHome: "Volver al inicio"
       },
       labels: {
         firstName: "Nombre",
