@@ -125,7 +125,7 @@ const translations = {
         country: "Country",
         phoneNumber: "Phone number",
         businessPhone: "Business phone",
-        companyName: "Company name (optional)",
+        companyName: "Company name",
         terms: "I accept the terms of service and privacy policy"
       },
       placeholders: {
@@ -343,7 +343,7 @@ const translations = {
         country: "Pays",
         phoneNumber: "Numéro de téléphone",
         businessPhone: "Téléphone professionnel",
-        companyName: "Nom de l'entreprise (optionnel)",
+        companyName: "Nom de l'entreprise",
         terms: "J'accepte les conditions d'utilisation et la politique de confidentialité"
       },
       placeholders: {
@@ -561,7 +561,7 @@ const translations = {
         country: "País",
         phoneNumber: "Número de teléfono",
         businessPhone: "Teléfono profesional",
-        companyName: "Nombre de la empresa (opcional)",
+        companyName: "Nombre de la empresa",
         terms: "Acepto los términos de servicio y la política de privacidad"
       },
       placeholders: {
