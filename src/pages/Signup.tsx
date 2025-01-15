@@ -23,10 +23,9 @@ import {
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
+import { PersonalData } from "@/types/signup";
 
-type Language = 'en' | 'fr' | 'es';
-
-const languages: Array<{ code: Language; label: string }> = [
+const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
   { code: 'en', label: 'English' },
   { code: 'fr', label: 'Français' },
   { code: 'es', label: 'Español' }
@@ -61,6 +60,25 @@ const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      terms: false,
+      address: "",
+      zipCode: "",
+      city: "",
+      country: "",
+      businessPhone: "",
+      companyName: "",
+      phoneNumber: "",
+    },
+  });
+
   const {
     state,
     setPersonalData,
@@ -72,6 +90,25 @@ const Signup = () => {
     setPasswordStrength,
     resetForm,
   } = useSignupState();
+
+  const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
+    setPersonalData(field, value);
+    form.setValue(field, value);
+  };
+
+  const handleCountryChange = (value: string) => {
+    setProfessionalData("country", value);
+    form.setValue("country", value);
+  };
+
+  const handlePhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldName: "businessPhone" | "phoneNumber"
+  ) => {
+    const value = e.target.value;
+    setProfessionalData(fieldName, value);
+    form.setValue(fieldName, value);
+  };
 
   const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
