@@ -365,7 +365,11 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>{t.signup.labels.companyName}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={t.signup.placeholders.companyName} />
+                    <Input 
+                      {...field} 
+                      placeholder={t.signup.placeholders.companyName}
+                      required 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -605,3 +609,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
