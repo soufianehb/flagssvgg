@@ -178,7 +178,34 @@ const translations = {
       tabs: {
         general: "General",
         security: "Security",
-        preferences: "Preferences"
+        preferences: "Preferences",
+        listings: {
+          title: "My Listings",
+          empty: "You haven't published any listings yet",
+          status: {
+            active: "Active",
+            pending: "Pending",
+            expired: "Expired"
+          },
+          filters: {
+            all: "All Listings",
+            active: "Active",
+            pending: "Pending",
+            expired: "Expired",
+            search: "Search in your listings..."
+          },
+          sort: {
+            newest: "Newest First",
+            oldest: "Oldest First",
+            mostViewed: "Most Viewed"
+          },
+          actions: {
+            edit: "Edit",
+            delete: "Delete",
+            deactivate: "Deactivate",
+            activate: "Activate"
+          }
+        }
       },
       general: {
         title: "General Information",
@@ -369,7 +396,34 @@ const translations = {
       tabs: {
         general: "Général",
         security: "Sécurité",
-        preferences: "Préférences"
+        preferences: "Préférences",
+        listings: {
+          title: "Mes Annonces",
+          empty: "Vous n'avez pas encore publié d'annonces",
+          status: {
+            active: "Active",
+            pending: "En attente",
+            expired: "Expirée"
+          },
+          filters: {
+            all: "Toutes les annonces",
+            active: "Actives",
+            pending: "En attente",
+            expired: "Expirées",
+            search: "Rechercher dans vos annonces..."
+          },
+          sort: {
+            newest: "Plus récentes",
+            oldest: "Plus anciennes",
+            mostViewed: "Plus vues"
+          },
+          actions: {
+            edit: "Modifier",
+            delete: "Supprimer",
+            deactivate: "Désactiver",
+            activate: "Activer"
+          }
+        }
       },
       general: {
         title: "Informations générales",
@@ -560,7 +614,34 @@ const translations = {
       tabs: {
         general: "General",
         security: "Seguridad",
-        preferences: "Preferencias"
+        preferences: "Preferencias",
+        listings: {
+          title: "Mis Anuncios",
+          empty: "Aún no has publicado ningún anuncio",
+          status: {
+            active: "Activo",
+            pending: "Pendiente",
+            expired: "Expirado"
+          },
+          filters: {
+            all: "Todos los anuncios",
+            active: "Activos",
+            pending: "Pendientes",
+            expired: "Expirados",
+            search: "Buscar en tus anuncios..."
+          },
+          sort: {
+            newest: "Más recientes",
+            oldest: "Más antiguos",
+            mostViewed: "Más vistos"
+          },
+          actions: {
+            edit: "Editar",
+            delete: "Eliminar",
+            deactivate: "Desactivar",
+            activate: "Activar"
+          }
+        }
       },
       general: {
         title: "Información general",

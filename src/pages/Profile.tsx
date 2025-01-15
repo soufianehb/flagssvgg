@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { SecuritySettings } from "@/components/profile/SecuritySettings";
 import { PreferenceSettings } from "@/components/profile/PreferenceSettings";
+import { UserListings } from "@/components/profile/UserListings";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Profile = () => {
             <TabsTrigger value="general">{t.profile.tabs.general}</TabsTrigger>
             <TabsTrigger value="security">{t.profile.tabs.security}</TabsTrigger>
             <TabsTrigger value="preferences">{t.profile.tabs.preferences}</TabsTrigger>
+            <TabsTrigger value="listings">{t.profile.listings.title}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="general" className="space-y-6">
@@ -53,6 +55,13 @@ const Profile = () => {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">{t.profile.preferences.title}</h2>
               <PreferenceSettings />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="listings" className="space-y-6">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4">{t.profile.listings.title}</h2>
+              <UserListings />
             </div>
           </TabsContent>
         </Tabs>
