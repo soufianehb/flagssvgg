@@ -128,59 +128,34 @@ const Signup = () => {
     form.setValue("country", value);
     const phoneCode = phoneCodes[value] || "";
     
-    const currentBusinessPhone = form.getValues("businessPhone");
-    const currentPhoneNumber = form.getValues("phoneNumber");
-    
-    if (!currentBusinessPhone || /^\+\d{1,3}/.test(currentBusinessPhone)) {
-      form.setValue("businessPhone", phoneCode + " ");
-    }
-    
-    if (!currentPhoneNumber || /^\+\d{1,3}/.test(currentPhoneNumber)) {
-      form.setValue("phoneNumber", phoneCode + " ");
-    }
+    // Reset phone numbers with new country code
+    form.setValue("businessPhone", phoneCode);
+    form.setValue("phoneNumber", phoneCode);
 
-    const validatePhone = (phone: string) => {
-      try {
-        if (!phone) return false;
-        return isValidPhoneNumber(phone, value as CountryCode);
-      } catch (error) {
-        return false;
-      }
-    };
-
-    const businessPhone = form.getValues("businessPhone");
-    const phoneNumber = form.getValues("phoneNumber");
-
-    if (businessPhone && !validatePhone(businessPhone)) {
-      form.setError("businessPhone", {
-        type: "manual",
-        message: "Numéro de téléphone invalide pour ce pays"
-      });
-    } else {
-      form.clearErrors("businessPhone");
-    }
-
-    if (phoneNumber && !validatePhone(phoneNumber)) {
-      form.setError("phoneNumber", {
-        type: "manual",
-        message: "Numéro de téléphone invalide pour ce pays"
-      });
-    } else {
-      form.clearErrors("phoneNumber");
-    }
+    // Clear any existing phone number errors
+    form.clearErrors("businessPhone");
+    form.clearErrors("phoneNumber");
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
     const value = e.target.value;
+    const country = form.getValues("country");
+    const countryCode = phoneCodes[country] || "";
+    
+    // Ensure the country code remains unchanged
+    if (!value.startsWith(countryCode)) {
+      form.setValue(fieldName, countryCode);
+      return;
+    }
+
     form.setValue(fieldName, value);
     
-    const country = form.getValues("country");
     if (country && value) {
       const isValid = validatePhoneNumber(value, country);
       if (!isValid) {
         form.setError(fieldName, {
           type: "manual",
-          message: "Format de numéro invalide"
+          message: t.signup.validation[fieldName].invalid
         });
       } else {
         form.clearErrors(fieldName);
@@ -466,12 +441,18 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
                   <FormControl>
-                    <Input 
-                      {...field} 
-                      type="tel" 
-                      placeholder={t.signup.placeholders.phoneNumber}
-                      onChange={(e) => handlePhoneChange(e, "phoneNumber")}
-                    />
+                    <div className="relative flex">
+                      <div className="absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
+                        {form.getValues("country") && phoneCodes[form.getValues("country")]}
+                      </div>
+                      <Input 
+                        {...field}
+                        type="tel"
+                        className="pl-[4.5rem]"
+                        placeholder={t.signup.placeholders.phoneNumber}
+                        onChange={(e) => handlePhoneChange(e, "phoneNumber")}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
