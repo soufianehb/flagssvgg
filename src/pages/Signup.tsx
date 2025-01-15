@@ -384,14 +384,6 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-
-            <Button
-              type="button"
-              onClick={nextStep}
-              className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white h-11"
-            >
-              {t.signup.buttons.next}
-            </Button>
           </div>
         );
 
@@ -702,14 +694,14 @@ const Signup = () => {
               </form>
             </Form>
 
-            <div className="text-center mt-4 space-y-3">
+            <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 {t.signup.buttons.login}
               </p>
               <Button
                 type="button"
                 onClick={() => navigate('/login')}
-                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white mt-2"
               >
                 <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
                 {t.login.submit}
