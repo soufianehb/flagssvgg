@@ -12,6 +12,8 @@ import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useSignupFormData } from "@/hooks/useSignupFormData";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
+import { isValidPhoneNumber } from "libphonenumber-js";
+import { phoneCodes } from "@/data/phoneCodes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +31,8 @@ const languages: Array<{ code: Language; label: string }> = [
   { code: 'fr', label: 'Français' },
   { code: 'es', label: 'Español' }
 ];
+
+const totalSteps = 3;
 
 const formSchema = z.object({
   firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
@@ -74,6 +78,13 @@ const Signup = () => {
     validateSecurityStep,
     clearStep
   } = useSignupFormData();
+
+  const handlePersonalDataChange = (field: keyof typeof personalData, value: string) => {
+    setPersonalData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   const getCurrentStepValidation = () => {
     switch (currentStep) {
@@ -137,7 +148,7 @@ const Signup = () => {
     form.setValue(fieldName, value);
     
     if (country && value) {
-      const isValid = validatePhoneNumber(value, country);
+      const isValid = isValidPhoneNumber(value, country);
       if (!isValid) {
         form.setError(fieldName, {
           type: "manual",
@@ -278,7 +289,7 @@ const Signup = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={goBack}
+                      onClick={() => goBack()}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
                     >
                       {t.signup.buttons.previous}
@@ -288,7 +299,7 @@ const Signup = () => {
                   {currentStep < totalSteps ? (
                     <Button
                       type="button"
-                      onClick={goToStep(currentStep + 1)}
+                      onClick={() => goToStep(currentStep + 1)}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       {t.signup.buttons.next}
