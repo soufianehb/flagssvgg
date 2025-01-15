@@ -384,6 +384,29 @@ const Signup = () => {
                 </FormItem>
               )}
             />
+
+            <div className="flex flex-col space-y-4">
+              <Button
+                type="button"
+                onClick={nextStep}
+                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white h-11"
+              >
+                {t.signup.buttons.next}
+              </Button>
+
+              <p className="text-sm text-gray-600 text-center">
+                {t.signup.buttons.login}
+              </p>
+
+              <Button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white h-11"
+              >
+                <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
+                {t.login.submit}
+              </Button>
+            </div>
           </div>
         );
 
