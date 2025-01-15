@@ -36,6 +36,9 @@ import {
 } from "@/components/ui/select";
 import { countries } from "@/data/countries";
 import { phoneCodes } from "@/data/phoneCodes";
+import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
+import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
+import SecurityStep from "@/components/signup/SecurityStep";
 
 type Language = 'en' | 'fr' | 'es';
 
@@ -222,283 +225,30 @@ const Signup = () => {
   };
 
   const renderFormStep = (step: number) => {
-    const baseClasses = "space-y-6 transition-all duration-300";
-    const animationClasses = "animate-fade-in";
-
     switch (step) {
       case 1:
-        return (
-          <div className={`${baseClasses} ${animationClasses}`}>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.firstName}</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder={t.signup.placeholders.firstName} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.lastName}</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder={t.signup.placeholders.lastName} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.email}</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                      <Input {...field} type="email" className="pl-10" placeholder={t.signup.placeholders.email} />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        );
-
+        return <PersonalInfoStep form={form} t={t} />;
       case 2:
         return (
-          <div className={`${baseClasses} ${animationClasses}`}>
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.address}</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder={t.signup.placeholders.address} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="zipCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.zipCode}</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder={t.signup.placeholders.zipCode} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.city}</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder={t.signup.placeholders.city} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="country"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.country}</FormLabel>
-                  <Select onValueChange={handleCountryChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t.signup.placeholders.country} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {countries.map((country) => (
-                        <SelectItem key={country} value={country}>
-                          {country}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
-                  <FormControl>
-                    <div className="relative flex">
-                      <div className="absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
-                        {form.getValues("country") && phoneCodes[form.getValues("country")]}
-                      </div>
-                      <Input 
-                        {...field}
-                        type="tel"
-                        className="pl-[4.5rem]"
-                        placeholder={t.signup.placeholders.phoneNumber}
-                        onChange={(e) => handlePhoneChange(e, "phoneNumber")}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.companyName}</FormLabel>
-                  <FormControl>
-                    <Input 
-                      {...field} 
-                      placeholder={t.signup.placeholders.companyName}
-                      required 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <ProfessionalInfoStep
+            form={form}
+            t={t}
+            handleCountryChange={handleCountryChange}
+            handlePhoneChange={handlePhoneChange}
+          />
         );
-
       case 3:
         return (
-          <div className={`${baseClasses} ${animationClasses}`}>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.password}</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                      <Input
-                        {...field}
-                        type={showPassword ? "text" : "password"}
-                        className="pl-10 pr-10"
-                        placeholder={t.signup.placeholders.password}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          calculatePasswordStrength(e.target.value);
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-5 w-5" />
-                        ) : (
-                          <Eye className="h-5 w-5" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  {field.value && (
-                    <div className="mt-2 space-y-1">
-                      <Progress value={passwordStrength} className="h-1" />
-                      <p className="text-xs text-gray-500">
-                        {t.signup.validation.password.strength}: {passwordStrength}%
-                      </p>
-                    </div>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.signup.labels.confirmPassword}</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Key className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                      <Input
-                        {...field}
-                        type={showConfirmPassword ? "text" : "password"}
-                        className="pl-10 pr-10"
-                        placeholder={t.signup.placeholders.confirmPassword}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="h-5 w-5" />
-                        ) : (
-                          <Eye className="h-5 w-5" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="terms"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      {t.signup.labels.terms}
-                    </FormLabel>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
+          <SecurityStep
+            form={form}
+            t={t}
+            showPassword={showPassword}
+            showConfirmPassword={showConfirmPassword}
+            passwordStrength={passwordStrength}
+            setShowPassword={setShowPassword}
+            setShowConfirmPassword={setShowConfirmPassword}
+          />
         );
-
       default:
         return null;
     }
