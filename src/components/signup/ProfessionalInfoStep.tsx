@@ -13,6 +13,36 @@ interface ProfessionalInfoStepProps {
 }
 
 const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange }: ProfessionalInfoStepProps) => {
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
+    const value = e.target.value;
+    const country = form.getValues("country");
+    const countryCode = phoneCodes[country] || "";
+    
+    // Si l'utilisateur essaie de modifier le préfixe, on le remet
+    if (!value.startsWith(countryCode)) {
+      const numberWithoutPrefix = value.replace(/^\+\d+/, '');
+      form.setValue(fieldName, `${countryCode}${numberWithoutPrefix}`);
+    } else {
+      form.setValue(fieldName, value);
+    }
+  };
+
+  const onCountryChange = (value: string) => {
+    handleCountryChange(value);
+    const phoneCode = phoneCodes[value] || "";
+    
+    // Mise à jour automatique des préfixes téléphoniques
+    const currentPhoneNumber = form.getValues("phoneNumber") || "";
+    const currentBusinessPhone = form.getValues("businessPhone") || "";
+    
+    // Garde les numéros existants mais change le préfixe
+    const phoneNumberWithoutPrefix = currentPhoneNumber.replace(/^\+\d+/, '');
+    const businessPhoneWithoutPrefix = currentBusinessPhone.replace(/^\+\d+/, '');
+    
+    form.setValue("phoneNumber", `${phoneCode}${phoneNumberWithoutPrefix}`);
+    form.setValue("businessPhone", `${phoneCode}${businessPhoneWithoutPrefix}`);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <FormField
@@ -65,7 +95,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.country}</FormLabel>
-            <Select onValueChange={handleCountryChange} defaultValue={field.value}>
+            <Select onValueChange={onCountryChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder={t.signup.placeholders.country} />
@@ -114,7 +144,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   type="tel"
                   className="pl-[4.5rem]"
                   placeholder={t.signup.placeholders.phoneNumber}
-                  onChange={(e) => handlePhoneChange(e, "phoneNumber")}
+                  onChange={(e) => handlePhoneInput(e, "phoneNumber")}
                 />
               </div>
             </FormControl>
@@ -139,7 +169,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   type="tel"
                   className="pl-[4.5rem]"
                   placeholder={t.signup.placeholders.businessPhone}
-                  onChange={(e) => handlePhoneChange(e, "businessPhone")}
+                  onChange={(e) => handlePhoneInput(e, "businessPhone")}
                 />
               </div>
             </FormControl>

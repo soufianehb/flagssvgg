@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
-import { isValidPhoneNumber } from 'libphonenumber-js';
+import { phoneCodes } from '@/data/phoneCodes';
 import type { CountryCode } from 'libphonenumber-js';
-import { useFormIntegrity } from './useFormIntegrity';
-
-const STORAGE_KEY = 'signup_form_data';
 
 interface StepValidation {
   isValid: boolean;
   errors: Record<string, string>;
 }
+
+const STORAGE_KEY = 'signup_form_data';
 
 export const useSignupFormData = () => {
   const [personalData, setPersonalData] = useState<PersonalData>(() => {
@@ -39,44 +38,20 @@ export const useSignupFormData = () => {
     };
   });
 
-  const {
-    validateStepIntegrity,
-    backupStepData,
-    rollbackStep,
-    preventDataContamination
-  } = useFormIntegrity();
-
-  // Sauvegarde automatique des données avec protection contre la contamination
+  // Sauvegarde automatique des données
   useEffect(() => {
-    const cleanData = preventDataContamination(personalData);
-    localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(cleanData));
+    localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
   }, [personalData]);
 
   useEffect(() => {
-    const cleanData = preventDataContamination(professionalData);
-    localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(cleanData));
+    localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(professionalData));
   }, [professionalData]);
 
   useEffect(() => {
-    const cleanData = preventDataContamination(securityData);
-    localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(cleanData));
+    localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
   }, [securityData]);
 
-  // Validation par étape avec intégrité
   const validatePersonalStep = (): StepValidation => {
-    const integrityCheck = validateStepIntegrity('personal', personalData);
-    if (!integrityCheck.isValid) {
-      return {
-        isValid: false,
-        errors: {
-          integrity: integrityCheck.errors.join(', ')
-        }
-      };
-    }
-
-    const cleanData = preventDataContamination(personalData);
-    backupStepData('personal', cleanData);
-
     const errors: Record<string, string> = {};
     
     if (!personalData.firstName.trim()) {
@@ -98,55 +73,29 @@ export const useSignupFormData = () => {
   };
 
   const validateProfessionalStep = (): StepValidation => {
-    const integrityCheck = validateStepIntegrity('professional', professionalData);
-    if (!integrityCheck.isValid) {
-      return {
-        isValid: false,
-        errors: {
-          integrity: integrityCheck.errors.join(', ')
-        }
-      };
-    }
-
-    const cleanData = preventDataContamination(professionalData);
-    backupStepData('professional', cleanData);
-
     const errors: Record<string, string> = {};
     
-    if (!professionalData.address.trim()) {
+    // Validation simplifiée - vérifie uniquement si les champs sont vides
+    if (!professionalData.address) {
       errors.address = 'L\'adresse est requise';
     }
-    if (!professionalData.zipCode.trim()) {
+    if (!professionalData.zipCode) {
       errors.zipCode = 'Le code postal est requis';
     }
-    if (!professionalData.city.trim()) {
+    if (!professionalData.city) {
       errors.city = 'La ville est requise';
     }
     if (!professionalData.country) {
       errors.country = 'Le pays est requis';
     }
-    if (!professionalData.companyName.trim()) {
+    if (!professionalData.companyName) {
       errors.companyName = 'Le nom de l\'entreprise est requis';
     }
-    
-    if (professionalData.phoneNumber && professionalData.country) {
-      try {
-        if (!isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
-          errors.phoneNumber = 'Le numéro de téléphone n\'est pas valide';
-        }
-      } catch (error) {
-        errors.phoneNumber = 'Format de numéro invalide';
-      }
+    if (!professionalData.phoneNumber) {
+      errors.phoneNumber = 'Le numéro de téléphone est requis';
     }
-    
-    if (professionalData.businessPhone && professionalData.country) {
-      try {
-        if (!isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
-          errors.businessPhone = 'Le numéro de téléphone professionnel n\'est pas valide';
-        }
-      } catch (error) {
-        errors.businessPhone = 'Format de numéro invalide';
-      }
+    if (!professionalData.businessPhone) {
+      errors.businessPhone = 'Le numéro professionnel est requis';
     }
 
     return {
@@ -156,19 +105,6 @@ export const useSignupFormData = () => {
   };
 
   const validateSecurityStep = (): StepValidation => {
-    const integrityCheck = validateStepIntegrity('security', securityData);
-    if (!integrityCheck.isValid) {
-      return {
-        isValid: false,
-        errors: {
-          integrity: integrityCheck.errors.join(', ')
-        }
-      };
-    }
-
-    const cleanData = preventDataContamination(securityData);
-    backupStepData('security', cleanData);
-
     const errors: Record<string, string> = {};
     
     if (!securityData.password) {
@@ -218,23 +154,6 @@ export const useSignupFormData = () => {
     }
   };
 
-  const handleStepError = (step: 'personal' | 'professional' | 'security') => {
-    const previousData = rollbackStep(step);
-    if (previousData) {
-      switch (step) {
-        case 'personal':
-          setPersonalData(previousData as PersonalData);
-          break;
-        case 'professional':
-          setProfessionalData(previousData as ProfessionalData);
-          break;
-        case 'security':
-          setSecurityData(previousData as SecurityData);
-          break;
-      }
-    }
-  };
-
   return {
     personalData,
     setPersonalData,
@@ -245,7 +164,6 @@ export const useSignupFormData = () => {
     validatePersonalStep,
     validateProfessionalStep,
     validateSecurityStep,
-    clearStep,
-    handleStepError
+    clearStep
   };
 };
