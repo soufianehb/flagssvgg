@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
-import { isValidPhoneNumber } from 'libphonenumber-js';
-import type { CountryCode } from 'libphonenumber-js';
-
-interface StepValidation {
-  isValid: boolean;
-  errors: Record<string, string>;
-}
 
 const STORAGE_KEY = 'signup_form_data';
 
@@ -38,7 +31,6 @@ export const useSignupForm = () => {
     };
   });
 
-  // Sauvegarde automatique des données
   useEffect(() => {
     localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
   }, [personalData]);
@@ -51,20 +43,11 @@ export const useSignupForm = () => {
     localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
   }, [securityData]);
 
-  // Validation par étape
-  const validatePersonalStep = (): StepValidation => {
+  const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
     
-    if (!personalData.firstName.trim()) {
-      errors.firstName = 'Le prénom est requis';
-    }
-    if (!personalData.lastName.trim()) {
-      errors.lastName = 'Le nom est requis';
-    }
     if (!personalData.email.trim()) {
       errors.email = 'L\'email est requis';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personalData.email)) {
-      errors.email = 'L\'email n\'est pas valide';
     }
 
     return {
@@ -73,37 +56,12 @@ export const useSignupForm = () => {
     };
   };
 
-  const validateProfessionalStep = (): StepValidation => {
+  const validateProfessionalStep = () => {
     const errors: Record<string, string> = {};
     
-    if (!professionalData.address.trim()) {
-      errors.address = 'L\'adresse est requise';
-    }
-    if (!professionalData.zipCode.trim()) {
-      errors.zipCode = 'Le code postal est requis';
-    }
-    if (!professionalData.city.trim()) {
-      errors.city = 'La ville est requise';
-    }
     if (!professionalData.country) {
       errors.country = 'Le pays est requis';
     }
-    if (!professionalData.companyName.trim()) {
-      errors.companyName = 'Le nom de l\'entreprise est requis';
-    }
-    
-    // Validation des numéros de téléphone
-    if (professionalData.phoneNumber && professionalData.country) {
-      if (!isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
-        errors.phoneNumber = 'Le numéro de téléphone n\'est pas valide';
-      }
-    }
-    
-    if (professionalData.businessPhone && professionalData.country) {
-      if (!isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
-        errors.businessPhone = 'Le numéro de téléphone professionnel n\'est pas valide';
-      }
-    }
 
     return {
       isValid: Object.keys(errors).length === 0,
@@ -111,18 +69,14 @@ export const useSignupForm = () => {
     };
   };
 
-  const validateSecurityStep = (): StepValidation => {
+  const validateSecurityStep = () => {
     const errors: Record<string, string> = {};
     
     if (!securityData.password) {
       errors.password = 'Le mot de passe est requis';
-    } else if (securityData.password.length < 8) {
-      errors.password = 'Le mot de passe doit contenir au moins 8 caractères';
     }
     
-    if (!securityData.confirmPassword) {
-      errors.confirmPassword = 'La confirmation du mot de passe est requise';
-    } else if (securityData.password !== securityData.confirmPassword) {
+    if (securityData.password !== securityData.confirmPassword) {
       errors.confirmPassword = 'Les mots de passe ne correspondent pas';
     }
     
