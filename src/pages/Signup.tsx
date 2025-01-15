@@ -10,6 +10,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +21,7 @@ import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
 import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
+import { phoneCodes } from "@/data/phoneCodes";
 
 type Language = 'en' | 'fr' | 'es';
 
@@ -63,7 +65,6 @@ const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
 
-  // Nouveaux états spécifiques pour chaque étape
   const [personalData, setPersonalData] = useState<PersonalData>({
     firstName: '',
     lastName: '',
@@ -86,13 +87,6 @@ const Signup = () => {
     terms: false
   });
 
-  const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -110,6 +104,58 @@ const Signup = () => {
     if (password.match(/[^A-Za-z0-9]/)) strength += 20;
     if (password.length >= 12) strength += 20;
     setPasswordStrength(strength);
+  };
+
+  const validatePhoneNumber = (phone: string, country: string) => {
+    try {
+      if (!phone) return false;
+      return isValidPhoneNumber(phone, country);
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
+  const handleCountryChange = (value: string) => {
+    form.setValue("country", value);
+    const phoneCode = phoneCodes[value] || "";
+    
+    form.setValue("businessPhone", phoneCode);
+    form.setValue("phoneNumber", phoneCode);
+
+    form.clearErrors("businessPhone");
+    form.clearErrors("phoneNumber");
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
+    const value = e.target.value;
+    const country = form.getValues("country");
+    const countryCode = phoneCodes[country] || "";
+    
+    if (!value.startsWith(countryCode)) {
+      form.setValue(fieldName, countryCode);
+      return;
+    }
+
+    form.setValue(fieldName, value);
+    
+    if (country && value) {
+      const isValid = validatePhoneNumber(value, country);
+      if (!isValid) {
+        form.setError(fieldName, {
+          type: "manual",
+          message: t.signup.validation[fieldName].invalid
+        });
+      } else {
+        form.clearErrors(fieldName);
+      }
+    }
   };
 
   const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
@@ -136,54 +182,6 @@ const Signup = () => {
     form.setValue(field, value);
     if (field === 'password') {
       calculatePasswordStrength(value as string);
-    }
-  };
-
-  const validatePhoneNumber = (phone: string, country: string) => {
-    try {
-      if (!phone) return false;
-      return isValidPhoneNumber(phone, country as CountryCode);
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const handleCountryChange = (value: string) => {
-    form.setValue("country", value);
-    const phoneCode = phoneCodes[value] || "";
-    
-    // Reset phone numbers with new country code
-    form.setValue("businessPhone", phoneCode);
-    form.setValue("phoneNumber", phoneCode);
-
-    // Clear any existing phone number errors
-    form.clearErrors("businessPhone");
-    form.clearErrors("phoneNumber");
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: "businessPhone" | "phoneNumber") => {
-    const value = e.target.value;
-    const country = form.getValues("country");
-    const countryCode = phoneCodes[country] || "";
-    
-    // Ensure the country code remains unchanged
-    if (!value.startsWith(countryCode)) {
-      form.setValue(fieldName, countryCode);
-      return;
-    }
-
-    form.setValue(fieldName, value);
-    
-    if (country && value) {
-      const isValid = validatePhoneNumber(value, country);
-      if (!isValid) {
-        form.setError(fieldName, {
-          type: "manual",
-          message: t.signup.validation[fieldName].invalid
-        });
-      } else {
-        form.clearErrors(fieldName);
-      }
     }
   };
 
@@ -260,8 +258,6 @@ const Signup = () => {
           <ProfessionalInfoStep
             form={form}
             t={t}
-            data={professionalData}
-            onChange={handleProfessionalDataChange}
             handleCountryChange={handleCountryChange}
             handlePhoneChange={handlePhoneChange}
           />
@@ -271,8 +267,6 @@ const Signup = () => {
           <SecurityStep
             form={form}
             t={t}
-            data={securityData}
-            onChange={handleSecurityDataChange}
             showPassword={showPassword}
             showConfirmPassword={showConfirmPassword}
             passwordStrength={passwordStrength}
