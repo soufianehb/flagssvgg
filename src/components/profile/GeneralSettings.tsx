@@ -19,7 +19,7 @@ const generalFormSchema = z.object({
   lastName: z.string().min(2),
   email: z.string().email(),
   phoneNumber: z.string().optional(),
-  company: z.string().optional(),
+  company: z.string().min(1, "Le nom de l'entreprise est requis"),
 });
 
 type GeneralFormValues = z.infer<typeof generalFormSchema>;
