@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSignupFormData } from "@/hooks/useSignupFormData";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import type { CountryCode } from "libphonenumber-js";
 import { phoneCodes } from "@/data/phoneCodes";
 import {
   DropdownMenu,
@@ -148,7 +149,7 @@ const Signup = () => {
     form.setValue(fieldName, value);
     
     if (country && value) {
-      const isValid = isValidPhoneNumber(value, country);
+      const isValid = isValidPhoneNumber(value, country as CountryCode);
       if (!isValid) {
         form.setError(fieldName, {
           type: "manual",
