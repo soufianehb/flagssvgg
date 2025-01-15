@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 interface NavigationState {
@@ -23,7 +23,7 @@ export const useSignupNavigation = (
   
   const { toast } = useToast();
 
-  const goToStep = async (step: number) => {
+  const goToStep = useCallback(async (step: number) => {
     try {
       const validation = validateCurrentStep();
       
@@ -37,49 +37,51 @@ export const useSignupNavigation = (
         return false;
       }
 
-      // Sauvegarder l'état actuel dans l'historique
-      setNavigationState(prev => ({
+      setNavigationState(prevState => ({
         currentStep: step,
-        history: [...prev.history, step]
+        history: [...prevState.history, step]
       }));
 
-      // Notifier le changement d'étape
-      await onStepChange?.(step);
+      if (onStepChange) {
+        await onStepChange(step);
+      }
+      
       return true;
     } catch (error) {
-      // En cas d'erreur, notifier et déclencher le rollback
       toast({
         variant: "destructive",
         title: "Erreur lors du changement d'étape",
         description: "Une erreur est survenue, retour à l'étape précédente"
       });
       
-      onError?.(navigationState.currentStep);
+      if (onError) {
+        onError(navigationState.currentStep);
+      }
       return false;
     }
-  };
+  }, [validateCurrentStep, toast, onStepChange, onError, navigationState.currentStep]);
 
-  const goBack = () => {
-    setNavigationState(prev => {
-      const newHistory = [...prev.history];
+  const goBack = useCallback(() => {
+    setNavigationState(prevState => {
+      const newHistory = [...prevState.history];
       newHistory.pop();
       const previousStep = newHistory[newHistory.length - 1] || 1;
       
-      onStepChange?.(previousStep);
+      if (onStepChange) {
+        onStepChange(previousStep);
+      }
       
       return {
         currentStep: previousStep,
         history: newHistory
       };
     });
-  };
-
-  const canGoBack = navigationState.history.length > 1;
+  }, [onStepChange]);
 
   return {
     currentStep: navigationState.currentStep,
     goToStep,
     goBack,
-    canGoBack
+    canGoBack: navigationState.history.length > 1
   };
 };
