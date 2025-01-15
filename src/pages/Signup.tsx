@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import type { CountryCode } from "libphonenumber-js";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -109,7 +110,7 @@ const Signup = () => {
   const validatePhoneNumber = (phone: string, country: string) => {
     try {
       if (!phone) return false;
-      return isValidPhoneNumber(phone, country);
+      return isValidPhoneNumber(phone, country as CountryCode);
     } catch (error) {
       return false;
     }
