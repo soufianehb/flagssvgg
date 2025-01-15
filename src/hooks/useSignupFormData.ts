@@ -12,7 +12,6 @@ interface StepValidation {
 }
 
 export const useSignupFormData = () => {
-  // États pour chaque étape
   const [personalData, setPersonalData] = useState<PersonalData>(() => {
     const saved = localStorage.getItem(`${STORAGE_KEY}_personal`);
     return saved ? JSON.parse(saved) : { firstName: '', lastName: '', email: '' };
@@ -40,25 +39,28 @@ export const useSignupFormData = () => {
     };
   });
 
-  // Sauvegarde automatique des données
-  useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(personalData));
-  }, [personalData]);
-
-  useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(professionalData));
-  }, [professionalData]);
-
-  useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(securityData));
-  }, [securityData]);
-
   const {
     validateStepIntegrity,
     backupStepData,
     rollbackStep,
     preventDataContamination
   } = useFormIntegrity();
+
+  // Sauvegarde automatique des données avec protection contre la contamination
+  useEffect(() => {
+    const cleanData = preventDataContamination(personalData);
+    localStorage.setItem(`${STORAGE_KEY}_personal`, JSON.stringify(cleanData));
+  }, [personalData]);
+
+  useEffect(() => {
+    const cleanData = preventDataContamination(professionalData);
+    localStorage.setItem(`${STORAGE_KEY}_professional`, JSON.stringify(cleanData));
+  }, [professionalData]);
+
+  useEffect(() => {
+    const cleanData = preventDataContamination(securityData);
+    localStorage.setItem(`${STORAGE_KEY}_security`, JSON.stringify(cleanData));
+  }, [securityData]);
 
   // Validation par étape avec intégrité
   const validatePersonalStep = (): StepValidation => {
@@ -72,7 +74,7 @@ export const useSignupFormData = () => {
       };
     }
 
-    const cleanData = preventDataContamination('personal', personalData) as PersonalData;
+    const cleanData = preventDataContamination(personalData);
     backupStepData('personal', cleanData);
 
     const errors: Record<string, string> = {};
@@ -106,7 +108,7 @@ export const useSignupFormData = () => {
       };
     }
 
-    const cleanData = preventDataContamination('professional', professionalData) as ProfessionalData;
+    const cleanData = preventDataContamination(professionalData);
     backupStepData('professional', cleanData);
 
     const errors: Record<string, string> = {};
@@ -128,14 +130,22 @@ export const useSignupFormData = () => {
     }
     
     if (professionalData.phoneNumber && professionalData.country) {
-      if (!isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
-        errors.phoneNumber = 'Le numéro de téléphone n\'est pas valide';
+      try {
+        if (!isValidPhoneNumber(professionalData.phoneNumber, professionalData.country as CountryCode)) {
+          errors.phoneNumber = 'Le numéro de téléphone n\'est pas valide';
+        }
+      } catch (error) {
+        errors.phoneNumber = 'Format de numéro invalide';
       }
     }
     
     if (professionalData.businessPhone && professionalData.country) {
-      if (!isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
-        errors.businessPhone = 'Le numéro de téléphone professionnel n\'est pas valide';
+      try {
+        if (!isValidPhoneNumber(professionalData.businessPhone, professionalData.country as CountryCode)) {
+          errors.businessPhone = 'Le numéro de téléphone professionnel n\'est pas valide';
+        }
+      } catch (error) {
+        errors.businessPhone = 'Format de numéro invalide';
       }
     }
 
@@ -156,7 +166,7 @@ export const useSignupFormData = () => {
       };
     }
 
-    const cleanData = preventDataContamination('security', securityData) as SecurityData;
+    const cleanData = preventDataContamination(securityData);
     backupStepData('security', cleanData);
 
     const errors: Record<string, string> = {};
@@ -183,7 +193,6 @@ export const useSignupFormData = () => {
     };
   };
 
-  // Nettoyage des données
   const clearStep = (step: 'personal' | 'professional' | 'security') => {
     switch (step) {
       case 'personal':
@@ -214,13 +223,13 @@ export const useSignupFormData = () => {
     if (previousData) {
       switch (step) {
         case 'personal':
-          setPersonalData(previousData);
+          setPersonalData(previousData as PersonalData);
           break;
         case 'professional':
-          setProfessionalData(previousData);
+          setProfessionalData(previousData as ProfessionalData);
           break;
         case 'security':
-          setSecurityData(previousData);
+          setSecurityData(previousData as SecurityData);
           break;
       }
     }

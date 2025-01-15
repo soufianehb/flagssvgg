@@ -1,26 +1,31 @@
 import { useState } from 'react';
 import { PersonalData, ProfessionalData, SecurityData } from '@/types/signup';
 
-interface StepData {
-  personal?: PersonalData;
-  professional?: ProfessionalData;
-  security?: SecurityData;
-}
+type StepData = PersonalData | ProfessionalData | SecurityData;
+type StepType = 'personal' | 'professional' | 'security';
 
 interface ValidationResult {
   isValid: boolean;
   errors: string[];
 }
 
-export const useFormIntegrity = () => {
-  const [backupData, setBackupData] = useState<StepData>({});
+interface BackupState {
+  [key: string]: StepData;
+}
 
-  const validateStepIntegrity = (
-    step: 'personal' | 'professional' | 'security',
-    data: PersonalData | ProfessionalData | SecurityData
-  ): ValidationResult => {
+export const useFormIntegrity = () => {
+  const [backupData, setBackupData] = useState<BackupState>({});
+
+  const validateStepIntegrity = (step: StepType, data: StepData): ValidationResult => {
     const errors: string[] = [];
 
+    // Vérification de l'intégrité des données
+    if (!data || typeof data !== 'object') {
+      errors.push('Les données sont invalides ou corrompues');
+      return { isValid: false, errors };
+    }
+
+    // Vérifications spécifiques par étape
     switch (step) {
       case 'personal':
         const personalData = data as PersonalData;
@@ -50,25 +55,18 @@ export const useFormIntegrity = () => {
     };
   };
 
-  const backupStepData = (
-    step: 'personal' | 'professional' | 'security',
-    data: PersonalData | ProfessionalData | SecurityData
-  ) => {
+  const backupStepData = (step: StepType, data: StepData) => {
     setBackupData(prev => ({
       ...prev,
-      [step]: { ...data }
+      [step]: JSON.parse(JSON.stringify(data)) // Deep copy to prevent contamination
     }));
   };
 
-  const rollbackStep = (step: 'personal' | 'professional' | 'security'): any => {
-    return backupData[step];
+  const rollbackStep = (step: StepType): StepData | null => {
+    return backupData[step] || null;
   };
 
-  const preventDataContamination = (
-    step: 'personal' | 'professional' | 'security',
-    data: PersonalData | ProfessionalData | SecurityData
-  ): PersonalData | ProfessionalData | SecurityData => {
-    // Créer une copie profonde pour éviter la contamination
+  const preventDataContamination = (data: StepData): StepData => {
     return JSON.parse(JSON.stringify(data));
   };
 
