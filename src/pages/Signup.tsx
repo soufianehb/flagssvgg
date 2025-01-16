@@ -34,14 +34,10 @@ const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
 const totalSteps = 3;
 
 const formSchema = z.object({
-  firstName: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
-  lastName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide"),
-  password: z
-    .string()
-    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
-    .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
-    .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string(),
+  password: z.string(),
   confirmPassword: z.string(),
   terms: z.boolean().refine((val) => val === true, "Vous devez accepter les conditions"),
   address: z.string(),
@@ -115,20 +111,14 @@ const Signup = () => {
     
     if (!state.personal.firstName.trim()) {
       errors.firstName = t.signup.validation.required;
-    } else if (state.personal.firstName.length < 2) {
-      errors.firstName = t.signup.validation.firstName;
     }
 
     if (!state.personal.lastName.trim()) {
       errors.lastName = t.signup.validation.required;
-    } else if (state.personal.lastName.length < 2) {
-      errors.lastName = t.signup.validation.lastName;
     }
 
     if (!state.personal.email.trim()) {
       errors.email = t.signup.validation.required;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.personal.email)) {
-      errors.email = t.signup.validation.email;
     }
 
     return {
@@ -179,22 +169,10 @@ const Signup = () => {
     
     if (!state.security.password) {
       errors.password = t.signup.validation.required;
-    } else {
-      if (state.security.password.length < 8) {
-        errors.password = t.signup.validation.password.minLength;
-      }
-      if (!/[A-Z]/.test(state.security.password)) {
-        errors.password = t.signup.validation.password.uppercase;
-      }
-      if (!/[0-9]/.test(state.security.password)) {
-        errors.password = t.signup.validation.password.number;
-      }
     }
     
     if (!state.security.confirmPassword) {
       errors.confirmPassword = t.signup.validation.required;
-    } else if (state.security.password !== state.security.confirmPassword) {
-      errors.confirmPassword = t.signup.validation.confirmPassword;
     }
     
     if (!state.security.terms) {
