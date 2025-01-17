@@ -193,6 +193,16 @@ const translations = {
           title: "Validation Error",
           description: "Please fix the errors before continuing"
         }
+      },
+      messages: {
+        success: {
+          title: "Account Created",
+          description: "Your account has been created successfully"
+        },
+        error: {
+          title: "Error",
+          description: "An error occurred while creating your account"
+        }
       }
     },
     profile: {
@@ -434,6 +444,16 @@ const translations = {
           description: "Veuillez corriger les erreurs avant de continuer"
         }
       },
+      messages: {
+        success: {
+          title: "Compte créé",
+          description: "Votre compte a été créé avec succès"
+        },
+        error: {
+          title: "Erreur",
+          description: "Une erreur s'est produite lors de la création de votre compte"
+        }
+      }
     },
     profile: {
       title: "Paramètres du profil",
@@ -674,6 +694,16 @@ const translations = {
           description: "Por favor, corrija los errores antes de continuar"
         }
       },
+      messages: {
+        success: {
+          title: "Cuenta creada",
+          description: "Su cuenta ha sido creada con éxito"
+        },
+        error: {
+          title: "Error",
+          description: "Ocurrió un error al crear su cuenta"
+        }
+      }
     },
     profile: {
       title: "Ajustes de perfil",
@@ -746,3 +776,4 @@ export const useTranslation = () => {
     setLanguage: setLang,
   };
 };
+
