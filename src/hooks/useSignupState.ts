@@ -47,6 +47,22 @@ export const useSignupState = (t: any) => {
     securityForm.setValue(field as any, value);
   }, [securityForm]);
 
+  const setLoading = useCallback((value: boolean) => {
+    dispatch({ type: "SET_LOADING", value });
+  }, []);
+
+  const setPasswordVisibility = useCallback((value: boolean) => {
+    dispatch({ type: "SET_PASSWORD_VISIBILITY", value });
+  }, []);
+
+  const setConfirmPasswordVisibility = useCallback((value: boolean) => {
+    dispatch({ type: "SET_CONFIRM_PASSWORD_VISIBILITY", value });
+  }, []);
+
+  const setPasswordStrength = useCallback((value: number) => {
+    dispatch({ type: "SET_PASSWORD_STRENGTH", value });
+  }, []);
+
   const validateStep = useCallback(async (step: 'personal' | 'professional' | 'security') => {
     let isValid = false;
     
@@ -89,6 +105,10 @@ export const useSignupState = (t: any) => {
     setPersonalData,
     setProfessionalData,
     setSecurityData,
+    setLoading,
+    setPasswordVisibility,
+    setConfirmPasswordVisibility,
+    setPasswordStrength,
     validateStep,
     resetForm
   };
