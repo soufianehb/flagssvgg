@@ -33,13 +33,29 @@ const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
 
 const totalSteps = 3;
 
+type FormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  terms: boolean;
+  address: string;
+  zipCode: string;
+  city: string;
+  country: string;
+  businessPhone: string;
+  companyName: string;
+  phoneNumber: string;
+};
+
 const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const schemas = createValidationSchemas(t);
-  const form = useForm({
+  const form = useForm<FormValues>({
     resolver: zodResolver(schemas.security),
     defaultValues: {
       firstName: "",
@@ -249,7 +265,7 @@ const Signup = () => {
     }
   );
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     setLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
