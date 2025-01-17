@@ -15,27 +15,51 @@ interface ProfessionalInfoStepProps {
 }
 
 const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange }: ProfessionalInfoStepProps) => {
-  // Validate that at least one phone number is filled
+  // Validate that at least one phone number is filled and valid
   const validatePhoneNumbers = () => {
     const phoneNumber = form.getValues("phoneNumber");
     const businessPhone = form.getValues("businessPhone");
     const country = form.getValues("country");
 
+    const phoneValidation = phoneNumber ? validatePhoneNumber(phoneNumber, country, t) : { isValid: true };
+    const businessValidation = businessPhone ? validatePhoneNumber(businessPhone, country, t) : { isValid: true };
+
+    // Si au moins un numéro est valide, on supprime toutes les erreurs
+    if ((phoneNumber && phoneValidation.isValid) || (businessPhone && businessValidation.isValid)) {
+      form.clearErrors("phoneNumber");
+      form.clearErrors("businessPhone");
+      return true;
+    }
+
+    // Si aucun numéro n'est entré
     if (!phoneNumber && !businessPhone) {
+      form.setError("phoneNumber", {
+        type: "manual",
+        message: t.signup.validation.phoneNumber.required
+      });
+      form.setError("businessPhone", {
+        type: "manual",
+        message: t.signup.validation.businessPhone.required
+      });
       return false;
     }
 
-    if (phoneNumber) {
-      const validation = validatePhoneNumber(phoneNumber, country, t);
-      if (!validation.isValid) return false;
+    // Si les numéros entrés sont invalides
+    if (phoneNumber && !phoneValidation.isValid) {
+      form.setError("phoneNumber", {
+        type: "manual",
+        message: phoneValidation.error
+      });
     }
 
-    if (businessPhone) {
-      const validation = validatePhoneNumber(businessPhone, country, t);
-      if (!validation.isValid) return false;
+    if (businessPhone && !businessValidation.isValid) {
+      form.setError("businessPhone", {
+        type: "manual",
+        message: businessValidation.error
+      });
     }
 
-    return true;
+    return false;
   };
 
   // Real-time validation
@@ -46,45 +70,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       }
       
       if (name === "phoneNumber" || name === "businessPhone" || name === "country") {
-        if (validatePhoneNumbers()) {
-          form.clearErrors("phoneNumber");
-          form.clearErrors("businessPhone");
-        } else {
-          const country = form.getValues("country");
-          const phoneNumber = form.getValues("phoneNumber");
-          const businessPhone = form.getValues("businessPhone");
-
-          if (phoneNumber) {
-            const validation = validatePhoneNumber(phoneNumber, country, t);
-            if (!validation.isValid) {
-              form.setError("phoneNumber", {
-                type: "manual",
-                message: validation.error
-              });
-            }
-          }
-
-          if (businessPhone) {
-            const validation = validatePhoneNumber(businessPhone, country, t);
-            if (!validation.isValid) {
-              form.setError("businessPhone", {
-                type: "manual",
-                message: validation.error
-              });
-            }
-          }
-
-          if (!phoneNumber && !businessPhone) {
-            form.setError("phoneNumber", {
-              type: "manual",
-              message: t.signup.validation.phoneNumber.required
-            });
-            form.setError("businessPhone", {
-              type: "manual",
-              message: t.signup.validation.businessPhone.required
-            });
-          }
-        }
+        validatePhoneNumbers();
       }
     });
 
