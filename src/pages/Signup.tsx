@@ -119,8 +119,8 @@ const Signup = () => {
     if (currentStep === 1 && !validatePersonalStep()) {
       toast({
         variant: "destructive",
-        title: t.signup.errors.invalidFields,
-        description: t.signup.errors.checkFields,
+        title: t.signup.validation.formError,
+        description: t.signup.validation.checkFields,
       });
       return;
     }
