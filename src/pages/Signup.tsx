@@ -83,26 +83,26 @@ const Signup = () => {
     resetForm,
   } = useSignupState();
 
-  const validatePersonalStep = () => {
+const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
     
     if (!state.personal.firstName.trim()) {
-      errors.firstName = t.signup.validation.required;
+      errors.firstName = t?.signup?.validation?.required || "First name is required";
     }
     if (!state.personal.lastName.trim()) {
-      errors.lastName = t.signup.validation.required;
+      errors.lastName = t?.signup?.validation?.required || "Last name is required";
     }
     if (!state.personal.email.trim()) {
-      errors.email = t.signup.validation.required;
+      errors.email = t?.signup?.validation?.required || "Email is required";
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.personal.email)) {
-      errors.email = t.signup.validation.email;
+      errors.email = t?.signup?.validation?.email || "Invalid email format";
     }
 
     if (Object.keys(errors).length > 0) {
       toast({
         variant: "destructive",
-        title: "Validation Error",
-        description: "Please check the form for errors",
+        title: t?.signup?.validation?.error?.title || "Validation Error",
+        description: t?.signup?.validation?.error?.description || "Please check the form for errors"
       });
     }
 
@@ -425,3 +425,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
