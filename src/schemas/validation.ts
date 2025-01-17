@@ -62,6 +62,13 @@ export const createValidationSchemas = (t: any) => ({
   )
 });
 
+// Export individual schemas
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+  rememberMe: z.boolean().default(false)
+});
+
 // Complete signup schema combining all parts
 export const createSignupSchema = (t: any) => {
   const schemas = createValidationSchemas(t);
