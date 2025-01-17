@@ -268,15 +268,15 @@ const Signup = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       resetForm();
       toast({
-        title: t.signup.success.title,
-        description: t.signup.success.description,
+        title: t.signup.messages?.success?.title || "Success",
+        description: t.signup.messages?.success?.description || "Account created successfully",
       });
       navigate("/login");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: t.signup.error.title,
-        description: error instanceof Error ? error.message : t.signup.error.description,
+        title: t.signup.messages?.error?.title || "Error",
+        description: error instanceof Error ? error.message : t.signup.messages?.error?.description || "An error occurred",
       });
     } finally {
       setLoading(false);
@@ -334,7 +334,7 @@ const Signup = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 {currentStep === 1 && (
                   <PersonalInfoStep 
-                    form={form} 
+                    form={form as any}
                     t={t} 
                     data={state.personal}
                     onChange={handlePersonalDataChange}
@@ -350,7 +350,7 @@ const Signup = () => {
                 )}
                 {currentStep === 3 && (
                   <SecurityStep
-                    form={form}
+                    form={form as any}
                     t={t}
                     showPassword={state.ui.showPassword}
                     showConfirmPassword={state.ui.showConfirmPassword}
