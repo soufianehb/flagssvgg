@@ -102,17 +102,10 @@ const Signup = () => {
       errors.email = t.signup.validation.email;
     }
 
-    if (Object.keys(errors).length > 0) {
-      Object.keys(errors).forEach((field) => {
-        form.setError(field as any, {
-          type: 'manual',
-          message: errors[field],
-        });
-      });
-      return false;
-    }
-
-    return true;
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
   };
 
   const handleNextStep = async () => {
@@ -145,7 +138,6 @@ const Signup = () => {
       return;
     }
 
-    // Si la validation passe, on efface les erreurs
     form.clearErrors();
     await goToStep(currentStep + 1);
   };
@@ -270,7 +262,6 @@ const Signup = () => {
 
   const { currentStep, goToStep, goBack, canGoBack } = useSignupNavigation(
     (step: number) => {
-      // Callback function when step changes
       console.log(`Step changed to ${step}`);
     }
   );
