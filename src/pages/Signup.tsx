@@ -33,13 +33,10 @@ const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
 
 const totalSteps = 3;
 
-type FormValues = {
+type FormValues = z.infer<ReturnType<typeof createValidationSchemas>["security"]> & {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-  terms: boolean;
   address: string;
   zipCode: string;
   city: string;
@@ -271,55 +268,18 @@ const Signup = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       resetForm();
       toast({
-        title: "Compte créé avec succès !",
-        description: "Vous pouvez maintenant vous connecter.",
+        title: t.signup.success.title,
+        description: t.signup.success.description,
       });
       navigate("/login");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: error instanceof Error ? error.message : "Une erreur est survenue lors de la création du compte.",
+        title: t.signup.error.title,
+        description: error instanceof Error ? error.message : t.signup.error.description,
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const renderFormStep = (step: number) => {
-    switch (step) {
-      case 1:
-        return (
-          <PersonalInfoStep 
-            form={form} 
-            t={t} 
-            data={state.personal}
-            onChange={handlePersonalDataChange}
-          />
-        );
-      case 2:
-        return (
-          <ProfessionalInfoStep
-            form={form}
-            t={t}
-            handleCountryChange={handleCountryChange}
-            handlePhoneChange={handlePhoneChange}
-          />
-        );
-      case 3:
-        return (
-          <SecurityStep
-            form={form}
-            t={t}
-            showPassword={state.ui.showPassword}
-            showConfirmPassword={state.ui.showConfirmPassword}
-            passwordStrength={state.ui.passwordStrength}
-            setShowPassword={setPasswordVisibility}
-            setShowConfirmPassword={setConfirmPasswordVisibility}
-          />
-        );
-      default:
-        return null;
     }
   };
 
@@ -329,7 +289,6 @@ const Signup = () => {
       
       <main className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
-          <div className="flex justify-between items-center">
             <Link 
               to="/" 
               className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -376,7 +335,7 @@ const Signup = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 {currentStep === 1 && (
                   <PersonalInfoStep 
-                    form={form as any} 
+                    form={form} 
                     t={t} 
                     data={state.personal}
                     onChange={handlePersonalDataChange}
@@ -392,7 +351,7 @@ const Signup = () => {
                 )}
                 {currentStep === 3 && (
                   <SecurityStep
-                    form={form as any}
+                    form={form}
                     t={t}
                     showPassword={state.ui.showPassword}
                     showConfirmPassword={state.ui.showConfirmPassword}
