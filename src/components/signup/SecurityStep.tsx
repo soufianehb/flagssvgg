@@ -25,8 +25,6 @@ const SecurityStep = ({
   setShowConfirmPassword,
   passwordStrength = 0
 }: SecurityStepProps) => {
-  const schema = createValidationSchemas(t).security;
-
   return (
     <div className="space-y-6 animate-fade-in">
       <FormField
