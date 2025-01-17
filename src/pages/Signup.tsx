@@ -1,18 +1,12 @@
 import { useNavigate, Link } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { UserPlus, Globe, ArrowLeft, LogIn } from "lucide-react";
+import { Globe, ArrowLeft, LogIn, UserPlus } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { useSignupState } from "@/hooks/useSignupState";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import type { CountryCode } from "libphonenumber-js";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +16,6 @@ import {
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
-import { PersonalData } from "@/types/signup";
-import { createValidationSchemas } from "@/schemas/validation";
 
 const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
   { code: 'en', label: 'English' },
@@ -33,46 +25,15 @@ const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
 
 const totalSteps = 3;
 
-type FormValues = z.infer<ReturnType<typeof createValidationSchemas>["security"]> & {
-  firstName: string;
-  lastName: string;
-  email: string;
-  address: string;
-  zipCode: string;
-  city: string;
-  country: string;
-  businessPhone: string;
-  companyName: string;
-  phoneNumber: string;
-};
-
 const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
-  const { toast } = useToast();
   
-  const schemas = createValidationSchemas(t);
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schemas.security),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      terms: false,
-      address: "",
-      zipCode: "",
-      city: "",
-      country: "",
-      businessPhone: "",
-      companyName: "",
-      phoneNumber: "",
-    },
-  });
-
   const {
     state,
+    personalForm,
+    professionalForm,
+    securityForm,
     setPersonalData,
     setProfessionalData,
     setSecurityData,
@@ -80,170 +41,25 @@ const Signup = () => {
     setPasswordVisibility,
     setConfirmPasswordVisibility,
     setPasswordStrength,
+    validateStep,
     resetForm,
   } = useSignupState(t);
 
-  const validatePersonalStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.personal.firstName.trim()) {
-      errors.firstName = t?.signup?.validation?.required || "First name is required";
+  const { currentStep, goToStep, goBack } = useSignupNavigation(
+    (step: number) => {
+      console.log(`Navigation to step ${step}`);
     }
-    if (!state.personal.lastName.trim()) {
-      errors.lastName = t?.signup?.validation?.required || "Last name is required";
-    }
-    if (!state.personal.email.trim()) {
-      errors.email = t?.signup?.validation?.required || "Email is required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.personal.email)) {
-      errors.email = t?.signup?.validation?.email || "Invalid email format";
-    }
-
-    if (Object.keys(errors).length > 0) {
-      toast({
-        variant: "destructive",
-        title: t?.signup?.validation?.error?.title || "Validation Error",
-        description: t?.signup?.validation?.error?.description || "Please check the form for errors"
-      });
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const validateProfessionalStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.professional.address.trim()) {
-      errors.address = t.signup.validation.address.required;
-    }
-    if (!state.professional.zipCode.trim()) {
-      errors.zipCode = t.signup.validation.zipCode.required;
-    }
-    if (!state.professional.city.trim()) {
-      errors.city = t.signup.validation.city.required;
-    }
-    if (!state.professional.country) {
-      errors.country = t.signup.validation.country.required;
-    }
-    if (!state.professional.companyName.trim()) {
-      errors.companyName = t.signup.validation.companyName.required;
-    }
-
-    if (state.professional.phoneNumber && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
-        errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
-      }
-    }
-
-    if (state.professional.businessPhone && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
-        errors.businessPhone = t.signup.validation.businessPhone.invalid;
-      }
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const validateSecurityStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.security.password) {
-      errors.password = t.signup.validation.required;
-    }
-    
-    if (!state.security.confirmPassword) {
-      errors.confirmPassword = t.signup.validation.required;
-    }
-    
-    if (!state.security.terms) {
-      errors.terms = t.signup.validation.terms;
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
+  );
 
   const handleNextStep = async () => {
-    let isValid = true;
-    let validationErrors = {};
+    const isValid = await validateStep(
+      currentStep === 1 ? 'personal' : 
+      currentStep === 2 ? 'professional' : 
+      'security'
+    );
 
-    if (currentStep === 1) {
-      const validation = validatePersonalStep();
-      isValid = validation.isValid;
-      validationErrors = validation.errors;
-    } else if (currentStep === 2) {
-      const validation = validateProfessionalStep();
-      isValid = validation.isValid;
-      validationErrors = validation.errors;
-    }
-
-    if (!isValid) {
-      Object.entries(validationErrors).forEach(([field, message]) => {
-        form.setError(field as any, {
-          type: 'manual',
-          message: message as string,
-        });
-      });
-      
-      toast({
-        variant: "destructive",
-        title: t.signup.validation.error.title,
-        description: t.signup.validation.error.description,
-      });
-      return;
-    }
-
-    form.clearErrors();
-    await goToStep(currentStep + 1);
-  };
-
-  const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
-    setPersonalData(field, value);
-    form.setValue(field, value);
-  };
-
-  const handleCountryChange = (value: string) => {
-    setProfessionalData("country", value);
-    form.setValue("country", value);
-  };
-
-  const handlePhoneChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    fieldName: "businessPhone" | "phoneNumber"
-  ) => {
-    const value = e.target.value;
-    setProfessionalData(fieldName, value);
-    form.setValue(fieldName, value);
-  };
-
-  const clearStep = (step: 'personal' | 'professional' | 'security') => {
-    switch (step) {
-      case 'personal':
-        setPersonalData('firstName', '');
-        setPersonalData('lastName', '');
-        setPersonalData('email', '');
-        break;
-      case 'professional':
-        setProfessionalData('address', '');
-        setProfessionalData('zipCode', '');
-        setProfessionalData('city', '');
-        setProfessionalData('country', '');
-        setProfessionalData('companyName', '');
-        setProfessionalData('phoneNumber', '');
-        setProfessionalData('businessPhone', '');
-        break;
-      case 'security':
-        setSecurityData('password', '');
-        setSecurityData('confirmPassword', '');
-        setSecurityData('terms', false);
-        break;
+    if (isValid) {
+      await goToStep(currentStep + 1);
     }
   };
 
@@ -251,30 +67,18 @@ const Signup = () => {
     setLanguage(lang);
   };
 
-  const { currentStep, goToStep, goBack, canGoBack } = useSignupNavigation(
-    (step: number) => {
-      console.log(`Step changed to ${step}`);
-    }
-  );
-
-  const onSubmit = async (values: FormValues) => {
-    setLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      resetForm();
-      toast({
-        title: t?.signup?.messages?.success?.title || "Success",
-        description: t?.signup?.messages?.success?.description || "Account created successfully"
-      });
-      navigate("/login");
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: t?.signup?.messages?.error?.title || "Error",
-        description: error instanceof Error ? error.message : t?.signup?.messages?.error?.description || "An error occurred"
-      });
-    } finally {
-      setLoading(false);
+  const handleSubmit = async () => {
+    const isValid = await validateStep('security');
+    
+    if (isValid) {
+      setLoading(true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+        resetForm();
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -325,33 +129,33 @@ const Signup = () => {
               </div>
             </div>
 
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <Form {...(currentStep === 1 ? personalForm : currentStep === 2 ? professionalForm : securityForm)}>
+              <form onSubmit={(e) => { e.preventDefault(); currentStep === totalSteps ? handleSubmit() : handleNextStep(); }} className="space-y-6">
                 {currentStep === 1 && (
                   <PersonalInfoStep 
-                    form={form as any}
+                    form={personalForm}
                     t={t} 
                     data={state.personal}
-                    onChange={handlePersonalDataChange}
+                    onChange={setPersonalData}
                   />
                 )}
                 {currentStep === 2 && (
                   <ProfessionalInfoStep
-                    form={form}
+                    form={professionalForm}
                     t={t}
-                    handleCountryChange={handleCountryChange}
-                    handlePhoneChange={handlePhoneChange}
+                    handleCountryChange={(country) => setProfessionalData('country', country)}
+                    handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
                   />
                 )}
                 {currentStep === 3 && (
                   <SecurityStep
-                    form={form as any}
+                    form={securityForm}
                     t={t}
                     showPassword={state.ui.showPassword}
                     showConfirmPassword={state.ui.showConfirmPassword}
-                    passwordStrength={state.ui.passwordStrength}
                     setShowPassword={setPasswordVisibility}
                     setShowConfirmPassword={setConfirmPasswordVisibility}
+                    passwordStrength={state.ui.passwordStrength}
                   />
                 )}
 
@@ -360,7 +164,7 @@ const Signup = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => goBack()}
+                      onClick={goBack}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
                     >
                       {t.signup.buttons.previous}
@@ -369,8 +173,7 @@ const Signup = () => {
                   
                   {currentStep < totalSteps ? (
                     <Button
-                      type="button"
-                      onClick={handleNextStep}
+                      type="submit"
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       {t.signup.buttons.next}
