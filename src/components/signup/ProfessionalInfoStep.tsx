@@ -1,9 +1,10 @@
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
 import { countries } from "@/data/countries";
 import { phoneCodes } from "@/data/phoneCodes";
+import { useEffect } from "react";
 
 interface ProfessionalInfoStepProps {
   form: UseFormReturn<any>;
@@ -13,17 +14,44 @@ interface ProfessionalInfoStepProps {
 }
 
 const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange }: ProfessionalInfoStepProps) => {
+  // Validate that at least one phone number is filled
+  const validatePhoneNumbers = () => {
+    const phoneNumber = form.getValues("phoneNumber");
+    const businessPhone = form.getValues("businessPhone");
+    return phoneNumber || businessPhone;
+  };
+
+  // Real-time validation
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "address" || name === "city" || name === "country") {
+        form.trigger(name);
+      }
+      
+      if (name === "phoneNumber" || name === "businessPhone") {
+        if (validatePhoneNumbers()) {
+          form.clearErrors("phoneNumber");
+          form.clearErrors("businessPhone");
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   return (
     <div className="space-y-6 animate-fade-in">
       <FormField
         control={form.control}
         name="address"
+        rules={{ required: t.signup.validation.address.required }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.address}</FormLabel>
             <FormControl>
               <Input {...field} placeholder={t.signup.placeholders.address} />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -38,6 +66,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
               <FormControl>
                 <Input {...field} placeholder={t.signup.placeholders.zipCode} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -45,12 +74,14 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
         <FormField
           control={form.control}
           name="city"
+          rules={{ required: t.signup.validation.city.required }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t.signup.labels.city}</FormLabel>
               <FormControl>
                 <Input {...field} placeholder={t.signup.placeholders.city} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -59,6 +90,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       <FormField
         control={form.control}
         name="country"
+        rules={{ required: t.signup.validation.country.required }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.country}</FormLabel>
@@ -76,6 +108,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 ))}
               </SelectContent>
             </Select>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -89,6 +122,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormControl>
               <Input {...field} placeholder={t.signup.placeholders.companyName} />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -96,6 +130,9 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       <FormField
         control={form.control}
         name="phoneNumber"
+        rules={{
+          validate: () => validatePhoneNumbers() || t.signup.validation.phoneNumber.required
+        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
@@ -131,6 +168,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 />
               </div>
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -138,6 +176,9 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       <FormField
         control={form.control}
         name="businessPhone"
+        rules={{
+          validate: () => validatePhoneNumbers() || t.signup.validation.businessPhone.required
+        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
@@ -173,6 +214,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 />
               </div>
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
