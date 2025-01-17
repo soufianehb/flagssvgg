@@ -48,6 +48,16 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
     return () => subscription.unsubscribe();
   }, [form, t]);
 
+  // Fonction pour gérer le changement de pays et mettre à jour les codes téléphoniques
+  const handleCountrySelection = (value: string) => {
+    handleCountryChange(value);
+    const phoneCode = phoneCodes[value];
+    if (phoneCode) {
+      form.setValue("phoneCode", phoneCode);
+      form.setValue("businessPhoneCode", phoneCode);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <FormField
@@ -103,7 +113,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.country}</FormLabel>
-            <Select onValueChange={handleCountryChange} defaultValue={field.value}>
+            <Select onValueChange={handleCountrySelection} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder={t.signup.placeholders.country} />
@@ -148,7 +158,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormControl>
               <div className="relative flex">
                 <Select 
-                  defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
+                  value={form.getValues("phoneCode")}
                   onValueChange={(value) => {
                     form.setValue("phoneCode", value);
                   }}
@@ -156,7 +166,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   <FormControl>
                     <SelectTrigger className="w-[70px] absolute inset-y-0 left-0 flex items-center px-1 bg-gray-100 border border-r-0 border-input rounded-l-md">
                       <SelectValue>
-                        {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
+                        {form.getValues("phoneCode") || "+--"}
                       </SelectValue>
                     </SelectTrigger>
                   </FormControl>
@@ -194,7 +204,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormControl>
               <div className="relative flex">
                 <Select 
-                  defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
+                  value={form.getValues("businessPhoneCode")}
                   onValueChange={(value) => {
                     form.setValue("businessPhoneCode", value);
                   }}
@@ -202,7 +212,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   <FormControl>
                     <SelectTrigger className="w-[70px] absolute inset-y-0 left-0 flex items-center px-1 bg-gray-100 border border-r-0 border-input rounded-l-md">
                       <SelectValue>
-                        {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
+                        {form.getValues("businessPhoneCode") || "+--"}
                       </SelectValue>
                     </SelectTrigger>
                   </FormControl>
