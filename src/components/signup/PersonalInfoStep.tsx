@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { PersonalData } from "@/types/signup";
 import * as z from "zod";
+import { useEffect } from "react";
 
 interface PersonalInfoStepProps {
   form: UseFormReturn<any>;
@@ -19,6 +20,22 @@ const formSchema = z.object({
 });
 
 const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) => {
+  // Effet pour valider les champs en temps réel
+  useEffect(() => {
+    const validateField = (field: keyof PersonalData) => {
+      try {
+        formSchema.shape[field].parse(data[field]);
+        form.clearErrors(field);
+      } catch (error) {
+        // Ne rien faire si la validation échoue
+      }
+    };
+
+    validateField('firstName');
+    validateField('lastName');
+    validateField('email');
+  }, [data, form]);
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
