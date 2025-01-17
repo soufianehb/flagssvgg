@@ -16,6 +16,7 @@ interface PersonalInfoStepProps {
 
 const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) => {
   const schema = createValidationSchemas(t).personalInfo;
+  const requiredMessage = t?.validation?.required || "This field is required";
 
   // Effet pour valider les champs en temps réel
   useEffect(() => {
@@ -40,17 +41,17 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
           control={form.control}
           name="firstName"
           rules={{
-            required: t.validation.required,
+            required: requiredMessage,
           }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.firstName}</FormLabel>
+              <FormLabel>{t?.signup?.labels?.firstName || "First name"}</FormLabel>
               <FormControl>
                 <Input 
                   {...field} 
                   value={data.firstName}
                   onChange={(e) => onChange('firstName', e.target.value)}
-                  placeholder={t.signup.placeholders.firstName}
+                  placeholder={t?.signup?.placeholders?.firstName || "Enter your first name"}
                   className={form.formState.errors.firstName ? "border-red-500" : ""}
                 />
               </FormControl>
@@ -63,17 +64,17 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
           control={form.control}
           name="lastName"
           rules={{
-            required: t.validation.required,
+            required: requiredMessage,
           }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.lastName}</FormLabel>
+              <FormLabel>{t?.signup?.labels?.lastName || "Last name"}</FormLabel>
               <FormControl>
                 <Input 
                   {...field} 
                   value={data.lastName}
                   onChange={(e) => onChange('lastName', e.target.value)}
-                  placeholder={t.signup.placeholders.lastName}
+                  placeholder={t?.signup?.placeholders?.lastName || "Enter your last name"}
                   className={form.formState.errors.lastName ? "border-red-500" : ""}
                 />
               </FormControl>
@@ -87,15 +88,15 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         control={form.control}
         name="email"
         rules={{
-          required: t.validation.required,
+          required: requiredMessage,
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: t.validation.email
+            message: t?.validation?.email || "Invalid email format"
           }
         }}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t.signup.labels.email}</FormLabel>
+            <FormLabel>{t?.signup?.labels?.email || "Email"}</FormLabel>
             <FormControl>
               <div className="relative">
                 <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -105,7 +106,7 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   onChange={(e) => onChange('email', e.target.value)}
                   type="email" 
                   className={`pl-10 ${form.formState.errors.email ? "border-red-500" : ""}`}
-                  placeholder={t.signup.placeholders.email} 
+                  placeholder={t?.signup?.placeholders?.email || "Enter your email"} 
                 />
               </div>
             </FormControl>
