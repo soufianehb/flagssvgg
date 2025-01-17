@@ -104,7 +104,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 <Select 
                   defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
                   onValueChange={(value) => {
-                    // Mise à jour du code pays uniquement, sans affecter le pays de résidence
                     form.setValue("phoneCode", value);
                   }}
                 >
@@ -118,7 +117,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   <SelectContent>
                     {Object.entries(phoneCodes).map(([country, code]) => (
                       <SelectItem key={country} value={code}>
-                        {code} ({country})
+                        {code} {country}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -147,7 +146,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 <Select 
                   defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
                   onValueChange={(value) => {
-                    // Mise à jour du code pays uniquement, sans affecter le pays de résidence
                     form.setValue("businessPhoneCode", value);
                   }}
                 >
@@ -161,7 +159,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   <SelectContent>
                     {Object.entries(phoneCodes).map(([country, code]) => (
                       <SelectItem key={country} value={code}>
-                        {code} ({country})
+                        {code} {country}
                       </SelectItem>
                     ))}
                   </SelectContent>
