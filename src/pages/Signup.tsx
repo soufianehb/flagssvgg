@@ -101,14 +101,6 @@ const Signup = () => {
                 >
                   {t.signup.buttons.next}
                 </Button>
-                <Button
-                  type="button"
-                  onClick={() => navigate('/login')}
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                >
-                  <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
-                  {t.login.submit}
-                </Button>
               </div>
             </form>
           </Form>
