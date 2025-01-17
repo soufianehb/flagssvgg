@@ -1,8 +1,9 @@
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { PersonalData } from "@/types/signup";
+import * as z from "zod";
 
 interface PersonalInfoStepProps {
   form: UseFormReturn<any>;
@@ -11,6 +12,12 @@ interface PersonalInfoStepProps {
   onChange: (field: keyof PersonalData, value: string) => void;
 }
 
+const formSchema = z.object({
+  firstName: z.string().min(1, "Le prénom est requis"),
+  lastName: z.string().min(1, "Le nom est requis"),
+  email: z.string().min(1, "L'email est requis").email("Format d'email invalide")
+});
+
 const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) => {
   return (
     <div className="space-y-6 animate-fade-in">
@@ -18,6 +25,9 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         <FormField
           control={form.control}
           name="firstName"
+          rules={{
+            required: t.signup.validation.required,
+          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t.signup.labels.firstName}</FormLabel>
@@ -26,9 +36,11 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   {...field} 
                   value={data.firstName}
                   onChange={(e) => onChange('firstName', e.target.value)}
-                  placeholder={t.signup.placeholders.firstName} 
+                  placeholder={t.signup.placeholders.firstName}
+                  className={form.formState.errors.firstName ? "border-red-500" : ""}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -36,6 +48,9 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         <FormField
           control={form.control}
           name="lastName"
+          rules={{
+            required: t.signup.validation.required,
+          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t.signup.labels.lastName}</FormLabel>
@@ -44,9 +59,11 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   {...field} 
                   value={data.lastName}
                   onChange={(e) => onChange('lastName', e.target.value)}
-                  placeholder={t.signup.placeholders.lastName} 
+                  placeholder={t.signup.placeholders.lastName}
+                  className={form.formState.errors.lastName ? "border-red-500" : ""}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -55,6 +72,13 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
       <FormField
         control={form.control}
         name="email"
+        rules={{
+          required: t.signup.validation.required,
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: t.signup.validation.email
+          }
+        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.email}</FormLabel>
@@ -66,11 +90,12 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   value={data.email}
                   onChange={(e) => onChange('email', e.target.value)}
                   type="email" 
-                  className="pl-10" 
+                  className={`pl-10 ${form.formState.errors.email ? "border-red-500" : ""}`}
                   placeholder={t.signup.placeholders.email} 
                 />
               </div>
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
