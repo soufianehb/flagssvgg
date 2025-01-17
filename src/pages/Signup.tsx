@@ -16,6 +16,7 @@ import {
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
+import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
 
 const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
   { code: 'en', label: 'English' },
@@ -73,12 +74,82 @@ const Signup = () => {
     if (isValid) {
       setLoading(true);
       try {
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
         resetForm();
         navigate("/login");
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <Form {...personalForm}>
+            <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
+              <PersonalInfoStep
+                form={personalForm}
+                t={t}
+                data={state.personal}
+                onChange={setPersonalData}
+              />
+              <div className="flex justify-end mt-6">
+                <Button type="submit">
+                  {t.signup.buttons.next}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        );
+      case 2:
+        return (
+          <Form {...professionalForm}>
+            <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
+              <ProfessionalInfoStep
+                form={professionalForm}
+                t={t}
+                handleCountryChange={(country) => setProfessionalData('country', country)}
+                handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
+              />
+              <div className="flex justify-between mt-6">
+                <Button type="button" variant="outline" onClick={goBack}>
+                  {t.signup.buttons.previous}
+                </Button>
+                <Button type="submit">
+                  {t.signup.buttons.next}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        );
+      case 3:
+        return (
+          <Form {...securityForm}>
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+              <SecurityStep
+                form={securityForm}
+                t={t}
+                showPassword={state.ui.showPassword}
+                showConfirmPassword={state.ui.showConfirmPassword}
+                setShowPassword={setPasswordVisibility}
+                setShowConfirmPassword={setConfirmPasswordVisibility}
+                passwordStrength={state.ui.passwordStrength}
+              />
+              <div className="flex justify-between mt-6">
+                <Button type="button" variant="outline" onClick={goBack}>
+                  {t.signup.buttons.previous}
+                </Button>
+                <Button type="submit" disabled={state.ui.isLoading}>
+                  {state.ui.isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        );
+      default:
+        return null;
     }
   };
 
@@ -129,68 +200,7 @@ const Signup = () => {
               </div>
             </div>
 
-            <Form {...(currentStep === 1 ? personalForm : currentStep === 2 ? professionalForm : securityForm)}>
-              <form onSubmit={(e) => { e.preventDefault(); currentStep === totalSteps ? handleSubmit() : handleNextStep(); }} className="space-y-6">
-                {currentStep === 1 && (
-                  <PersonalInfoStep 
-                    form={personalForm}
-                    t={t} 
-                    data={state.personal}
-                    onChange={setPersonalData}
-                  />
-                )}
-                {currentStep === 2 && (
-                  <ProfessionalInfoStep
-                    form={professionalForm}
-                    t={t}
-                    handleCountryChange={(country) => setProfessionalData('country', country)}
-                    handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
-                  />
-                )}
-                {currentStep === 3 && (
-                  <SecurityStep
-                    form={securityForm}
-                    t={t}
-                    showPassword={state.ui.showPassword}
-                    showConfirmPassword={state.ui.showConfirmPassword}
-                    setShowPassword={setPasswordVisibility}
-                    setShowConfirmPassword={setConfirmPasswordVisibility}
-                    passwordStrength={state.ui.passwordStrength}
-                  />
-                )}
-
-                <div className="flex justify-between space-x-4 mt-8">
-                  {currentStep > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={goBack}
-                      className="w-full md:w-[400px] mx-auto flex justify-center items-center border-accent text-accent hover:bg-accent/10 hover:text-accent"
-                    >
-                      {t.signup.buttons.previous}
-                    </Button>
-                  )}
-                  
-                  {currentStep < totalSteps ? (
-                    <Button
-                      type="submit"
-                      className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                    >
-                      {t.signup.buttons.next}
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                      disabled={state.ui.isLoading}
-                    >
-                      <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" />
-                      {state.ui.isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
-                    </Button>
-                  )}
-                </div>
-              </form>
-            </Form>
+            {renderCurrentStep()}
 
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
