@@ -96,7 +96,10 @@ const Signup = () => {
                 onChange={setPersonalData}
               />
               <div className="flex justify-end mt-6">
-                <Button type="submit">
+                <Button 
+                  type="submit"
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                >
                   {t.signup.buttons.next}
                 </Button>
               </div>
@@ -117,7 +120,10 @@ const Signup = () => {
                 <Button type="button" variant="outline" onClick={goBack}>
                   {t.signup.buttons.previous}
                 </Button>
-                <Button type="submit">
+                <Button 
+                  type="submit"
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                >
                   {t.signup.buttons.next}
                 </Button>
               </div>
@@ -141,7 +147,11 @@ const Signup = () => {
                 <Button type="button" variant="outline" onClick={goBack}>
                   {t.signup.buttons.previous}
                 </Button>
-                <Button type="submit" disabled={state.ui.isLoading}>
+                <Button 
+                  type="submit" 
+                  disabled={state.ui.isLoading}
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                >
                   {state.ui.isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
                 </Button>
               </div>
