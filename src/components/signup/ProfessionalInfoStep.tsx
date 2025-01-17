@@ -108,7 +108,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   }}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-[120px] absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
+                    <SelectTrigger className="w-[90px] absolute inset-y-0 left-0 flex items-center px-2 bg-gray-100 border border-r-0 border-input rounded-l-md">
                       <SelectValue>
                         {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
                       </SelectValue>
@@ -125,7 +125,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 <Input 
                   {...field}
                   type="tel"
-                  className="pl-[130px]"
+                  className="pl-[100px]"
                   placeholder={t.signup.placeholders.phoneNumber}
                   onChange={(e) => handlePhoneChange(e, "phoneNumber")}
                 />
@@ -150,7 +150,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   }}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-[120px] absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
+                    <SelectTrigger className="w-[90px] absolute inset-y-0 left-0 flex items-center px-2 bg-gray-100 border border-r-0 border-input rounded-l-md">
                       <SelectValue>
                         {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
                       </SelectValue>
@@ -167,7 +167,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 <Input 
                   {...field}
                   type="tel"
-                  className="pl-[130px]"
+                  className="pl-[100px]"
                   placeholder={t.signup.placeholders.businessPhone}
                   onChange={(e) => handlePhoneChange(e, "businessPhone")}
                 />
