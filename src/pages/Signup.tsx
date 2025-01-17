@@ -16,7 +16,6 @@ import {
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
-import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
 
 const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
   { code: 'en', label: 'English' },
@@ -95,12 +94,20 @@ const Signup = () => {
                 data={state.personal}
                 onChange={setPersonalData}
               />
-              <div className="flex justify-center mt-6">
+              <div className="flex flex-col gap-4 mt-6">
                 <Button 
                   type="submit"
                   className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                 >
                   {t.signup.buttons.next}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                >
+                  <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
+                  {t.login.submit}
                 </Button>
               </div>
             </form>
@@ -116,21 +123,31 @@ const Signup = () => {
                 handleCountryChange={(country) => setProfessionalData('country', country)}
                 handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
               />
-              <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
-                <Button 
+              <div className="flex flex-col gap-4 mt-6">
+                <Button
                   type="button" 
-                  variant="outline" 
-                  onClick={goBack}
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center"
-                >
-                  {t.signup.buttons.previous}
-                </Button>
-                <Button 
-                  type="submit"
+                  onClick={() => navigate('/login')}
                   className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                 >
-                  {t.signup.buttons.next}
+                  <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
+                  {t.login.submit}
                 </Button>
+                <div className="flex gap-4 w-full md:w-[400px] mx-auto">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={goBack}
+                    className="flex-1 justify-center items-center"
+                  >
+                    {t.signup.buttons.previous}
+                  </Button>
+                  <Button 
+                    type="submit"
+                    className="flex-1 justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                  >
+                    {t.signup.buttons.next}
+                  </Button>
+                </div>
               </div>
             </form>
           </Form>
