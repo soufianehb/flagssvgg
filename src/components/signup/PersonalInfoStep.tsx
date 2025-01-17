@@ -3,11 +3,9 @@ import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { PersonalData } from "@/types/signup";
-import { createValidationSchemas } from "@/schemas/validation";
-import * as z from "zod";
 
 interface PersonalInfoStepProps {
-  form: UseFormReturn<z.infer<ReturnType<typeof createValidationSchemas>["personalInfo"]>>;
+  form: UseFormReturn<PersonalData>;
   t: any;
   data: PersonalData;
   onChange: (field: keyof PersonalData, value: string) => void;

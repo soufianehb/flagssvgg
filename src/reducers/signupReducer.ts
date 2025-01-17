@@ -37,6 +37,8 @@ export const initialState: SignupState = {
     companyName: "",
     phoneNumber: "",
     businessPhone: "",
+    phoneCode: "",
+    businessPhoneCode: "",
   },
   security: {
     password: "",

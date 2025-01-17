@@ -3,11 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Key, Eye, EyeOff } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { createValidationSchemas } from "@/schemas/validation";
-import * as z from "zod";
+import { SecurityData } from "@/types/signup";
 
 interface SecurityStepProps {
-  form: UseFormReturn<z.infer<ReturnType<typeof createValidationSchemas>["security"]>>;
+  form: UseFormReturn<SecurityData>;
   t: any;
   showPassword: boolean;
   showConfirmPassword: boolean;

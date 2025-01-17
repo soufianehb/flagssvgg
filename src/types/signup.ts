@@ -27,3 +27,10 @@ export type SignupFormData = {
   professional: ProfessionalData;
   security: SecurityData;
 }
+
+export type SignupStepProps = {
+  form: UseFormReturn<any>;
+  t: any;
+  data?: any;
+  onChange?: (field: string, value: any) => void;
+}
