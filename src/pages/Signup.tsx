@@ -98,6 +98,14 @@ const Signup = () => {
       errors.email = t.signup.validation.email;
     }
 
+    if (Object.keys(errors).length > 0) {
+      toast({
+        variant: "destructive",
+        title: t.signup.validation.error.title || "Validation Error",
+        description: t.signup.validation.error.description || "Please check the form for errors",
+      });
+    }
+
     return {
       isValid: Object.keys(errors).length === 0,
       errors
