@@ -38,6 +38,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
+  const languages = [
+    { code: 'en', label: t.nav.language.en },
+    { code: 'fr', label: t.nav.language.fr },
+    { code: 'es', label: t.nav.language.es }
+  ];
+
+  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
