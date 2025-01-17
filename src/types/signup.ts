@@ -1,3 +1,5 @@
+import { UseFormReturn } from "react-hook-form";
+
 export interface PersonalData {
   firstName: string;
   lastName: string;
