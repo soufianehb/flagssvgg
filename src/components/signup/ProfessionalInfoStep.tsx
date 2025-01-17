@@ -24,7 +24,7 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
   // Real-time validation
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "address" || name === "city" || name === "country") {
+      if (name === "address" || name === "city" || name === "country" || name === "zipCode" || name === "companyName") {
         form.trigger(name);
       }
       
