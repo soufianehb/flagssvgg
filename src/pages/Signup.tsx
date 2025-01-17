@@ -124,6 +124,25 @@ const Signup = () => {
       });
       return;
     }
+
+    if (currentStep === 2) {
+      const { isValid, errors } = validateProfessionalStep();
+      if (!isValid) {
+        Object.keys(errors).forEach((field) => {
+          form.setError(field as any, {
+            type: 'manual',
+            message: errors[field],
+          });
+        });
+        toast({
+          variant: "destructive",
+          title: t.signup.validation.error.title,
+          description: t.signup.validation.error.description,
+        });
+        return;
+      }
+    }
+
     await goToStep(currentStep + 1);
   };
 

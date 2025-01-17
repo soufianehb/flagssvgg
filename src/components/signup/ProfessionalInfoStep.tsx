@@ -32,12 +32,21 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
         if (validatePhoneNumbers()) {
           form.clearErrors("phoneNumber");
           form.clearErrors("businessPhone");
+        } else {
+          form.setError("phoneNumber", {
+            type: "manual",
+            message: t.signup.validation.phoneNumber.required
+          });
+          form.setError("businessPhone", {
+            type: "manual",
+            message: t.signup.validation.businessPhone.required
+          });
         }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [form]);
+  }, [form, t]);
 
   return (
     <div className="space-y-6 animate-fade-in">
