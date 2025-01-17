@@ -56,7 +56,9 @@ const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
+  
+  // Correction de l'initialisation de useForm avec les options requises
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: "",
