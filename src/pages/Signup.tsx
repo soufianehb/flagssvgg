@@ -95,7 +95,7 @@ const Signup = () => {
                 data={state.personal}
                 onChange={setPersonalData}
               />
-              <div className="flex justify-end mt-6">
+              <div className="flex justify-center mt-6">
                 <Button 
                   type="submit"
                   className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
@@ -116,8 +116,13 @@ const Signup = () => {
                 handleCountryChange={(country) => setProfessionalData('country', country)}
                 handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
               />
-              <div className="flex justify-between mt-6">
-                <Button type="button" variant="outline" onClick={goBack}>
+              <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={goBack}
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center"
+                >
                   {t.signup.buttons.previous}
                 </Button>
                 <Button 
@@ -143,8 +148,13 @@ const Signup = () => {
                 setShowConfirmPassword={setConfirmPasswordVisibility}
                 passwordStrength={state.ui.passwordStrength}
               />
-              <div className="flex justify-between mt-6">
-                <Button type="button" variant="outline" onClick={goBack}>
+              <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={goBack}
+                  className="w-full md:w-[400px] mx-auto flex justify-center items-center"
+                >
                   {t.signup.buttons.previous}
                 </Button>
                 <Button 
