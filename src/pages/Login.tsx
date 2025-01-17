@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
+import { loginSchema } from "@/schemas/validation";
 
 const Login = () => {
   const { t, language, setLanguage } = useTranslation();
@@ -37,31 +38,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const formSchema = z.object({
-    email: z.string().email(t.login.email.invalid),
-    password: z
-      .string()
-      .min(6, t.login.password.requirements.minLength)
-      .regex(/[A-Z]/, t.login.password.requirements.uppercase)
-      .regex(/[0-9]/, t.login.password.requirements.number),
-    rememberMe: z.boolean().default(false),
-  });
-
-  const languages = [
-    { code: 'en', label: t.nav.language.en },
-    { code: 'fr', label: t.nav.language.fr },
-    { code: 'es', label: t.nav.language.es }
-  ];
-
-  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
-    setLanguage(lang);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-  };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -79,7 +57,7 @@ const Login = () => {
     setPasswordStrength(strength);
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {
       console.log("Login attempt with:", values);

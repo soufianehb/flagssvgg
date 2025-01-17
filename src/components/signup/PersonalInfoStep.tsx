@@ -3,11 +3,12 @@ import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { PersonalData } from "@/types/signup";
+import { personalInfoSchema } from "@/schemas/validation";
 import * as z from "zod";
 import { useEffect } from "react";
 
 interface PersonalInfoStepProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<z.infer<typeof personalInfoSchema>>;
   t: any;
   data: PersonalData;
   onChange: (field: keyof PersonalData, value: string) => void;
