@@ -1,4 +1,4 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
@@ -29,7 +29,6 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   placeholder={t.signup.placeholders.firstName} 
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -48,7 +47,6 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                   placeholder={t.signup.placeholders.lastName} 
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -73,7 +71,6 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
                 />
               </div>
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />

@@ -1,4 +1,4 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
@@ -24,7 +24,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormControl>
               <Input {...field} placeholder={t.signup.placeholders.address} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -39,7 +38,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
               <FormControl>
                 <Input {...field} placeholder={t.signup.placeholders.zipCode} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -53,7 +51,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
               <FormControl>
                 <Input {...field} placeholder={t.signup.placeholders.city} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -79,7 +76,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 ))}
               </SelectContent>
             </Select>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -93,7 +89,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormControl>
               <Input {...field} placeholder={t.signup.placeholders.companyName} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -118,7 +113,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 />
               </div>
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -143,7 +137,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                 />
               </div>
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
