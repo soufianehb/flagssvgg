@@ -1,5 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowLeft, LogIn, UserPlus } from "lucide-react";
+import { Globe, ArrowLeft, LogIn } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useSignupState } from "@/hooks/useSignupState";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
+import { validatePhoneNumber } from "@/utils/phoneValidation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,6 +60,24 @@ const Signup = () => {
     );
 
     if (isValid) {
+      if (currentStep === 2) {
+        // Vérifier la validité des numéros de téléphone avant de passer à l'étape suivante
+        const phoneNumber = professionalForm.getValues("phoneNumber");
+        const businessPhone = professionalForm.getValues("businessPhone");
+        const country = professionalForm.getValues("country");
+
+        const isPhoneValid = phoneNumber ? validatePhoneNumber(phoneNumber, country, t).isValid : true;
+        const isBusinessPhoneValid = businessPhone ? validatePhoneNumber(businessPhone, country, t).isValid : true;
+
+        // Au moins un numéro doit être valide
+        if (!phoneNumber && !businessPhone) {
+          return;
+        }
+
+        if (!isPhoneValid || !isBusinessPhoneValid) {
+          return;
+        }
+      }
       await goToStep(currentStep + 1);
     }
   };
@@ -106,6 +125,15 @@ const Signup = () => {
           </Form>
         );
       case 2:
+        const phoneNumber = professionalForm.getValues("phoneNumber");
+        const businessPhone = professionalForm.getValues("businessPhone");
+        const country = professionalForm.getValues("country");
+
+        const isPhoneValid = phoneNumber ? validatePhoneNumber(phoneNumber, country, t).isValid : true;
+        const isBusinessPhoneValid = businessPhone ? validatePhoneNumber(businessPhone, country, t).isValid : true;
+        const hasAtLeastOnePhone = phoneNumber || businessPhone;
+        const arePhoneNumbersValid = (isPhoneValid && isBusinessPhoneValid && hasAtLeastOnePhone);
+
         return (
           <Form {...professionalForm}>
             <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
@@ -127,7 +155,8 @@ const Signup = () => {
                   </Button>
                   <Button 
                     type="submit"
-                    className="flex-1 justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                    disabled={!arePhoneNumbersValid}
+                    className="flex-1 justify-center items-center bg-accent hover:bg-accent/90 text-white disabled:opacity-50"
                   >
                     {t.signup.buttons.next}
                   </Button>
