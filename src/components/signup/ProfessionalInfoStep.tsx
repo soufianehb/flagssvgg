@@ -5,6 +5,7 @@ import { UseFormReturn } from "react-hook-form";
 import { countries } from "@/data/countries";
 import { phoneCodes } from "@/data/phoneCodes";
 import { useEffect } from "react";
+import { validatePhoneNumber } from "@/utils/phoneValidation";
 
 interface ProfessionalInfoStepProps {
   form: UseFormReturn<any>;
@@ -18,7 +19,23 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
   const validatePhoneNumbers = () => {
     const phoneNumber = form.getValues("phoneNumber");
     const businessPhone = form.getValues("businessPhone");
-    return phoneNumber || businessPhone;
+    const country = form.getValues("country");
+
+    if (!phoneNumber && !businessPhone) {
+      return false;
+    }
+
+    if (phoneNumber) {
+      const validation = validatePhoneNumber(phoneNumber, country, t);
+      if (!validation.isValid) return false;
+    }
+
+    if (businessPhone) {
+      const validation = validatePhoneNumber(businessPhone, country, t);
+      if (!validation.isValid) return false;
+    }
+
+    return true;
   };
 
   // Real-time validation
@@ -28,19 +45,45 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
         form.trigger(name);
       }
       
-      if (name === "phoneNumber" || name === "businessPhone") {
+      if (name === "phoneNumber" || name === "businessPhone" || name === "country") {
         if (validatePhoneNumbers()) {
           form.clearErrors("phoneNumber");
           form.clearErrors("businessPhone");
         } else {
-          form.setError("phoneNumber", {
-            type: "manual",
-            message: t.signup.validation.phoneNumber.required
-          });
-          form.setError("businessPhone", {
-            type: "manual",
-            message: t.signup.validation.businessPhone.required
-          });
+          const country = form.getValues("country");
+          const phoneNumber = form.getValues("phoneNumber");
+          const businessPhone = form.getValues("businessPhone");
+
+          if (phoneNumber) {
+            const validation = validatePhoneNumber(phoneNumber, country, t);
+            if (!validation.isValid) {
+              form.setError("phoneNumber", {
+                type: "manual",
+                message: validation.error
+              });
+            }
+          }
+
+          if (businessPhone) {
+            const validation = validatePhoneNumber(businessPhone, country, t);
+            if (!validation.isValid) {
+              form.setError("businessPhone", {
+                type: "manual",
+                message: validation.error
+              });
+            }
+          }
+
+          if (!phoneNumber && !businessPhone) {
+            form.setError("phoneNumber", {
+              type: "manual",
+              message: t.signup.validation.phoneNumber.required
+            });
+            form.setError("businessPhone", {
+              type: "manual",
+              message: t.signup.validation.businessPhone.required
+            });
+          }
         }
       }
     });
