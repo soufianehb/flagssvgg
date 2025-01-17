@@ -81,7 +81,7 @@ const Signup = () => {
     setConfirmPasswordVisibility,
     setPasswordStrength,
     resetForm,
-  } = useSignupState();
+  } = useSignupState(t);
 
   const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
