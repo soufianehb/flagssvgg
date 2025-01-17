@@ -1,6 +1,6 @@
 import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
 
-export type SignupState = {
+export interface SignupState {
   personal: PersonalData;
   professional: ProfessionalData;
   security: SecurityData;
@@ -10,7 +10,7 @@ export type SignupState = {
     showConfirmPassword: boolean;
     passwordStrength: number;
   };
-};
+}
 
 export type SignupAction =
   | { type: "SET_PERSONAL_DATA"; field: keyof PersonalData; value: string }
@@ -20,6 +20,7 @@ export type SignupAction =
   | { type: "SET_PASSWORD_VISIBILITY"; value: boolean }
   | { type: "SET_CONFIRM_PASSWORD_VISIBILITY"; value: boolean }
   | { type: "SET_PASSWORD_STRENGTH"; value: number }
+  | { type: "CLEAR_STEP"; step: 'personal' | 'professional' | 'security' }
   | { type: "RESET_FORM" };
 
 export const initialState: SignupState = {
@@ -108,6 +109,26 @@ export const signupReducer = (state: SignupState, action: SignupAction): SignupS
           passwordStrength: action.value,
         },
       };
+    case "CLEAR_STEP":
+      switch (action.step) {
+        case 'personal':
+          return {
+            ...state,
+            personal: initialState.personal,
+          };
+        case 'professional':
+          return {
+            ...state,
+            professional: initialState.professional,
+          };
+        case 'security':
+          return {
+            ...state,
+            security: initialState.security,
+          };
+        default:
+          return state;
+      }
     case "RESET_FORM":
       return initialState;
     default:
