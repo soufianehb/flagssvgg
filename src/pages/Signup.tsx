@@ -101,8 +101,8 @@ const Signup = () => {
     if (Object.keys(errors).length > 0) {
       toast({
         variant: "destructive",
-        title: t.signup.validation.error.title || "Validation Error",
-        description: t.signup.validation.error.description || "Please check the form for errors",
+        title: "Validation Error",
+        description: "Please check the form for errors",
       });
     }
 
