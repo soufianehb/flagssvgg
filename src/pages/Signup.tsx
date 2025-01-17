@@ -83,7 +83,7 @@ const Signup = () => {
     resetForm,
   } = useSignupState();
 
-const validatePersonalStep = () => {
+  const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
     
     if (!state.personal.firstName.trim()) {
@@ -104,6 +104,64 @@ const validatePersonalStep = () => {
         title: t?.signup?.validation?.error?.title || "Validation Error",
         description: t?.signup?.validation?.error?.description || "Please check the form for errors"
       });
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  };
+
+  const validateProfessionalStep = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!state.professional.address.trim()) {
+      errors.address = t.signup.validation.address.required;
+    }
+    if (!state.professional.zipCode.trim()) {
+      errors.zipCode = t.signup.validation.zipCode.required;
+    }
+    if (!state.professional.city.trim()) {
+      errors.city = t.signup.validation.city.required;
+    }
+    if (!state.professional.country) {
+      errors.country = t.signup.validation.country.required;
+    }
+    if (!state.professional.companyName.trim()) {
+      errors.companyName = t.signup.validation.companyName.required;
+    }
+
+    if (state.professional.phoneNumber && state.professional.country) {
+      if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
+        errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
+      }
+    }
+
+    if (state.professional.businessPhone && state.professional.country) {
+      if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
+        errors.businessPhone = t.signup.validation.businessPhone.invalid;
+      }
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  };
+
+  const validateSecurityStep = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!state.security.password) {
+      errors.password = t.signup.validation.required;
+    }
+    
+    if (!state.security.confirmPassword) {
+      errors.confirmPassword = t.signup.validation.required;
+    }
+    
+    if (!state.security.terms) {
+      errors.terms = t.signup.validation.terms;
     }
 
     return {
@@ -165,64 +223,6 @@ const validatePersonalStep = () => {
     form.setValue(fieldName, value);
   };
 
-  const validateProfessionalStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.professional.address.trim()) {
-      errors.address = t.signup.validation.address.required;
-    }
-    if (!state.professional.zipCode.trim()) {
-      errors.zipCode = t.signup.validation.zipCode.required;
-    }
-    if (!state.professional.city.trim()) {
-      errors.city = t.signup.validation.city.required;
-    }
-    if (!state.professional.country) {
-      errors.country = t.signup.validation.country.required;
-    }
-    if (!state.professional.companyName.trim()) {
-      errors.companyName = t.signup.validation.companyName.required;
-    }
-
-    if (state.professional.phoneNumber && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
-        errors.phoneNumber = t.signup.validation.phoneNumber.invalid;
-      }
-    }
-
-    if (state.professional.businessPhone && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
-        errors.businessPhone = t.signup.validation.businessPhone.invalid;
-      }
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
-  const validateSecurityStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.security.password) {
-      errors.password = t.signup.validation.required;
-    }
-    
-    if (!state.security.confirmPassword) {
-      errors.confirmPassword = t.signup.validation.required;
-    }
-    
-    if (!state.security.terms) {
-      errors.terms = t.signup.validation.terms;
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  };
-
   const clearStep = (step: 'personal' | 'professional' | 'security') => {
     switch (step) {
       case 'personal':
@@ -251,19 +251,6 @@ const validatePersonalStep = () => {
     setLanguage(lang);
   };
 
-  const getCurrentStepValidation = () => {
-    switch (currentStep) {
-      case 1:
-        return validatePersonalStep();
-      case 2:
-        return validateProfessionalStep();
-      case 3:
-        return validateSecurityStep();
-      default:
-        return { isValid: true, errors: {} };
-    }
-  };
-
   const { currentStep, goToStep, goBack, canGoBack } = useSignupNavigation(
     (step: number) => {
       console.log(`Step changed to ${step}`);
@@ -276,15 +263,15 @@ const validatePersonalStep = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       resetForm();
       toast({
-        title: t.signup.messages?.success?.title || "Success",
-        description: t.signup.messages?.success?.description || "Account created successfully",
+        title: t?.signup?.messages?.success?.title || "Success",
+        description: t?.signup?.messages?.success?.description || "Account created successfully"
       });
       navigate("/login");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: t.signup.messages?.error?.title || "Error",
-        description: error instanceof Error ? error.message : t.signup.messages?.error?.description || "An error occurred",
+        title: t?.signup?.messages?.error?.title || "Error",
+        description: error instanceof Error ? error.message : t?.signup?.messages?.error?.description || "An error occurred"
       });
     } finally {
       setLoading(false);
@@ -425,4 +412,3 @@ const validatePersonalStep = () => {
 };
 
 export default Signup;
-
