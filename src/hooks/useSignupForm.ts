@@ -46,8 +46,18 @@ export const useSignupForm = () => {
   const validatePersonalStep = () => {
     const errors: Record<string, string> = {};
     
-    if (!personalData.email.trim()) {
+    if (!personalData.firstName?.trim()) {
+      errors.firstName = 'Le prénom est requis';
+    }
+    
+    if (!personalData.lastName?.trim()) {
+      errors.lastName = 'Le nom est requis';
+    }
+    
+    if (!personalData.email?.trim()) {
       errors.email = 'L\'email est requis';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(personalData.email)) {
+      errors.email = 'Format d\'email invalide';
     }
 
     return {
