@@ -59,8 +59,22 @@ export const useSignupForm = () => {
   const validateProfessionalStep = () => {
     const errors: Record<string, string> = {};
     
-    if (!professionalData.country) {
+    if (!professionalData.address?.trim()) {
+      errors.address = 'L\'adresse est requise';
+    }
+    
+    if (!professionalData.city?.trim()) {
+      errors.city = 'La ville est requise';
+    }
+    
+    if (!professionalData.country?.trim()) {
       errors.country = 'Le pays est requis';
+    }
+
+    // Vérifier qu'au moins un numéro de téléphone est rempli
+    if (!professionalData.phoneNumber?.trim() && !professionalData.businessPhone?.trim()) {
+      errors.phoneNumber = 'Au moins un numéro de téléphone est requis';
+      errors.businessPhone = 'Au moins un numéro de téléphone est requis';
     }
 
     return {

@@ -116,7 +116,27 @@ const Signup = () => {
   };
 
   const handleNextStep = async () => {
-    if (currentStep === 1 && !validatePersonalStep()) {
+    let isValid = true;
+    let validationErrors = {};
+
+    if (currentStep === 1) {
+      const validation = validatePersonalStep();
+      isValid = validation.isValid;
+      validationErrors = validation.errors;
+    } else if (currentStep === 2) {
+      const validation = validateProfessionalStep();
+      isValid = validation.isValid;
+      validationErrors = validation.errors;
+    }
+
+    if (!isValid) {
+      Object.entries(validationErrors).forEach(([field, message]) => {
+        form.setError(field as any, {
+          type: 'manual',
+          message: message as string,
+        });
+      });
+      
       toast({
         variant: "destructive",
         title: t.signup.validation.error.title,
@@ -125,24 +145,8 @@ const Signup = () => {
       return;
     }
 
-    if (currentStep === 2) {
-      const { isValid, errors } = validateProfessionalStep();
-      if (!isValid) {
-        Object.keys(errors).forEach((field) => {
-          form.setError(field as any, {
-            type: 'manual',
-            message: errors[field],
-          });
-        });
-        toast({
-          variant: "destructive",
-          title: t.signup.validation.error.title,
-          description: t.signup.validation.error.description,
-        });
-        return;
-      }
-    }
-
+    // Si la validation passe, on efface les erreurs
+    form.clearErrors();
     await goToStep(currentStep + 1);
   };
 
