@@ -116,14 +116,6 @@ const Signup = () => {
                 handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
               />
               <div className="flex flex-col gap-4 mt-6">
-                <Button
-                  type="button" 
-                  onClick={() => navigate('/login')}
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                >
-                  <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
-                  {t.login.submit}
-                </Button>
                 <div className="flex gap-4 w-full md:w-[400px] mx-auto">
                   <Button 
                     type="button" 
