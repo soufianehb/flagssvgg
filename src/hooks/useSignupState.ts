@@ -3,10 +3,13 @@ import { signupReducer, initialState } from "@/reducers/signupReducer";
 import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import type { CountryCode } from "libphonenumber-js";
+import { createValidationSchemas } from "@/schemas/validation";
+import { useToast } from "@/hooks/use-toast";
 
 const STORAGE_KEY = "signup_form_data";
 
-export const useSignupState = () => {
+export const useSignupState = (t: any) => {
+  const { toast } = useToast();
   const [state, dispatch] = useReducer(signupReducer, initialState, () => {
     const savedState = localStorage.getItem(STORAGE_KEY);
     return savedState ? JSON.parse(savedState) : initialState;
@@ -33,87 +36,66 @@ export const useSignupState = () => {
   }, []);
 
   const validatePersonalStep = useCallback(() => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.personal.firstName?.trim()) {
-      errors.firstName = 'Le prénom est requis';
+    const schema = createValidationSchemas(t).personalInfo;
+    try {
+      schema.parse(state.personal);
+      return { isValid: true, errors: {} };
+    } catch (error: any) {
+      const errors = error.errors.reduce((acc: any, curr: any) => {
+        acc[curr.path[0]] = curr.message;
+        return acc;
+      }, {});
+      return { isValid: false, errors };
     }
-    
-    if (!state.personal.lastName?.trim()) {
-      errors.lastName = 'Le nom est requis';
-    }
-    
-    if (!state.personal.email?.trim()) {
-      errors.email = 'L\'email est requis';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.personal.email)) {
-      errors.email = 'Format d\'email invalide';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  }, [state.personal]);
+  }, [state.personal, t]);
 
   const validateProfessionalStep = useCallback(() => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.professional.address?.trim()) {
-      errors.address = 'L\'adresse est requise';
-    }
-    
-    if (!state.professional.city?.trim()) {
-      errors.city = 'La ville est requise';
-    }
-    
-    if (!state.professional.country?.trim()) {
-      errors.country = 'Le pays est requis';
-    }
-
-    if (state.professional.phoneNumber && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
-        errors.phoneNumber = 'Numéro de téléphone invalide';
+    const schema = createValidationSchemas(t).professionalInfo;
+    try {
+      schema.parse(state.professional);
+      
+      // Validation supplémentaire pour les numéros de téléphone
+      if (state.professional.phoneNumber && state.professional.country) {
+        if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
+          return {
+            isValid: false,
+            errors: { phoneNumber: t.validation.phoneNumber.invalid }
+          };
+        }
       }
-    }
 
-    if (state.professional.businessPhone && state.professional.country) {
-      if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
-        errors.businessPhone = 'Numéro de téléphone professionnel invalide';
+      if (state.professional.businessPhone && state.professional.country) {
+        if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
+          return {
+            isValid: false,
+            errors: { businessPhone: t.validation.businessPhone.invalid }
+          };
+        }
       }
-    }
 
-    // Vérifier qu'au moins un numéro de téléphone est rempli
-    if (!state.professional.phoneNumber?.trim() && !state.professional.businessPhone?.trim()) {
-      errors.phoneNumber = 'Au moins un numéro de téléphone est requis';
-      errors.businessPhone = 'Au moins un numéro de téléphone est requis';
+      return { isValid: true, errors: {} };
+    } catch (error: any) {
+      const errors = error.errors.reduce((acc: any, curr: any) => {
+        acc[curr.path[0]] = curr.message;
+        return acc;
+      }, {});
+      return { isValid: false, errors };
     }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  }, [state.professional]);
+  }, [state.professional, t]);
 
   const validateSecurityStep = useCallback(() => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.security.password) {
-      errors.password = 'Le mot de passe est requis';
+    const schema = createValidationSchemas(t).security;
+    try {
+      schema.parse(state.security);
+      return { isValid: true, errors: {} };
+    } catch (error: any) {
+      const errors = error.errors.reduce((acc: any, curr: any) => {
+        acc[curr.path[0]] = curr.message;
+        return acc;
+      }, {});
+      return { isValid: false, errors };
     }
-    
-    if (state.security.password !== state.security.confirmPassword) {
-      errors.confirmPassword = 'Les mots de passe ne correspondent pas';
-    }
-    
-    if (!state.security.terms) {
-      errors.terms = 'Vous devez accepter les conditions';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  }, [state.security]);
+  }, [state.security, t]);
 
   const setLoading = useCallback((value: boolean) => {
     dispatch({ type: "SET_LOADING", value });
