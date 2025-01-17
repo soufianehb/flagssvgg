@@ -3,29 +3,25 @@ import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { PersonalData } from "@/types/signup";
-import { personalInfoSchema } from "@/schemas/validation";
+import { createValidationSchemas } from "@/schemas/validation";
 import * as z from "zod";
 import { useEffect } from "react";
 
 interface PersonalInfoStepProps {
-  form: UseFormReturn<z.infer<typeof personalInfoSchema>>;
+  form: UseFormReturn<z.infer<ReturnType<typeof createValidationSchemas>["personalInfo"]>>;
   t: any;
   data: PersonalData;
   onChange: (field: keyof PersonalData, value: string) => void;
 }
 
-const formSchema = z.object({
-  firstName: z.string().min(1, "Le prénom est requis"),
-  lastName: z.string().min(1, "Le nom est requis"),
-  email: z.string().min(1, "L'email est requis").email("Format d'email invalide")
-});
-
 const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) => {
+  const schema = createValidationSchemas(t).personalInfo;
+
   // Effet pour valider les champs en temps réel
   useEffect(() => {
     const validateField = (field: keyof PersonalData) => {
       try {
-        formSchema.shape[field].parse(data[field]);
+        schema.shape[field].parse(data[field]);
         form.clearErrors(field);
       } catch (error) {
         // Ne rien faire si la validation échoue
@@ -44,7 +40,7 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
           control={form.control}
           name="firstName"
           rules={{
-            required: t.signup.validation.required,
+            required: t.validation.required,
           }}
           render={({ field }) => (
             <FormItem>
@@ -67,7 +63,7 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
           control={form.control}
           name="lastName"
           rules={{
-            required: t.signup.validation.required,
+            required: t.validation.required,
           }}
           render={({ field }) => (
             <FormItem>
@@ -91,10 +87,10 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         control={form.control}
         name="email"
         rules={{
-          required: t.signup.validation.required,
+          required: t.validation.required,
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: t.signup.validation.email
+            message: t.validation.email
           }
         }}
         render={({ field }) => (

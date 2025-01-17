@@ -3,11 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Key, Eye, EyeOff } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { securitySchema } from "@/schemas/validation";
+import { createValidationSchemas } from "@/schemas/validation";
 import * as z from "zod";
 
 interface SecurityStepProps {
-  form: UseFormReturn<z.infer<typeof securitySchema>>;
+  form: UseFormReturn<z.infer<ReturnType<typeof createValidationSchemas>["security"]>>;
   t: any;
   showPassword: boolean;
   showConfirmPassword: boolean;
@@ -25,6 +25,8 @@ const SecurityStep = ({
   setShowConfirmPassword,
   passwordStrength = 0
 }: SecurityStepProps) => {
+  const schema = createValidationSchemas(t).security;
+
   return (
     <div className="space-y-6 animate-fade-in">
       <FormField

@@ -1,59 +1,73 @@
 import * as z from "zod";
 import { type CountryCode } from "libphonenumber-js";
 
-// Schéma de base pour le mot de passe
-export const passwordSchema = z.object({
-  password: z
-    .string()
-    .min(6, "Le mot de passe doit contenir au moins 6 caractères")
-    .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
-    .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre")
+export const createValidationSchemas = (t: any) => ({
+  // Password schema with translations
+  password: z.object({
+    password: z
+      .string()
+      .min(6, t.validation.password.minLength)
+      .regex(/[A-Z]/, t.validation.password.uppercase)
+      .regex(/[0-9]/, t.validation.password.number)
+  }),
+
+  // Login schema with translations
+  login: z.object({
+    email: z.string().email(t.validation.email.invalid),
+    password: z.string().min(1, t.validation.required),
+    rememberMe: z.boolean().default(false)
+  }),
+
+  // Personal info schema with translations
+  personalInfo: z.object({
+    firstName: z.string().min(1, t.validation.required),
+    lastName: z.string().min(1, t.validation.required),
+    email: z.string().min(1, t.validation.required).email(t.validation.email.invalid)
+  }),
+
+  // Professional info schema with translations
+  professionalInfo: z.object({
+    address: z.string().min(1, t.validation.address.required),
+    zipCode: z.string().min(1, t.validation.zipCode.required),
+    city: z.string().min(1, t.validation.city.required),
+    country: z.string().min(1, t.validation.country.required),
+    companyName: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    businessPhone: z.string().optional()
+  }).refine(
+    (data) => data.phoneNumber || data.businessPhone,
+    t.validation.phoneNumber.required
+  ),
+
+  // Security schema with translations
+  security: z.object({
+    password: z.string()
+      .min(6, t.validation.password.minLength)
+      .regex(/[A-Z]/, t.validation.password.uppercase)
+      .regex(/[0-9]/, t.validation.password.number),
+    confirmPassword: z.string(),
+    terms: z.boolean()
+  }).refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: t.validation.password.match,
+      path: ["confirmPassword"]
+    }
+  ).refine(
+    (data) => data.terms === true,
+    {
+      message: t.validation.terms,
+      path: ["terms"]
+    }
+  )
 });
 
-// Schéma pour la connexion
-export const loginSchema = z.object({
-  email: z.string().email("Format d'email invalide"),
-  password: passwordSchema.shape.password,
-  rememberMe: z.boolean().default(false)
-});
-
-// Schéma pour les informations personnelles
-export const personalInfoSchema = z.object({
-  firstName: z.string().min(1, "Le prénom est requis"),
-  lastName: z.string().min(1, "Le nom est requis"),
-  email: z.string().min(1, "L'email est requis").email("Format d'email invalide")
-});
-
-// Schéma pour les informations professionnelles
-export const professionalInfoSchema = z.object({
-  address: z.string().min(1, "L'adresse est requise"),
-  zipCode: z.string().min(1, "Le code postal est requis"),
-  city: z.string().min(1, "La ville est requise"),
-  country: z.string().min(1, "Le pays est requis"),
-  companyName: z.string().optional(),
-  phoneNumber: z.string().optional(),
-  businessPhone: z.string().optional()
-}).refine(
-  (data) => data.phoneNumber || data.businessPhone,
-  "Au moins un numéro de téléphone est requis"
-);
-
-// Schéma pour la sécurité (inscription)
-export const securitySchema = z.object({
-  password: passwordSchema.shape.password,
-  confirmPassword: z.string(),
-  terms: z.boolean()
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  "Les mots de passe ne correspondent pas"
-).refine(
-  (data) => data.terms === true,
-  "Vous devez accepter les conditions"
-);
-
-// Schéma complet pour l'inscription
-export const signupSchema = z.object({
-  personal: personalInfoSchema,
-  professional: professionalInfoSchema,
-  security: securitySchema
-});
+// Complete signup schema combining all parts
+export const createSignupSchema = (t: any) => {
+  const schemas = createValidationSchemas(t);
+  return z.object({
+    personal: schemas.personalInfo,
+    professional: schemas.professionalInfo,
+    security: schemas.security
+  });
+};
