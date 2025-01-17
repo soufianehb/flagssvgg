@@ -24,6 +24,7 @@ import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
 import { PersonalData } from "@/types/signup";
+import { createValidationSchemas } from "@/schemas/validation";
 
 const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
   { code: 'en', label: 'English' },
@@ -33,33 +34,14 @@ const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
 
 const totalSteps = 3;
 
-const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string(),
-  password: z.string(),
-  confirmPassword: z.string(),
-  terms: z.boolean().refine((val) => val === true, "Vous devez accepter les conditions"),
-  address: z.string(),
-  zipCode: z.string(),
-  city: z.string(),
-  country: z.string(),
-  businessPhone: z.string(),
-  companyName: z.string(),
-  phoneNumber: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Les mots de passe ne correspondent pas",
-  path: ["confirmPassword"],
-});
-
 const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Correction de l'initialisation de useForm avec les options requises
+  const schemas = createValidationSchemas(t);
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schemas.security),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -332,7 +314,6 @@ const Signup = () => {
       
       <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
-          <div className="flex justify-between items-center">
             <Link 
               to="/" 
               className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -377,7 +358,33 @@ const Signup = () => {
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {renderFormStep(currentStep)}
+                {currentStep === 1 && (
+                  <PersonalInfoStep 
+                    form={form as any} 
+                    t={t} 
+                    data={state.personal}
+                    onChange={handlePersonalDataChange}
+                  />
+                )}
+                {currentStep === 2 && (
+                  <ProfessionalInfoStep
+                    form={form}
+                    t={t}
+                    handleCountryChange={handleCountryChange}
+                    handlePhoneChange={handlePhoneChange}
+                  />
+                )}
+                {currentStep === 3 && (
+                  <SecurityStep
+                    form={form as any}
+                    t={t}
+                    showPassword={state.ui.showPassword}
+                    showConfirmPassword={state.ui.showConfirmPassword}
+                    passwordStrength={state.ui.passwordStrength}
+                    setShowPassword={setPasswordVisibility}
+                    setShowConfirmPassword={setConfirmPasswordVisibility}
+                  />
+                )}
 
                 <div className="flex justify-between space-x-4 mt-8">
                   {currentStep > 1 && (
