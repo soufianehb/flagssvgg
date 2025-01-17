@@ -15,69 +15,59 @@ interface ProfessionalInfoStepProps {
 }
 
 const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange }: ProfessionalInfoStepProps) => {
-  // Validate that at least one phone number is filled and valid
   const validatePhoneNumbers = () => {
     const phoneNumber = form.getValues("phoneNumber");
     const businessPhone = form.getValues("businessPhone");
     const country = form.getValues("country");
 
-    const phoneValidation = phoneNumber ? validatePhoneNumber(phoneNumber, country, t) : { isValid: true };
-    const businessValidation = businessPhone ? validatePhoneNumber(businessPhone, country, t) : { isValid: true };
-
-    // Si au moins un numéro est valide, on supprime toutes les erreurs
-    if ((phoneNumber && phoneValidation.isValid) || (businessPhone && businessValidation.isValid)) {
-      form.clearErrors("phoneNumber");
-      form.clearErrors("businessPhone");
+    // Si aucun numéro n'est entré, on ne fait rien
+    if (!phoneNumber && !businessPhone) {
       return true;
     }
 
-    // Si aucun numéro n'est entré
-    if (!phoneNumber && !businessPhone) {
-      form.setError("phoneNumber", {
-        type: "manual",
-        message: t.signup.validation.phoneNumber.required
-      });
-      form.setError("businessPhone", {
-        type: "manual",
-        message: t.signup.validation.businessPhone.required
-      });
-      return false;
+    const phoneValidation = phoneNumber ? validatePhoneNumber(phoneNumber, country, t) : { isValid: true };
+    const businessValidation = businessPhone ? validatePhoneNumber(businessPhone, country, t) : { isValid: true };
+
+    // Validation individuelle pour chaque champ
+    if (phoneNumber) {
+      if (phoneValidation.isValid) {
+        form.clearErrors("phoneNumber");
+      } else {
+        form.setError("phoneNumber", {
+          type: "manual",
+          message: phoneValidation.error || t.signup.validation.phoneNumber.invalid
+        });
+      }
     }
 
-    // Si les numéros entrés sont invalides
-    if (phoneNumber && !phoneValidation.isValid) {
-      form.setError("phoneNumber", {
-        type: "manual",
-        message: phoneValidation.error
-      });
+    if (businessPhone) {
+      if (businessValidation.isValid) {
+        form.clearErrors("businessPhone");
+      } else {
+        form.setError("businessPhone", {
+          type: "manual",
+          message: businessValidation.error || t.signup.validation.businessPhone.invalid
+        });
+      }
     }
 
-    if (businessPhone && !businessValidation.isValid) {
-      form.setError("businessPhone", {
-        type: "manual",
-        message: businessValidation.error
-      });
-    }
-
-    return false;
+    return (phoneNumber ? phoneValidation.isValid : true) && 
+           (businessPhone ? businessValidation.isValid : true);
   };
 
   // Real-time validation
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "address" || name === "city" || name === "country" || name === "zipCode" || name === "companyName") {
-        form.trigger(name);
-      }
-      
       if (name === "phoneNumber" || name === "businessPhone" || name === "country") {
         validatePhoneNumbers();
+      } else if (name) {
+        form.trigger(name);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [form, t]);
 
-  // Fonction pour gérer le changement de pays et mettre à jour les codes téléphoniques
   const handleCountrySelection = (value: string) => {
     handleCountryChange(value);
     const phoneCode = phoneCodes[value];
@@ -178,9 +168,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       <FormField
         control={form.control}
         name="phoneNumber"
-        rules={{
-          validate: () => validatePhoneNumbers() || t.signup.validation.phoneNumber.required
-        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
@@ -212,7 +199,10 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   type="tel"
                   className="pl-[80px]"
                   placeholder={t.signup.placeholders.phoneNumber}
-                  onChange={(e) => handlePhoneChange(e, "phoneNumber")}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handlePhoneChange(e, "phoneNumber");
+                  }}
                 />
               </div>
             </FormControl>
@@ -224,9 +214,6 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
       <FormField
         control={form.control}
         name="businessPhone"
-        rules={{
-          validate: () => validatePhoneNumbers() || t.signup.validation.businessPhone.required
-        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
@@ -258,7 +245,10 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
                   type="tel"
                   className="pl-[80px]"
                   placeholder={t.signup.placeholders.businessPhone}
-                  onChange={(e) => handlePhoneChange(e, "businessPhone")}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handlePhoneChange(e, "businessPhone");
+                  }}
                 />
               </div>
             </FormControl>
