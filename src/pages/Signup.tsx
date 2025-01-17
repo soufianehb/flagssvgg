@@ -227,11 +227,9 @@ const Signup = () => {
   };
 
   const { currentStep, goToStep, goBack, canGoBack } = useSignupNavigation(
-    getCurrentStepValidation,
-    (step) => {
-      if (step < currentStep) {
-        clearStep(step === 1 ? 'personal' : step === 2 ? 'professional' : 'security');
-      }
+    (step: number) => {
+      // Callback function when step changes
+      console.log(`Step changed to ${step}`);
     }
   );
 
