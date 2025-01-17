@@ -5,6 +5,8 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 import type { CountryCode } from "libphonenumber-js";
 import { createValidationSchemas } from "@/schemas/validation";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const STORAGE_KEY = "signup_form_data";
 
@@ -15,6 +17,23 @@ export const useSignupState = (t: any) => {
     return savedState ? JSON.parse(savedState) : initialState;
   });
 
+  // Création des formulaires avec react-hook-form
+  const personalForm = useForm({
+    resolver: zodResolver(createValidationSchemas(t).personalInfo),
+    defaultValues: state.personal
+  });
+
+  const professionalForm = useForm({
+    resolver: zodResolver(createValidationSchemas(t).professionalInfo),
+    defaultValues: state.professional
+  });
+
+  const securityForm = useForm({
+    resolver: zodResolver(createValidationSchemas(t).security),
+    defaultValues: state.security
+  });
+
+  // Persistence des données
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -23,80 +42,62 @@ export const useSignupState = (t: any) => {
     return () => clearTimeout(timeoutId);
   }, [state]);
 
+  // Gestionnaires de données personnelles
   const setPersonalData = useCallback((field: keyof PersonalData, value: string) => {
     dispatch({ type: "SET_PERSONAL_DATA", field, value });
-  }, []);
+    personalForm.setValue(field, value);
+  }, [personalForm]);
 
+  // Gestionnaires de données professionnelles
   const setProfessionalData = useCallback((field: keyof ProfessionalData, value: string) => {
     dispatch({ type: "SET_PROFESSIONAL_DATA", field, value });
-  }, []);
+    professionalForm.setValue(field, value);
+  }, [professionalForm]);
 
+  // Gestionnaires de données de sécurité
   const setSecurityData = useCallback((field: keyof SecurityData, value: string | boolean) => {
     dispatch({ type: "SET_SECURITY_DATA", field, value });
-  }, []);
+    securityForm.setValue(field as any, value);
+  }, [securityForm]);
 
-  const validatePersonalStep = useCallback(() => {
-    const schema = createValidationSchemas(t).personalInfo;
-    try {
-      schema.parse(state.personal);
-      return { isValid: true, errors: {} };
-    } catch (error: any) {
-      const errors = error.errors.reduce((acc: any, curr: any) => {
-        acc[curr.path[0]] = curr.message;
-        return acc;
-      }, {});
-      return { isValid: false, errors };
+  // Validation des étapes
+  const validatePersonalStep = useCallback(async () => {
+    const result = await personalForm.trigger();
+    if (!result) {
+      toast({
+        title: t?.validation?.error?.title || "Error",
+        description: t?.validation?.error?.description || "Please check the form for errors",
+        variant: "destructive"
+      });
     }
-  }, [state.personal, t]);
+    return result;
+  }, [personalForm, t, toast]);
 
-  const validateProfessionalStep = useCallback(() => {
-    const schema = createValidationSchemas(t).professionalInfo;
-    try {
-      schema.parse(state.professional);
-      
-      // Validation supplémentaire pour les numéros de téléphone
-      if (state.professional.phoneNumber && state.professional.country) {
-        if (!isValidPhoneNumber(state.professional.phoneNumber, state.professional.country as CountryCode)) {
-          return {
-            isValid: false,
-            errors: { phoneNumber: t.validation.phoneNumber.invalid }
-          };
-        }
-      }
-
-      if (state.professional.businessPhone && state.professional.country) {
-        if (!isValidPhoneNumber(state.professional.businessPhone, state.professional.country as CountryCode)) {
-          return {
-            isValid: false,
-            errors: { businessPhone: t.validation.businessPhone.invalid }
-          };
-        }
-      }
-
-      return { isValid: true, errors: {} };
-    } catch (error: any) {
-      const errors = error.errors.reduce((acc: any, curr: any) => {
-        acc[curr.path[0]] = curr.message;
-        return acc;
-      }, {});
-      return { isValid: false, errors };
+  const validateProfessionalStep = useCallback(async () => {
+    const result = await professionalForm.trigger();
+    if (!result) {
+      toast({
+        title: t?.validation?.error?.title || "Error",
+        description: t?.validation?.error?.description || "Please check the form for errors",
+        variant: "destructive"
+      });
     }
-  }, [state.professional, t]);
+    return result;
+  }, [professionalForm, t, toast]);
 
-  const validateSecurityStep = useCallback(() => {
-    const schema = createValidationSchemas(t).security;
-    try {
-      schema.parse(state.security);
-      return { isValid: true, errors: {} };
-    } catch (error: any) {
-      const errors = error.errors.reduce((acc: any, curr: any) => {
-        acc[curr.path[0]] = curr.message;
-        return acc;
-      }, {});
-      return { isValid: false, errors };
+  const validateSecurityStep = useCallback(async () => {
+    const result = await securityForm.trigger();
+    if (!result) {
+      toast({
+        title: t?.validation?.error?.title || "Error",
+        description: t?.validation?.error?.description || "Please check the form for errors",
+        variant: "destructive"
+      });
     }
-  }, [state.security, t]);
+    return result;
+  }, [securityForm, t, toast]);
 
+  // Gestion de l'UI
   const setLoading = useCallback((value: boolean) => {
     dispatch({ type: "SET_LOADING", value });
   }, []);
@@ -113,18 +114,36 @@ export const useSignupState = (t: any) => {
     dispatch({ type: "SET_PASSWORD_STRENGTH", value });
   }, []);
 
+  // Réinitialisation
   const resetForm = useCallback(() => {
     dispatch({ type: "RESET_FORM" });
     localStorage.removeItem(STORAGE_KEY);
-  }, []);
+    personalForm.reset();
+    professionalForm.reset();
+    securityForm.reset();
+  }, [personalForm, professionalForm, securityForm]);
 
   const clearStep = useCallback((step: 'personal' | 'professional' | 'security') => {
     dispatch({ type: "CLEAR_STEP", step });
     localStorage.removeItem(`${STORAGE_KEY}_${step}`);
-  }, []);
+    switch (step) {
+      case 'personal':
+        personalForm.reset();
+        break;
+      case 'professional':
+        professionalForm.reset();
+        break;
+      case 'security':
+        securityForm.reset();
+        break;
+    }
+  }, [personalForm, professionalForm, securityForm]);
 
   return {
     state,
+    personalForm,
+    professionalForm,
+    securityForm,
     setPersonalData,
     setProfessionalData,
     setSecurityData,
