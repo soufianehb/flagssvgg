@@ -13,7 +13,6 @@ import { useSignupState } from "@/hooks/useSignupState";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import type { CountryCode } from "libphonenumber-js";
-import { phoneCodes } from "@/data/phoneCodes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -312,8 +311,9 @@ const Signup = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       
-      <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
+          <div className="flex justify-between items-center">
             <Link 
               to="/" 
               className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -435,7 +435,7 @@ const Signup = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
