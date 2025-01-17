@@ -10,15 +10,37 @@ export const validatePhoneNumber = (
   }
 
   try {
+    console.log('Validating phone number:', phoneNumber, 'for country:', country);
+    
+    // Try to parse the phone number first
+    const parsedNumber = parsePhoneNumber(phoneNumber, country as CountryCode);
+    
+    if (!parsedNumber) {
+      console.log('Failed to parse phone number');
+      return {
+        isValid: false,
+        error: t.signup.validation.phoneNumber.invalidFormat
+      };
+    }
+
     const isValid = isValidPhoneNumber(phoneNumber, country as CountryCode);
+    console.log('Phone number validation result:', isValid);
+    
+    if (!isValid) {
+      return {
+        isValid: false,
+        error: t.signup.validation.phoneNumber.invalidFormat
+      };
+    }
+
     return {
-      isValid,
-      error: isValid ? undefined : t.signup.validation.phoneNumber.invalid
+      isValid: true
     };
   } catch (error) {
+    console.log('Phone validation error:', error);
     return {
       isValid: false,
-      error: t.signup.validation.phoneNumber.invalid
+      error: t.signup.validation.phoneNumber.invalidFormat
     };
   }
 };
