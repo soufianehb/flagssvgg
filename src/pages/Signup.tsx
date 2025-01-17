@@ -87,6 +87,46 @@ const Signup = () => {
     resetForm,
   } = useSignupState();
 
+  const validatePersonalStep = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!state.personal.firstName.trim()) {
+      errors.firstName = t.signup.validation.required;
+    }
+    if (!state.personal.lastName.trim()) {
+      errors.lastName = t.signup.validation.required;
+    }
+    if (!state.personal.email.trim()) {
+      errors.email = t.signup.validation.required;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.personal.email)) {
+      errors.email = t.signup.validation.email;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      Object.keys(errors).forEach((field) => {
+        form.setError(field as any, {
+          type: 'manual',
+          message: errors[field],
+        });
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleNextStep = async () => {
+    if (currentStep === 1 && !validatePersonalStep()) {
+      toast({
+        variant: "destructive",
+        title: t.signup.errors.invalidFields,
+        description: t.signup.errors.checkFields,
+      });
+      return;
+    }
+    await goToStep(currentStep + 1);
+  };
+
   const handlePersonalDataChange = (field: keyof PersonalData, value: string) => {
     setPersonalData(field, value);
     form.setValue(field, value);
@@ -104,27 +144,6 @@ const Signup = () => {
     const value = e.target.value;
     setProfessionalData(fieldName, value);
     form.setValue(fieldName, value);
-  };
-
-  const validatePersonalStep = () => {
-    const errors: Record<string, string> = {};
-    
-    if (!state.personal.firstName.trim()) {
-      errors.firstName = t.signup.validation.required;
-    }
-
-    if (!state.personal.lastName.trim()) {
-      errors.lastName = t.signup.validation.required;
-    }
-
-    if (!state.personal.email.trim()) {
-      errors.email = t.signup.validation.required;
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
   };
 
   const validateProfessionalStep = () => {
@@ -359,7 +378,7 @@ const Signup = () => {
                   {currentStep < totalSteps ? (
                     <Button
                       type="button"
-                      onClick={() => goToStep(currentStep + 1)}
+                      onClick={handleNextStep}
                       className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                     >
                       {t.signup.buttons.next}
