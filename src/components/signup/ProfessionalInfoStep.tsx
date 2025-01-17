@@ -101,13 +101,32 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
             <FormControl>
               <div className="relative flex">
-                <div className="absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
-                  {form.getValues("country") && phoneCodes[form.getValues("country")]}
-                </div>
+                <Select 
+                  defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
+                  onValueChange={(value) => {
+                    // Mise à jour du code pays uniquement, sans affecter le pays de résidence
+                    form.setValue("phoneCode", value);
+                  }}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-[120px] absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
+                      <SelectValue>
+                        {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
+                      </SelectValue>
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.entries(phoneCodes).map(([country, code]) => (
+                      <SelectItem key={country} value={code}>
+                        {code} ({country})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Input 
                   {...field}
                   type="tel"
-                  className="pl-[4.5rem]"
+                  className="pl-[130px]"
                   placeholder={t.signup.placeholders.phoneNumber}
                   onChange={(e) => handlePhoneChange(e, "phoneNumber")}
                 />
@@ -125,13 +144,32 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
             <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
             <FormControl>
               <div className="relative flex">
-                <div className="absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
-                  {form.getValues("country") && phoneCodes[form.getValues("country")]}
-                </div>
+                <Select 
+                  defaultValue={form.getValues("country") ? phoneCodes[form.getValues("country")] : undefined}
+                  onValueChange={(value) => {
+                    // Mise à jour du code pays uniquement, sans affecter le pays de résidence
+                    form.setValue("businessPhoneCode", value);
+                  }}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-[120px] absolute inset-y-0 left-0 flex items-center px-3 bg-gray-100 border border-r-0 border-input rounded-l-md">
+                      <SelectValue>
+                        {form.getValues("country") ? phoneCodes[form.getValues("country")] : "+--"}
+                      </SelectValue>
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.entries(phoneCodes).map(([country, code]) => (
+                      <SelectItem key={country} value={code}>
+                        {code} ({country})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Input 
                   {...field}
                   type="tel"
-                  className="pl-[4.5rem]"
+                  className="pl-[130px]"
                   placeholder={t.signup.placeholders.businessPhone}
                   onChange={(e) => handlePhoneChange(e, "businessPhone")}
                 />
