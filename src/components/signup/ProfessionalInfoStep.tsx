@@ -4,8 +4,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { UseFormReturn } from "react-hook-form";
 import { countries } from "@/data/countries";
 import { phoneCodes } from "@/data/phoneCodes";
-import { useEffect } from "react";
-import { validatePhoneNumber } from "@/utils/phoneValidation";
 
 interface ProfessionalInfoStepProps {
   form: UseFormReturn<any>;
@@ -15,59 +13,6 @@ interface ProfessionalInfoStepProps {
 }
 
 const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange }: ProfessionalInfoStepProps) => {
-  const validatePhoneNumbers = () => {
-    const phoneNumber = form.getValues("phoneNumber");
-    const businessPhone = form.getValues("businessPhone");
-    const country = form.getValues("country");
-
-    // Si aucun numéro n'est entré, on ne fait rien
-    if (!phoneNumber && !businessPhone) {
-      return true;
-    }
-
-    const phoneValidation = phoneNumber ? validatePhoneNumber(phoneNumber, country, t) : { isValid: true };
-    const businessValidation = businessPhone ? validatePhoneNumber(businessPhone, country, t) : { isValid: true };
-
-    // Validation individuelle pour chaque champ
-    if (phoneNumber) {
-      if (phoneValidation.isValid) {
-        form.clearErrors("phoneNumber");
-      } else {
-        form.setError("phoneNumber", {
-          type: "manual",
-          message: phoneValidation.error || t.signup.validation.phoneNumber.invalid
-        });
-      }
-    }
-
-    if (businessPhone) {
-      if (businessValidation.isValid) {
-        form.clearErrors("businessPhone");
-      } else {
-        form.setError("businessPhone", {
-          type: "manual",
-          message: businessValidation.error || t.signup.validation.businessPhone.invalid
-        });
-      }
-    }
-
-    return (phoneNumber ? phoneValidation.isValid : true) && 
-           (businessPhone ? businessValidation.isValid : true);
-  };
-
-  // Real-time validation
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "phoneNumber" || name === "businessPhone" || name === "country") {
-        validatePhoneNumbers();
-      } else if (name) {
-        form.trigger(name);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, t]);
-
   const handleCountrySelection = (value: string) => {
     handleCountryChange(value);
     const phoneCode = phoneCodes[value];
