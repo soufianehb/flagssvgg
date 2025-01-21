@@ -1,8 +1,7 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { countries } from "@/data/countries";
+import { AddressFields } from "./professional/AddressFields";
+import { CompanyField } from "./professional/CompanyField";
+import { PhoneField } from "./professional/PhoneField";
 import { phoneCodes } from "@/data/phoneCodes";
 
 interface ProfessionalInfoStepProps {
@@ -24,182 +23,31 @@ const ProfessionalInfoStep = ({ form, t, handleCountryChange, handlePhoneChange 
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <FormField
-        control={form.control}
-        name="address"
-        rules={{ required: t.signup.validation.address.required }}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.address}</FormLabel>
-            <FormControl>
-              <Input {...field} placeholder={t.signup.placeholders.address} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+      <AddressFields 
+        form={form} 
+        t={t} 
+        handleCountryChange={handleCountrySelection} 
+      />
+      
+      <CompanyField 
+        form={form} 
+        t={t} 
       />
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField
-          control={form.control}
-          name="zipCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.signup.labels.zipCode}</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder={t.signup.placeholders.zipCode} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="city"
-          rules={{ required: t.signup.validation.city.required }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.signup.labels.city}</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder={t.signup.placeholders.city} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      <FormField
-        control={form.control}
-        name="country"
-        rules={{ required: t.signup.validation.country.required }}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.country}</FormLabel>
-            <Select onValueChange={handleCountrySelection} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder={t.signup.placeholders.country} />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country} value={country}>
-                    {country}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
+      <PhoneField 
+        form={form} 
+        t={t} 
+        fieldName="phoneNumber"
+        phoneCodeField="phoneCode"
+        handlePhoneChange={handlePhoneChange}
       />
 
-      <FormField
-        control={form.control}
-        name="companyName"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.companyName}</FormLabel>
-            <FormControl>
-              <Input {...field} placeholder={t.signup.placeholders.companyName} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="phoneNumber"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
-            <FormControl>
-              <div className="relative flex">
-                <Select 
-                  value={form.getValues("phoneCode")}
-                  onValueChange={(value) => {
-                    form.setValue("phoneCode", value);
-                  }}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-[70px] absolute inset-y-0 left-0 flex items-center px-1 bg-gray-100 border border-r-0 border-input rounded-l-md">
-                      <SelectValue>
-                        {form.getValues("phoneCode") || "+--"}
-                      </SelectValue>
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(phoneCodes).map(([country, code]) => (
-                      <SelectItem key={country} value={code}>
-                        {code} {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input 
-                  {...field}
-                  type="tel"
-                  className="pl-[80px]"
-                  placeholder={t.signup.placeholders.phoneNumber}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    handlePhoneChange(e, "phoneNumber");
-                  }}
-                />
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="businessPhone"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
-            <FormControl>
-              <div className="relative flex">
-                <Select 
-                  value={form.getValues("businessPhoneCode")}
-                  onValueChange={(value) => {
-                    form.setValue("businessPhoneCode", value);
-                  }}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-[70px] absolute inset-y-0 left-0 flex items-center px-1 bg-gray-100 border border-r-0 border-input rounded-l-md">
-                      <SelectValue>
-                        {form.getValues("businessPhoneCode") || "+--"}
-                      </SelectValue>
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(phoneCodes).map(([country, code]) => (
-                      <SelectItem key={country} value={code}>
-                        {code} {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input 
-                  {...field}
-                  type="tel"
-                  className="pl-[80px]"
-                  placeholder={t.signup.placeholders.businessPhone}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    handlePhoneChange(e, "businessPhone");
-                  }}
-                />
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+      <PhoneField 
+        form={form} 
+        t={t} 
+        fieldName="businessPhone"
+        phoneCodeField="businessPhoneCode"
+        handlePhoneChange={handlePhoneChange}
       />
     </div>
   );
