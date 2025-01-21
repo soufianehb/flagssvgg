@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { SignupContainer } from "@/components/signup/SignupContainer";
 
-const languages = [
+const languages: { code: 'en' | 'fr' | 'es'; label: string; }[] = [
   { code: 'en', label: 'English' },
   { code: 'fr', label: 'Français' },
   { code: 'es', label: 'Español' }
