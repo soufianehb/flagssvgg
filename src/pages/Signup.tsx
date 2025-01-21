@@ -31,13 +31,25 @@ const Signup = () => {
     await goToStep(currentStep + 1);
   };
 
-  const handleSubmit = async (formData: any) => {
+  const handleSubmit = async () => {
     try {
+      // Get the form data from the state management (e.g., useSignupState)
+      const formState = window.signupState; // This will be populated by the form components
+      
+      if (!formState?.personal?.email || !formState?.security?.password) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Missing required fields",
+        });
+        return;
+      }
+
       await signup(
-        formData.personal.email,
-        formData.security.password,
-        formData.personal.firstName,
-        formData.personal.lastName
+        formState.personal.email,
+        formState.security.password,
+        formState.personal.firstName,
+        formState.personal.lastName
       );
       
       toast({
