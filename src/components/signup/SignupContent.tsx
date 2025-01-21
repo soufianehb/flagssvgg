@@ -3,6 +3,7 @@ import PersonalInfoStep from "./PersonalInfoStep";
 import ProfessionalInfoStep from "./ProfessionalInfoStep";
 import SecurityStep from "./SecurityStep";
 import { useSignupState } from "@/hooks/useSignupState";
+import { useToast } from "@/hooks/use-toast";
 
 interface SignupContentProps {
   currentStep: number;
@@ -19,6 +20,8 @@ export const SignupContent = ({
   handleNextStep, 
   handleSubmit 
 }: SignupContentProps) => {
+  const { toast } = useToast();
+  
   const {
     state,
     personalForm,
@@ -31,12 +34,73 @@ export const SignupContent = ({
     setConfirmPasswordVisibility,
   } = useSignupState(t);
 
+  const validatePersonalStep = async () => {
+    const isValid = await personalForm.trigger();
+    if (!isValid) {
+      toast({
+        variant: "destructive",
+        title: t?.validation?.error?.title || "Validation Error",
+        description: t?.validation?.error?.description || "Please fill in all required fields"
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const validateProfessionalStep = async () => {
+    const isValid = await professionalForm.trigger();
+    if (!isValid) {
+      toast({
+        variant: "destructive",
+        title: t?.validation?.error?.title || "Validation Error",
+        description: t?.validation?.error?.description || "Please fill in all required fields"
+      });
+      return false;
+    }
+
+    const formData = professionalForm.getValues();
+    if (!formData.phoneNumber && !formData.businessPhone) {
+      toast({
+        variant: "destructive",
+        title: t?.validation?.error?.title || "Validation Error",
+        description: t?.validation?.phoneNumber?.required || "At least one phone number is required"
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleStepSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    let canProceed = false;
+    
+    switch (currentStep) {
+      case 1:
+        canProceed = await validatePersonalStep();
+        break;
+      case 2:
+        canProceed = await validateProfessionalStep();
+        break;
+      default:
+        canProceed = true;
+    }
+
+    if (canProceed) {
+      if (currentStep === 3) {
+        handleSubmit();
+      } else {
+        handleNextStep();
+      }
+    }
+  };
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
         return (
           <Form {...personalForm}>
-            <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
+            <form onSubmit={handleStepSubmit}>
               <PersonalInfoStep
                 form={personalForm}
                 t={t}
@@ -49,7 +113,7 @@ export const SignupContent = ({
       case 2:
         return (
           <Form {...professionalForm}>
-            <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
+            <form onSubmit={handleStepSubmit}>
               <ProfessionalInfoStep
                 form={professionalForm}
                 t={t}
@@ -77,7 +141,7 @@ export const SignupContent = ({
       case 3:
         return (
           <Form {...securityForm}>
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+            <form onSubmit={handleStepSubmit}>
               <SecurityStep
                 form={securityForm}
                 t={t}
