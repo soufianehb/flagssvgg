@@ -182,7 +182,8 @@ const translations = {
           required: "Country is required"
         },
         companyName: {
-          required: "Company name is required"
+          required: "Company name is required",
+          minLength: "Company name must be at least 2 characters"
         },
         businessPhone: {
           required: "Business phone is required",
@@ -432,7 +433,8 @@ const translations = {
           required: "Le pays est requis"
         },
         companyName: {
-          required: "Le nom de l'entreprise est requis"
+          required: "Le nom de l'entreprise est requis",
+          minLength: "Le nom de l'entreprise doit contenir au moins 2 caractères"
         },
         businessPhone: {
           required: "Le téléphone professionnel est requis",
@@ -682,7 +684,8 @@ const translations = {
           required: "El país es requerido"
         },
         companyName: {
-          required: "El nombre de la empresa es requerido"
+          required: "El nombre de la empresa es requerido",
+          minLength: "El nombre de la empresa debe tener al menos 2 caracteres"
         },
         businessPhone: {
           required: "El teléfono profesional es requerido",
@@ -776,4 +779,3 @@ export const useTranslation = () => {
     setLanguage: setLang,
   };
 };
-

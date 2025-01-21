@@ -17,6 +17,12 @@ export const PhoneField = ({ form, t, fieldName, phoneCodeField, handlePhoneChan
     <FormField
       control={form.control}
       name={fieldName}
+      rules={{
+        pattern: {
+          value: /^[0-9]+$/,
+          message: t?.validation?.phoneNumber?.invalid || "Invalid phone number format"
+        }
+      }}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{t.signup.labels[fieldName]}</FormLabel>
@@ -55,7 +61,7 @@ export const PhoneField = ({ form, t, fieldName, phoneCodeField, handlePhoneChan
               />
             </div>
           </FormControl>
-          <FormMessage />
+          <FormMessage className="text-red-500" />
         </FormItem>
       )}
     />
