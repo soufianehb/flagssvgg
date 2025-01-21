@@ -1,139 +1,37 @@
-import { PersonalData, ProfessionalData, SecurityData } from "@/types/signup";
+import { SignupState, SignupAction } from "@/types/signupState";
+import { initialState } from "./signupInitialState";
+import { handlePersonalData } from "./handlers/personalDataHandler";
+import { handleProfessionalData } from "./handlers/professionalDataHandler";
+import { handleSecurityData } from "./handlers/securityDataHandler";
+import { handleUiActions } from "./handlers/uiHandler";
 
-export interface SignupState {
-  personal: PersonalData;
-  professional: ProfessionalData;
-  security: SecurityData;
-  ui: {
-    isLoading: boolean;
-    showPassword: boolean;
-    showConfirmPassword: boolean;
-    passwordStrength: number;
-  };
-}
-
-export type SignupAction =
-  | { type: "SET_PERSONAL_DATA"; field: keyof PersonalData; value: string }
-  | { type: "SET_PROFESSIONAL_DATA"; field: keyof ProfessionalData; value: string }
-  | { type: "SET_SECURITY_DATA"; field: keyof SecurityData; value: string | boolean }
-  | { type: "SET_LOADING"; value: boolean }
-  | { type: "SET_PASSWORD_VISIBILITY"; value: boolean }
-  | { type: "SET_CONFIRM_PASSWORD_VISIBILITY"; value: boolean }
-  | { type: "SET_PASSWORD_STRENGTH"; value: number }
-  | { type: "CLEAR_STEP"; step: 'personal' | 'professional' | 'security' }
-  | { type: "RESET_FORM" };
-
-export const initialState: SignupState = {
-  personal: {
-    firstName: "",
-    lastName: "",
-    email: "",
-  },
-  professional: {
-    address: "",
-    zipCode: "",
-    city: "",
-    country: "",
-    companyName: "",
-    phoneNumber: "",
-    businessPhone: "",
-    phoneCode: "",
-    businessPhoneCode: "",
-  },
-  security: {
-    password: "",
-    confirmPassword: "",
-    terms: false,
-  },
-  ui: {
-    isLoading: false,
-    showPassword: false,
-    showConfirmPassword: false,
-    passwordStrength: 0,
-  },
-};
+export { initialState };
 
 export const signupReducer = (state: SignupState, action: SignupAction): SignupState => {
-  switch (action.type) {
-    case "SET_PERSONAL_DATA":
-      return {
-        ...state,
-        personal: {
-          ...state.personal,
-          [action.field]: action.value,
-        },
-      };
-    case "SET_PROFESSIONAL_DATA":
-      return {
-        ...state,
-        professional: {
-          ...state.professional,
-          [action.field]: action.value,
-        },
-      };
-    case "SET_SECURITY_DATA":
-      return {
-        ...state,
-        security: {
-          ...state.security,
-          [action.field]: action.value,
-        },
-      };
-    case "SET_LOADING":
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          isLoading: action.value,
-        },
-      };
-    case "SET_PASSWORD_VISIBILITY":
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          showPassword: action.value,
-        },
-      };
-    case "SET_CONFIRM_PASSWORD_VISIBILITY":
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          showConfirmPassword: action.value,
-        },
-      };
-    case "SET_PASSWORD_STRENGTH":
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          passwordStrength: action.value,
-        },
-      };
-    case "CLEAR_STEP":
-      switch (action.step) {
-        case 'personal':
-          return {
-            ...state,
-            personal: initialState.personal,
-          };
-        case 'professional':
-          return {
-            ...state,
-            professional: initialState.professional,
-          };
-        case 'security':
-          return {
-            ...state,
-            security: initialState.security,
-          };
-        default:
-          return state;
-      }
-    case "RESET_FORM":
-      return initialState;
-    default:
-      return state;
+  // Gérer les actions de réinitialisation d'abord
+  if (action.type === "RESET_FORM") {
+    return initialState;
   }
+
+  if (action.type === "CLEAR_STEP" && action.step) {
+    return {
+      ...state,
+      [action.step]: initialState[action.step],
+    };
+  }
+
+  // Déléguer aux gestionnaires spécifiques
+  const afterPersonal = handlePersonalData(state, action);
+  if (afterPersonal !== state) return afterPersonal;
+
+  const afterProfessional = handleProfessionalData(state, action);
+  if (afterProfessional !== state) return afterProfessional;
+
+  const afterSecurity = handleSecurityData(state, action);
+  if (afterSecurity !== state) return afterSecurity;
+
+  const afterUi = handleUiActions(state, action);
+  if (afterUi !== state) return afterUi;
+
+  return state;
 };
