@@ -4,13 +4,18 @@ import { StepProgress } from "./StepProgress";
 import { SignupFooter } from "./SignupFooter";
 import { SignupContent } from "./SignupContent";
 
+interface Language {
+  code: 'en' | 'fr' | 'es';
+  label: string;
+}
+
 interface SignupContainerProps {
   t: any;
   language: string;
-  languages: Array<{ code: string; label: string; }>;
+  languages: Language[];
   currentStep: number;
   totalSteps: number;
-  onLanguageChange: (lang: string) => void;
+  onLanguageChange: (lang: 'en' | 'fr' | 'es') => void;
   onLoginClick: () => void;
   goBack: () => void;
   handleNextStep: () => void;
