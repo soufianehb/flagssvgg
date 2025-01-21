@@ -3,12 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import type { User } from '@supabase/supabase-js';
+import type { PersonalData, ProfessionalData } from '@/types/signup';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  signup: (
+    email: string, 
+    password: string, 
+    personalData: PersonalData,
+    professionalData: ProfessionalData
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -21,7 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check active sessions and subscribe to auth changes
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session);
       setUser(session?.user ?? null);
@@ -62,20 +67,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (email: string, password: string, firstName: string, lastName: string) => {
+  const signup = async (
+    email: string, 
+    password: string, 
+    personalData: PersonalData,
+    professionalData: ProfessionalData
+  ) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      // 1. Create auth user which will trigger profile creation via database trigger
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            first_name: firstName,
-            last_name: lastName,
+            first_name: personalData.firstName,
+            last_name: personalData.lastName,
           },
         },
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
+
+      // 2. Insert professional info
+      const { error: professionalError } = await supabase
+        .from('professional_info')
+        .insert({
+          user_id: authData.user?.id,
+          address: professionalData.address,
+          zip_code: professionalData.zipCode,
+          city: professionalData.city,
+          country: professionalData.country,
+          company_name: professionalData.companyName,
+          phone_number: professionalData.phoneNumber,
+          business_phone: professionalData.businessPhone,
+          phone_code: professionalData.phoneCode,
+          business_phone_code: professionalData.businessPhoneCode,
+        });
+
+      if (professionalError) throw professionalError;
 
       toast({
         title: "Success",
@@ -84,6 +113,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       navigate('/login');
     } catch (error: any) {
+      console.error('Signup error:', error);
       toast({
         variant: "destructive",
         title: "Error",

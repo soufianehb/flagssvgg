@@ -9,6 +9,62 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      professional_info: {
+        Row: {
+          address: string
+          business_phone: string | null
+          business_phone_code: string | null
+          city: string
+          company_name: string
+          country: string
+          created_at: string
+          id: string
+          phone_code: string | null
+          phone_number: string | null
+          updated_at: string
+          user_id: string
+          zip_code: string
+        }
+        Insert: {
+          address: string
+          business_phone?: string | null
+          business_phone_code?: string | null
+          city: string
+          company_name: string
+          country: string
+          created_at?: string
+          id?: string
+          phone_code?: string | null
+          phone_number?: string | null
+          updated_at?: string
+          user_id: string
+          zip_code: string
+        }
+        Update: {
+          address?: string
+          business_phone?: string | null
+          business_phone_code?: string | null
+          city?: string
+          company_name?: string
+          country?: string
+          created_at?: string
+          id?: string
+          phone_code?: string | null
+          phone_number?: string | null
+          updated_at?: string
+          user_id?: string
+          zip_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_info_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string

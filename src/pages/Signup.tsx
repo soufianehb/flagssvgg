@@ -47,16 +47,10 @@ const Signup = () => {
       await signup(
         formState.personal.email,
         formState.security.password,
-        formState.personal.firstName,
-        formState.personal.lastName
+        formState.personal,
+        formState.professional
       );
       
-      toast({
-        title: "Success",
-        description: "Account created successfully! Please check your email for verification.",
-      });
-      
-      navigate("/login");
     } catch (error: any) {
       console.error("Error during form submission:", error);
       toast({
