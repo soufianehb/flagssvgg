@@ -92,14 +92,6 @@ const Signup = () => {
                 data={state.personal}
                 onChange={setPersonalData}
               />
-              <div className="flex flex-col gap-4 mt-6">
-                <button 
-                  type="submit"
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
-                >
-                  {t.signup.buttons.next}
-                </button>
-              </div>
             </form>
           </Form>
         );
