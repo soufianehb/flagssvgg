@@ -16,7 +16,7 @@ export const AddressFields = ({ form, t, handleCountryChange }: AddressFieldsPro
       <FormField
         control={form.control}
         name="address"
-        rules={{ required: t.signup.validation.address.required }}
+        rules={{ required: t?.signup?.validation?.address?.required || "Address is required" }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.address}</FormLabel>
@@ -32,6 +32,7 @@ export const AddressFields = ({ form, t, handleCountryChange }: AddressFieldsPro
         <FormField
           control={form.control}
           name="zipCode"
+          rules={{ required: t?.signup?.validation?.zipCode?.required || "Zip code is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t.signup.labels.zipCode}</FormLabel>
@@ -46,7 +47,7 @@ export const AddressFields = ({ form, t, handleCountryChange }: AddressFieldsPro
         <FormField
           control={form.control}
           name="city"
-          rules={{ required: t.signup.validation.city.required }}
+          rules={{ required: t?.signup?.validation?.city?.required || "City is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t.signup.labels.city}</FormLabel>
@@ -62,7 +63,7 @@ export const AddressFields = ({ form, t, handleCountryChange }: AddressFieldsPro
       <FormField
         control={form.control}
         name="country"
-        rules={{ required: t.signup.validation.country.required }}
+        rules={{ required: t?.signup?.validation?.country?.required || "Country is required" }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.country}</FormLabel>

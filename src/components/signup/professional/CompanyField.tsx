@@ -12,6 +12,7 @@ export const CompanyField = ({ form, t }: CompanyFieldProps) => {
     <FormField
       control={form.control}
       name="companyName"
+      rules={{ required: t?.signup?.validation?.companyName?.required || "Company name is required" }}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{t.signup.labels.companyName}</FormLabel>

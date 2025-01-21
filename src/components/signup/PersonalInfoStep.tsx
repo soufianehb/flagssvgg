@@ -18,6 +18,7 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         <FormField
           control={form.control}
           name="firstName"
+          rules={{ required: t?.signup?.validation?.firstName?.required || "First name is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t?.signup?.labels?.firstName || "First name"}</FormLabel>
@@ -37,6 +38,7 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
         <FormField
           control={form.control}
           name="lastName"
+          rules={{ required: t?.signup?.validation?.lastName?.required || "Last name is required" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t?.signup?.labels?.lastName || "Last name"}</FormLabel>
@@ -57,6 +59,13 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
       <FormField
         control={form.control}
         name="email"
+        rules={{ 
+          required: t?.signup?.validation?.email?.required || "Email is required",
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: t?.signup?.validation?.email?.invalid || "Invalid email address"
+          }
+        }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t?.signup?.labels?.email || "Email"}</FormLabel>
