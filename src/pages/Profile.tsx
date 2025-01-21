@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,9 +15,13 @@ const Profile = () => {
   const { isAuthenticated } = useAuth();
   const { t } = useTranslation();
 
-  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
+
   if (!isAuthenticated) {
-    navigate("/login");
     return null;
   }
 
@@ -25,7 +30,7 @@ const Profile = () => {
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 font-montserrat">
+        <h1 className="text-3xl font-bold mb-6">
           {t.profile.title}
         </h1>
 
