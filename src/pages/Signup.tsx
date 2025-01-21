@@ -4,6 +4,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { SignupContainer } from "@/components/signup/SignupContainer";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const languages: { code: 'en' | 'fr' | 'es'; label: string; }[] = [
   { code: 'en', label: 'English' },
@@ -16,6 +18,8 @@ const totalSteps = 3;
 const Signup = () => {
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
+  const { signup } = useAuth();
+  const { toast } = useToast();
   
   const { currentStep, goToStep, goBack } = useSignupNavigation(
     (step: number) => {
@@ -27,12 +31,28 @@ const Signup = () => {
     await goToStep(currentStep + 1);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (formData: any) => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await signup(
+        formData.personal.email,
+        formData.security.password,
+        formData.personal.firstName,
+        formData.personal.lastName
+      );
+      
+      toast({
+        title: "Success",
+        description: "Account created successfully! Please check your email for verification.",
+      });
+      
       navigate("/login");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error during form submission:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "An error occurred during signup",
+      });
     }
   };
 
