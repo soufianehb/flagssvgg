@@ -1,26 +1,22 @@
-import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowLeft, LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/lib/i18n";
-import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Form } from "@/components/ui/form";
 import { useSignupState } from "@/hooks/useSignupState";
 import { useSignupNavigation } from "@/hooks/useSignupNavigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import PersonalInfoStep from "@/components/signup/PersonalInfoStep";
 import ProfessionalInfoStep from "@/components/signup/ProfessionalInfoStep";
 import SecurityStep from "@/components/signup/SecurityStep";
+import { StepProgress } from "@/components/signup/StepProgress";
+import { LanguageSelector } from "@/components/signup/LanguageSelector";
+import { SignupHeader } from "@/components/signup/SignupHeader";
+import { SignupFooter } from "@/components/signup/SignupFooter";
 
-const languages: Array<{ code: 'en' | 'fr' | 'es'; label: string }> = [
-  { code: 'en', label: 'English' },
-  { code: 'fr', label: 'Français' },
-  { code: 'es', label: 'Español' }
+const languages = [
+  { code: 'en' as const, label: 'English' },
+  { code: 'fr' as const, label: 'Français' },
+  { code: 'es' as const, label: 'Español' }
 ];
 
 const totalSteps = 3;
@@ -62,8 +58,6 @@ const Signup = () => {
       if (currentStep === 2) {
         const phoneNumber = professionalForm.getValues("phoneNumber");
         const businessPhone = professionalForm.getValues("businessPhone");
-
-        // Au moins un numéro doit être renseigné
         if (!phoneNumber && !businessPhone) {
           return;
         }
@@ -72,13 +66,8 @@ const Signup = () => {
     }
   };
 
-  const handleLanguageChange = (lang: 'en' | 'fr' | 'es') => {
-    setLanguage(lang);
-  };
-
   const handleSubmit = async () => {
     const isValid = await validateStep('security');
-    
     if (isValid) {
       setLoading(true);
       try {
@@ -104,21 +93,19 @@ const Signup = () => {
                 onChange={setPersonalData}
               />
               <div className="flex flex-col gap-4 mt-6">
-                <Button 
+                <button 
                   type="submit"
                   className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
                 >
                   {t.signup.buttons.next}
-                </Button>
+                </button>
               </div>
             </form>
           </Form>
         );
       case 2:
-        const phoneNumber = professionalForm.getValues("phoneNumber");
-        const businessPhone = professionalForm.getValues("businessPhone");
-        const hasAtLeastOnePhone = phoneNumber || businessPhone;
-
+        const hasAtLeastOnePhone = professionalForm.getValues("phoneNumber") || professionalForm.getValues("businessPhone");
+        
         return (
           <Form {...professionalForm}>
             <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
@@ -128,24 +115,21 @@ const Signup = () => {
                 handleCountryChange={(country) => setProfessionalData('country', country)}
                 handlePhoneChange={(e, field) => setProfessionalData(field, e.target.value)}
               />
-              <div className="flex flex-col gap-4 mt-6">
-                <div className="flex gap-4 w-full md:w-[400px] mx-auto">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={goBack}
-                    className="flex-1 justify-center items-center"
-                  >
-                    {t.signup.buttons.previous}
-                  </Button>
-                  <Button 
-                    type="submit"
-                    disabled={!hasAtLeastOnePhone}
-                    className="flex-1 justify-center items-center bg-accent hover:bg-accent/90 text-white disabled:opacity-50"
-                  >
-                    {t.signup.buttons.next}
-                  </Button>
-                </div>
+              <div className="flex gap-4 w-full md:w-[400px] mx-auto mt-6">
+                <button 
+                  type="button" 
+                  onClick={goBack}
+                  className="flex-1 justify-center items-center border border-gray-300 rounded-md px-4 py-2"
+                >
+                  {t.signup.buttons.previous}
+                </button>
+                <button 
+                  type="submit"
+                  disabled={!hasAtLeastOnePhone}
+                  className="flex-1 justify-center items-center bg-accent hover:bg-accent/90 text-white rounded-md px-4 py-2 disabled:opacity-50"
+                >
+                  {t.signup.buttons.next}
+                </button>
               </div>
             </form>
           </Form>
@@ -164,21 +148,20 @@ const Signup = () => {
                 passwordStrength={state.ui.passwordStrength}
               />
               <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
-                <Button 
+                <button 
                   type="button" 
-                  variant="outline" 
                   onClick={goBack}
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center"
+                  className="w-full md:w-[400px] border border-gray-300 rounded-md px-4 py-2"
                 >
                   {t.signup.buttons.previous}
-                </Button>
-                <Button 
-                  type="submit" 
+                </button>
+                <button 
+                  type="submit"
                   disabled={state.ui.isLoading}
-                  className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white"
+                  className="w-full md:w-[400px] bg-accent hover:bg-accent/90 text-white rounded-md px-4 py-2"
                 >
                   {state.ui.isLoading ? t.signup.buttons.loading : t.signup.buttons.submit}
-                </Button>
+                </button>
               </div>
             </form>
           </Form>
@@ -194,62 +177,28 @@ const Signup = () => {
       
       <main className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
-          <Link 
-            to="/" 
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            {t.signup.buttons.backHome}
-          </Link>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                {t.nav.language[language]}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {languages.map((lang) => (
-                <DropdownMenuItem
-                  key={lang.code}
-                  onClick={() => handleLanguageChange(lang.code)}
-                >
-                  {lang.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <SignupHeader t={t} />
+          
+          <LanguageSelector
+            currentLanguage={language}
+            languages={languages}
+            t={t}
+            onLanguageChange={setLanguage}
+          />
 
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold">{t.signup.title}</h1>
-              <p className="mt-2 text-gray-600">
-                {t.signup.steps.progress.replace('{step}', currentStep.toString()).replace('{total}', totalSteps.toString())}
-              </p>
-              <div className="w-full bg-gray-200 h-2 rounded-full mt-4">
-                <div 
-                  className="bg-accent h-2 rounded-full transition-all duration-300 ease-in-out"
-                  style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-                />
-              </div>
-            </div>
+            <StepProgress
+              currentStep={currentStep}
+              totalSteps={totalSteps}
+              t={t}
+            />
 
             {renderCurrentStep()}
 
-            <div className="text-center mt-4">
-              <p className="text-sm text-gray-600">
-                {t.signup.buttons.login}
-              </p>
-              <Button
-                type="button"
-                onClick={() => navigate('/login')}
-                className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white mt-2"
-              >
-                <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
-                {t.login.submit}
-              </Button>
-            </div>
+            <SignupFooter
+              t={t}
+              onLoginClick={() => navigate('/login')}
+            />
           </div>
         </div>
       </main>
