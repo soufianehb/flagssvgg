@@ -3,6 +3,8 @@ import * as ToastPrimitives from "@radix-ui/react-toast"
 import { type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import { toastVariants } from "./variants"
+import { ToastAction, ToastClose } from "./actions"
+import { ToastViewport } from "./viewport"
 
 export const ToastProvider = ToastPrimitives.Provider
 
@@ -48,5 +50,4 @@ ToastDescription.displayName = ToastPrimitives.Description.displayName
 export type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 export type ToastActionElement = React.ReactElement<typeof ToastAction>
 
-export { ToastAction, ToastClose } from "./actions"
-export { ToastViewport } from "./viewport"
+export { ToastAction, ToastClose, ToastViewport }
