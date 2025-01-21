@@ -13,11 +13,7 @@ export const CompanyField = ({ form, t }: CompanyFieldProps) => {
       control={form.control}
       name="companyName"
       rules={{ 
-        required: t?.validation?.companyName?.required || "Company name is required",
-        minLength: {
-          value: 2,
-          message: t?.validation?.companyName?.minLength || "Company name must be at least 2 characters"
-        }
+        required: t?.validation?.companyName?.required || "Company name is required"
       }}
       render={({ field }) => (
         <FormItem>
