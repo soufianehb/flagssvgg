@@ -6,6 +6,7 @@ import { useSignupNavigation } from "@/hooks/useSignupNavigation";
 import { SignupContainer } from "@/components/signup/SignupContainer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useSignupState } from "@/hooks/useSignupState";
 
 const languages: { code: 'en' | 'fr' | 'es'; label: string; }[] = [
   { code: 'en', label: 'English' },
@@ -20,6 +21,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const { signup } = useAuth();
   const { toast } = useToast();
+  const { state: formState } = useSignupState(t);
   
   const { currentStep, goToStep, goBack } = useSignupNavigation(
     (step: number) => {
@@ -33,9 +35,6 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      // Get the form data from the state management (e.g., useSignupState)
-      const formState = window.signupState; // This will be populated by the form components
-      
       if (!formState?.personal?.email || !formState?.security?.password) {
         toast({
           variant: "destructive",
