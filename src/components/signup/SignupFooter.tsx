@@ -14,7 +14,7 @@ export const SignupFooter = ({ t, onLoginClick }: SignupFooterProps) => {
       <Button
         type="button"
         onClick={onLoginClick}
-        className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white mt-2"
+        className="w-full md:w-[400px] h-11 rounded-md mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white mt-2"
       >
         <LogIn className="mr-2 h-5 w-5" aria-hidden="true" />
         {t.login.submit}
