@@ -44,25 +44,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log('Attempting login with:', { email });
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Login error:', error);
+        
+        // Handle specific error cases
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            variant: "destructive",
+            title: "Login Failed",
+            description: "Invalid email or password. Please try again.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "An error occurred during login. Please try again.",
+          });
+        }
+        throw error;
+      }
 
-      toast({
-        title: "Success",
-        description: "Successfully logged in",
-      });
-      
-      navigate('/');
+      if (data.user) {
+        console.log('Login successful:', data.user.email);
+        toast({
+          title: "Success",
+          description: "Successfully logged in",
+        });
+        navigate('/');
+      }
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      console.error('Login error caught:', error);
+      // Don't show another toast here since we already showed one in the error handling above
       throw error;
     }
   };
