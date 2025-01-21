@@ -77,6 +77,13 @@ const PersonalInfoStep = ({ form, t, data, onChange }: PersonalInfoStepProps) =>
           </FormItem>
         )}
       />
+
+      <button 
+        type="submit"
+        className="w-full md:w-[400px] mx-auto flex justify-center items-center bg-accent hover:bg-accent/90 text-white rounded-md px-4 py-2"
+      >
+        {t?.signup?.buttons?.next || "Next"}
+      </button>
     </div>
   );
 };
