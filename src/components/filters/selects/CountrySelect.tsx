@@ -8,7 +8,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { getCountryFlag } from 'country-flag-icons/unicode'
+import getCountryFlag from 'country-flag-icons/unicode'
 import { countries } from "@/data/countries";
 
 interface CountrySelectProps {
