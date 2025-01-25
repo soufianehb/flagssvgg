@@ -1,10 +1,4 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -12,12 +6,7 @@ import getCountryFlag from 'country-flag-icons/unicode';
 import { countries } from "@/data/countries";
 import { countryCodeMap } from "@/data/countryCodeMap";
 
-interface CountrySelectProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
+export const CountrySelect = ({ value, onChange }) => {
   const { t } = useTranslation();
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
@@ -31,13 +20,16 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
     "!duration-200"
   );
 
-  const getCountryCode = (country: string) => {
+  const getCountryCode = (country) => {
     return countryCodeMap[country] || '';
   };
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
+      <Label 
+        htmlFor="country" 
+        className="text-sm font-semibold text-gray-700 block"
+      >
         {t.filters.country.placeholder}
       </Label>
       <Select value={value} onValueChange={onChange}>
@@ -53,9 +45,9 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
         </SelectTrigger>
         <SelectContent className={selectContentClasses}>
           {countries.map((country) => (
-            <SelectItem 
-              key={country} 
-              value={country.toLowerCase()} 
+            <SelectItem
+              key={country}
+              value={country.toLowerCase()}
               className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
               <span className="text-xl leading-none inline-flex items-center">
