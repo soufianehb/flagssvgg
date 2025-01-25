@@ -8,7 +8,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { Flag } from "lucide-react";
+import { getCountryFlag } from 'country-flag-icons/unicode'
 import { countries } from "@/data/countries";
 
 interface CountrySelectProps {
@@ -33,19 +33,23 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
   return (
     <div className="space-y-2">
       <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
-        {t.filters.country.label}
+        Country of Origin
       </Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
           <div className="flex items-center gap-2">
-            <Flag className="h-4 w-4" />
+            {value && <span className="text-lg">{getCountryFlag(value.toUpperCase())}</span>}
             <SelectValue placeholder={t.filters.country.placeholder} />
           </div>
         </SelectTrigger>
         <SelectContent className={selectContentClasses}>
           {countries.map((country) => (
-            <SelectItem key={country} value={country.toLowerCase()} className="flex items-center gap-2">
-              <Flag className="h-4 w-4" />
+            <SelectItem 
+              key={country} 
+              value={country.toLowerCase()} 
+              className="flex items-center gap-2"
+            >
+              <span className="text-lg">{getCountryFlag(country.substring(0, 2).toUpperCase())}</span>
               {country}
             </SelectItem>
           ))}
