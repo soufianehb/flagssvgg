@@ -6,7 +6,12 @@ import getCountryFlag from 'country-flag-icons/unicode';
 import { countries } from "@/data/countries";
 import { countryCodeMap } from "@/data/countryCodeMap";
 
-export const CountrySelect = ({ value, onChange }) => {
+interface CountrySelectProps {
+  value?: string;
+  onChange: (value: string) => void;
+}
+
+export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
   const { t } = useTranslation();
 
   const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
@@ -20,8 +25,21 @@ export const CountrySelect = ({ value, onChange }) => {
     "!duration-200"
   );
 
-  const getCountryCode = (country) => {
-    return countryCodeMap[country] || '';
+  const getCountryCode = (country: string): string => {
+    if (!country) return '';
+    // Convert to title case for consistent lookup
+    const formattedCountry = country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
+    return countryCodeMap[formattedCountry] || '';
+  };
+
+  const getFlagForCountry = (country: string): string => {
+    const code = getCountryCode(country);
+    if (!code) return '';
+    try {
+      return getCountryFlag(code);
+    } catch {
+      return '';
+    }
   };
 
   return (
@@ -37,7 +55,7 @@ export const CountrySelect = ({ value, onChange }) => {
           <div className="flex items-center gap-2">
             {value && (
               <span className="text-xl leading-none">
-                {getCountryFlag(getCountryCode(value.charAt(0).toUpperCase() + value.slice(1)))}
+                {getFlagForCountry(value)}
               </span>
             )}
             <SelectValue placeholder={t.filters.country.placeholder} />
@@ -51,7 +69,7 @@ export const CountrySelect = ({ value, onChange }) => {
               className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
               <span className="text-xl leading-none inline-flex items-center">
-                {getCountryFlag(getCountryCode(country))}
+                {getFlagForCountry(country)}
               </span>
               <span className="ml-2">{country}</span>
             </SelectItem>
