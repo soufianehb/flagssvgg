@@ -8,8 +8,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import getCountryFlag from 'country-flag-icons/unicode'
+import getCountryFlag from 'country-flag-icons/unicode';
 import { countries } from "@/data/countries";
+import { countryCodeMap } from "@/data/countryCodes";
 
 interface CountrySelectProps {
   value: string;
@@ -31,8 +32,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
   );
 
   const getCountryCode = (country: string) => {
-    // Get first two letters and convert to uppercase for flag
-    return country.substring(0, 2).toUpperCase();
+    return countryCodeMap[country] || '';
   };
 
   return (
@@ -45,7 +45,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
           <div className="flex items-center gap-2">
             {value && (
               <span className="text-xl leading-none">
-                {getCountryFlag(getCountryCode(value))}
+                {getCountryFlag(getCountryCode(value.charAt(0).toUpperCase() + value.slice(1)))}
               </span>
             )}
             <SelectValue placeholder={t.filters.country.placeholder} />
