@@ -30,6 +30,11 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
     "!duration-200"
   );
 
+  const getCountryCode = (country: string) => {
+    // Get first two letters and convert to uppercase for flag
+    return country.substring(0, 2).toUpperCase();
+  };
+
   return (
     <div className="space-y-2">
       <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
@@ -39,8 +44,8 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
         <SelectTrigger id="country" className={selectClasses}>
           <div className="flex items-center gap-2">
             {value && (
-              <span className="text-lg leading-none">
-                {getCountryFlag(value.toUpperCase())}
+              <span className="text-xl leading-none">
+                {getCountryFlag(getCountryCode(value))}
               </span>
             )}
             <SelectValue placeholder={t.filters.country.placeholder} />
@@ -51,12 +56,12 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
             <SelectItem 
               key={country} 
               value={country.toLowerCase()} 
-              className="flex items-center gap-3 py-2"
+              className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
-              <span className="text-lg leading-none">
-                {getCountryFlag(country.substring(0, 2).toUpperCase())}
+              <span className="text-xl leading-none inline-flex items-center">
+                {getCountryFlag(getCountryCode(country))}
               </span>
-              <span>{country}</span>
+              <span className="ml-2">{country}</span>
             </SelectItem>
           ))}
         </SelectContent>
