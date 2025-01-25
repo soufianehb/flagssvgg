@@ -8,14 +8,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-
-const countries = [
-  { value: "us", label: "United States" },
-  { value: "uk", label: "United Kingdom" },
-  { value: "fr", label: "France" },
-  { value: "de", label: "Germany" },
-  { value: "es", label: "Spain" },
-];
+import { Flag } from "lucide-react";
+import { countries } from "@/data/countries";
 
 interface CountrySelectProps {
   value: string;
@@ -43,12 +37,16 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
       </Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
-          <SelectValue placeholder={t.filters.country.placeholder} />
+          <div className="flex items-center gap-2">
+            <Flag className="h-4 w-4" />
+            <SelectValue placeholder={t.filters.country.placeholder} />
+          </div>
         </SelectTrigger>
         <SelectContent className={selectContentClasses}>
           {countries.map((country) => (
-            <SelectItem key={country.value} value={country.value}>
-              {country.label}
+            <SelectItem key={country} value={country.toLowerCase()} className="flex items-center gap-2">
+              <Flag className="h-4 w-4" />
+              {country}
             </SelectItem>
           ))}
         </SelectContent>

@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { CountrySelect } from "@/components/filters/selects/CountrySelect";
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -256,7 +257,10 @@ const Signup = () => {
                   <FormItem>
                     <FormLabel>{t.signup.labels.country}</FormLabel>
                     <FormControl>
-                      <Input placeholder={t.signup.placeholders.country} {...field} />
+                      <CountrySelect
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
