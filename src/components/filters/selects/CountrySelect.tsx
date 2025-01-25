@@ -33,12 +33,16 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
   return (
     <div className="space-y-2">
       <Label htmlFor="country" className="text-sm font-semibold text-gray-700 block">
-        Country of Origin
+        {t.filters.country.placeholder}
       </Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
           <div className="flex items-center gap-2">
-            {value && <span className="text-lg">{getCountryFlag(value.toUpperCase())}</span>}
+            {value && (
+              <span className="text-lg leading-none">
+                {getCountryFlag(value.toUpperCase())}
+              </span>
+            )}
             <SelectValue placeholder={t.filters.country.placeholder} />
           </div>
         </SelectTrigger>
@@ -47,10 +51,12 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
             <SelectItem 
               key={country} 
               value={country.toLowerCase()} 
-              className="flex items-center gap-2"
+              className="flex items-center gap-3 py-2"
             >
-              <span className="text-lg">{getCountryFlag(country.substring(0, 2).toUpperCase())}</span>
-              {country}
+              <span className="text-lg leading-none">
+                {getCountryFlag(country.substring(0, 2).toUpperCase())}
+              </span>
+              <span>{country}</span>
             </SelectItem>
           ))}
         </SelectContent>
