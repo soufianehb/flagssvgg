@@ -44,12 +44,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
 
   return (
     <div className="space-y-2">
-      <Label 
-        htmlFor="country" 
-        className="text-sm font-semibold text-gray-700 block"
-      >
-        {t.filters.country.placeholder}
-      </Label>
+      
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
           <div className="flex items-center gap-2">
