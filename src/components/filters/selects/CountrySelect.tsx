@@ -27,24 +27,26 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
 
   const getCountryCode = (country: string): string => {
     if (!country) return '';
-    // Convert to title case for consistent lookup
-    const formattedCountry = country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
-    return countryCodeMap[formattedCountry] || '';
+    return countryCodeMap[country] || '';
   };
 
   const getFlagForCountry = (country: string): string => {
+    if (!country) return '';
     const code = getCountryCode(country);
-    if (!code) return '';
+    if (!code) {
+      console.warn(`No country code found for: ${country}`);
+      return '';
+    }
     try {
       return getCountryFlag(code);
-    } catch {
+    } catch (error) {
+      console.error(`Error getting flag for country: ${country}, code: ${code}`, error);
       return '';
     }
   };
 
   return (
     <div className="space-y-2">
-      
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
           <div className="flex items-center gap-2">
@@ -60,7 +62,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
           {countries.map((country) => (
             <SelectItem
               key={country}
-              value={country.toLowerCase()}
+              value={country}
               className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
               <span className="text-xl leading-none inline-flex items-center">
