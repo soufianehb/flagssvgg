@@ -277,20 +277,6 @@ const Signup = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="companyName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.companyName}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t.signup.placeholders.companyName} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               {/* Phone Numbers */}
               <div className="space-y-4">
                 <FormItem>
@@ -378,6 +364,20 @@ const Signup = () => {
                   </div>
                   <FormMessage>{form.formState.errors.businessPhone?.message}</FormMessage>
                 </FormItem>
+
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.signup.labels.companyName}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t.signup.placeholders.companyName} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
