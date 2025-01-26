@@ -2,7 +2,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import getCountryFlag from 'country-flag-icons/unicode';
+import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { countries } from "@/data/countries";
 import { countryCodeMap } from "@/data/countryCodeMap";
 
@@ -27,18 +27,21 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
 
   const getCountryCode = (country: string): string => {
     if (!country) return '';
-    return countryCodeMap[country] || '';
-  };
-
-  const getFlagForCountry = (country: string): string => {
-    if (!country) return '';
-    const code = getCountryCode(country);
+    const code = countryCodeMap[country];
     if (!code) {
       console.warn(`No country code found for: ${country}`);
       return '';
     }
+    return code;
+  };
+
+  const getFlagEmoji = (country: string): string => {
+    if (!country) return '';
+    const code = getCountryCode(country);
+    if (!code) return '';
+    
     try {
-      return getCountryFlag(code);
+      return getUnicodeFlagIcon(code);
     } catch (error) {
       console.error(`Error getting flag for country: ${country}, code: ${code}`, error);
       return '';
@@ -52,7 +55,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
           <div className="flex items-center gap-2">
             {value && (
               <span className="text-xl leading-none">
-                {getFlagForCountry(value)}
+                {getFlagEmoji(value)}
               </span>
             )}
             <SelectValue placeholder={t.filters.country.placeholder} />
@@ -66,7 +69,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
               className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
               <span className="text-xl leading-none inline-flex items-center">
-                {getFlagForCountry(country)}
+                {getFlagEmoji(country)}
               </span>
               <span className="ml-2">{country}</span>
             </SelectItem>
