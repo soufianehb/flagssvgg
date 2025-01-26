@@ -1,10 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { countries } from "@/data/countries";
-import { countryCodeMap } from "@/data/countryCodeMap";
 
 interface CountrySelectProps {
   value?: string;
@@ -25,41 +22,11 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
     "!duration-200"
   );
 
-  const getCountryCode = (country: string): string => {
-    if (!country) return '';
-    const code = countryCodeMap[country];
-    if (!code) {
-      console.warn(`No country code found for: ${country}`);
-      return '';
-    }
-    return code;
-  };
-
-  const getFlagEmoji = (country: string): string => {
-    if (!country) return '';
-    const code = getCountryCode(country);
-    if (!code) return '';
-    
-    try {
-      return getUnicodeFlagIcon(code);
-    } catch (error) {
-      console.error(`Error getting flag for country: ${country}, code: ${code}`, error);
-      return '';
-    }
-  };
-
   return (
     <div className="space-y-2">
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="country" className={selectClasses}>
-          <div className="flex items-center gap-2">
-            {value && (
-              <span className="text-xl leading-none">
-                {getFlagEmoji(value)}
-              </span>
-            )}
-            <SelectValue placeholder={t.filters.country.placeholder} />
-          </div>
+          <SelectValue placeholder={t.filters.country.placeholder} />
         </SelectTrigger>
         <SelectContent className={selectContentClasses}>
           {countries.map((country) => (
@@ -68,10 +35,7 @@ export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
               value={country}
               className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
             >
-              <span className="text-xl leading-none inline-flex items-center">
-                {getFlagEmoji(country)}
-              </span>
-              <span className="ml-2">{country}</span>
+              {country}
             </SelectItem>
           ))}
         </SelectContent>
