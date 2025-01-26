@@ -18,6 +18,14 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
+import { phoneCodes } from "@/data/phoneCodes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -135,7 +143,7 @@ const Signup = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
             <div className="rounded-md shadow-sm space-y-4">
-              {/* First Name and Last Name in one line */}
+              {/* Personal Information */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -166,6 +174,7 @@ const Signup = () => {
                 />
               </div>
 
+              {/* Email and Password */}
               <FormField
                 control={form.control}
                 name="email"
@@ -206,6 +215,7 @@ const Signup = () => {
                 )}
               />
 
+              {/* Address Information */}
               <FormField
                 control={form.control}
                 name="address"
@@ -281,66 +291,94 @@ const Signup = () => {
                 )}
               />
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="phoneCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Code</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter phone code" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              {/* Phone Numbers */}
+              <div className="space-y-4">
+                <FormItem>
+                  <FormLabel>Personal Phone</FormLabel>
+                  <div className="flex gap-2">
+                    <div className="w-1/3">
+                      <FormField
+                        control={form.control}
+                        name="phoneCode"
+                        render={({ field }) => (
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Code" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {Object.entries(phoneCodes).map(([country, code]) => (
+                                <SelectItem key={country} value={code}>
+                                  {code}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                          <FormControl>
+                            <Input placeholder="Phone number" {...field} />
+                          </FormControl>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <FormMessage>{form.formState.errors.phoneNumber?.message}</FormMessage>
+                </FormItem>
 
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.phoneNumber} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <FormItem>
+                  <FormLabel>Business Phone</FormLabel>
+                  <div className="flex gap-2">
+                    <div className="w-1/3">
+                      <FormField
+                        control={form.control}
+                        name="businessPhoneCode"
+                        render={({ field }) => (
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Code" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {Object.entries(phoneCodes).map(([country, code]) => (
+                                <SelectItem key={country} value={code}>
+                                  {code}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name="businessPhone"
+                        render={({ field }) => (
+                          <FormControl>
+                            <Input placeholder="Business phone" {...field} />
+                          </FormControl>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <FormMessage>{form.formState.errors.businessPhone?.message}</FormMessage>
+                </FormItem>
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="businessPhoneCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Business Phone Code</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter business phone code" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="businessPhone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.businessPhone} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
             </div>
 
             <div>
