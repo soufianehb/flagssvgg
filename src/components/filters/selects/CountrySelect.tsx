@@ -49,14 +49,20 @@ const countryToCode: { [key: string]: string } = {
 
 interface CountrySelectProps {
   value?: string;
+  onChange?: (value: string) => void;
   onValueChange?: (value: string) => void;
 }
 
-export function CountrySelect({ value, onValueChange }: CountrySelectProps) {
+export function CountrySelect({ value, onChange, onValueChange }: CountrySelectProps) {
   const { t } = useTranslation();
 
+  const handleValueChange = (newValue: string) => {
+    if (onChange) onChange(newValue);
+    if (onValueChange) onValueChange(newValue);
+  };
+
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={value} onValueChange={handleValueChange}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={t.filters.country.placeholder}>
           {value && (
