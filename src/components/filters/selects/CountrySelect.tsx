@@ -4,12 +4,7 @@ import { cn } from "@/lib/utils";
 import { countries } from "@/data/countries";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
-interface CountrySelectProps {
-  value?: string;
-  onChange: (value: string) => void;
-}
-
-// Map of country names to their ISO 3166-1 alpha-2 codes
+// Mapping of country names to their ISO codes
 const countryToCode: { [key: string]: string } = {
   "Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
   "Antigua and Barbuda": "ag", "Argentina": "ar", "Armenia": "am", "Australia": "au", "Austria": "at",
@@ -37,58 +32,51 @@ const countryToCode: { [key: string]: string } = {
   "Montenegro": "me", "Morocco": "ma", "Mozambique": "mz", "Myanmar": "mm", "Namibia": "na",
   "Nauru": "nr", "Nepal": "np", "Netherlands": "nl", "New Zealand": "nz", "Nicaragua": "ni",
   "Niger": "ne", "Nigeria": "ng", "North Macedonia": "mk", "Norway": "no", "Oman": "om",
-  "Pakistan": "pk", "Palau": "pw", "Palestine": "ps", "Panama": "pa", "Papua New Guinea": "pg",
-  "Paraguay": "py", "Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt",
-  "Qatar": "qa", "Romania": "ro", "Russia": "ru", "Rwanda": "rw", "Saint Kitts and Nevis": "kn",
-  "Saint Lucia": "lc", "Saint Vincent and the Grenadines": "vc", "Samoa": "ws", "San Marino": "sm",
-  "Sao Tome and Principe": "st", "Saudi Arabia": "sa", "Senegal": "sn", "Serbia": "rs",
-  "Seychelles": "sc", "Sierra Leone": "sl", "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si",
-  "Solomon Islands": "sb", "Somalia": "so", "South Africa": "za", "South Sudan": "ss", "Spain": "es",
-  "Sri Lanka": "lk", "Sudan": "sd", "Suriname": "sr", "Sweden": "se", "Switzerland": "ch",
-  "Syria": "sy", "Taiwan": "tw", "Tajikistan": "tj", "Tanzania": "tz", "Thailand": "th",
-  "Timor-Leste": "tl", "Togo": "tg", "Tonga": "to", "Trinidad and Tobago": "tt", "Tunisia": "tn",
-  "Turkey": "tr", "Turkmenistan": "tm", "Tuvalu": "tv", "Uganda": "ug", "Ukraine": "ua",
-  "United Arab Emirates": "ae", "United Kingdom": "gb", "United States": "us", "Uruguay": "uy",
-  "Uzbekistan": "uz", "Vanuatu": "vu", "Vatican City": "va", "Venezuela": "ve", "Vietnam": "vn",
-  "Yemen": "ye", "Zambia": "zm", "Zimbabwe": "zw"
+  "Pakistan": "pk", "Palau": "pw", "Panama": "pa", "Papua New Guinea": "pg", "Paraguay": "py",
+  "Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt", "Qatar": "qa",
+  "Romania": "ro", "Russia": "ru", "Rwanda": "rw", "Saint Kitts and Nevis": "kn", "Saint Lucia": "lc",
+  "Saint Vincent and the Grenadines": "vc", "Samoa": "ws", "San Marino": "sm", "Sao Tome and Principe": "st",
+  "Saudi Arabia": "sa", "Senegal": "sn", "Serbia": "rs", "Seychelles": "sc", "Sierra Leone": "sl",
+  "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si", "Solomon Islands": "sb", "Somalia": "so",
+  "South Africa": "za", "South Sudan": "ss", "Spain": "es", "Sri Lanka": "lk", "Sudan": "sd",
+  "Suriname": "sr", "Sweden": "se", "Switzerland": "ch", "Syria": "sy", "Taiwan": "tw",
+  "Tajikistan": "tj", "Tanzania": "tz", "Thailand": "th", "Timor-Leste": "tl", "Togo": "tg",
+  "Tonga": "to", "Trinidad and Tobago": "tt", "Tunisia": "tn", "Turkey": "tr", "Turkmenistan": "tm",
+  "Tuvalu": "tv", "Uganda": "ug", "Ukraine": "ua", "United Arab Emirates": "ae", "United Kingdom": "gb",
+  "United States": "us", "Uruguay": "uy", "Uzbekistan": "uz", "Vanuatu": "vu", "Vatican City": "va",
+  "Venezuela": "ve", "Vietnam": "vn", "Yemen": "ye", "Zambia": "zm", "Zimbabwe": "zw"
 };
 
-export const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
+interface CountrySelectProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
+}
+
+export function CountrySelect({ value, onValueChange }: CountrySelectProps) {
   const { t } = useTranslation();
 
-  const selectClasses = "w-full bg-white transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary/20 focus:ring-2 focus:ring-primary/20";
-  const selectContentClasses = cn(
-    "relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 shadow-md",
-    "data-[state=open]:animate-in data-[state=closed]:animate-out",
-    "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-    "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-    "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
-    "origin-top",
-    "!duration-200"
-  );
-
   return (
-    <div className="space-y-2">
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger id="country" className={selectClasses}>
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder={t.filters.country.placeholder}>
           {value && (
-            <span className={`fi fi-${countryToCode[value]} mr-2`} />
+            <span className="flex items-center">
+              <span className={cn("fi fi-" + countryToCode[value], "mr-2")} />
+              {value}
+            </span>
           )}
-          <SelectValue placeholder={t.filters.country.placeholder} />
-        </SelectTrigger>
-        <SelectContent className={selectContentClasses}>
-          {countries.map((country) => (
-            <SelectItem
-              key={country}
-              value={country}
-              className="flex items-center gap-3 py-2.5 px-2 cursor-pointer hover:bg-gray-100"
-            >
-              <span className={`fi fi-${countryToCode[country]}`} />
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {countries.map((country) => (
+          <SelectItem key={country} value={country}>
+            <span className="flex items-center">
+              <span className={cn("fi fi-" + countryToCode[country], "mr-2")} />
               {country}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
-};
+}
