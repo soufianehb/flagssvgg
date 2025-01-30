@@ -16,59 +16,9 @@
       "code": "DZ"
     },
     {
-      "name": "American Samoa",
-      "dial_code": "+1684",
-      "code": "AS"
-    },
-    {
-      "name": "Andorra",
-      "dial_code": "+376",
-      "code": "AD"
-    },
-    {
-      "name": "Angola",
-      "dial_code": "+244",
-      "code": "AO"
-    },
-    {
-      "name": "Argentina",
-      "dial_code": "+54",
-      "code": "AR"
-    },
-    {
-      "name": "Armenia",
-      "dial_code": "+374",
-      "code": "AM"
-    },
-    {
       "name": "Australia",
       "dial_code": "+61",
       "code": "AU"
-    },
-    {
-      "name": "Austria",
-      "dial_code": "+43",
-      "code": "AT"
-    },
-    {
-      "name": "Azerbaijan",
-      "dial_code": "+994",
-      "code": "AZ"
-    },
-    {
-      "name": "Bahrain",
-      "dial_code": "+973",
-      "code": "BH"
-    },
-    {
-      "name": "Bangladesh",
-      "dial_code": "+880",
-      "code": "BD"
-    },
-    {
-      "name": "Belgium",
-      "dial_code": "+32",
-      "code": "BE"
     },
     {
       "name": "Brazil",
