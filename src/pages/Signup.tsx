@@ -82,11 +82,11 @@ const Signup = () => {
       zipCode: "",
       city: "",
       country: "",
-      companyName: "",
       phoneNumber: "",
       businessPhone: "",
       phoneCode: "",
       businessPhoneCode: "",
+      companyName: "",
     },
   });
 
