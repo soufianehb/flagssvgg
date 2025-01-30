@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import countriesJson from '../../public/CountryCodes.json';
 import {
   Select,
   SelectContent,
@@ -26,6 +25,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+// Temporary data until Supabase implementation
+const temporaryCountries = [
+  { name: "United States", dial_code: "+1", code: "US" },
+  { name: "United Kingdom", dial_code: "+44", code: "GB" },
+  { name: "France", dial_code: "+33", code: "FR" },
+  { name: "Germany", dial_code: "+49", code: "DE" },
+  { name: "Japan", dial_code: "+81", code: "JP" },
+  { name: "China", dial_code: "+86", code: "CN" },
+  { name: "India", dial_code: "+91", code: "IN" }
+};
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -95,7 +105,7 @@ const Signup = () => {
   
   React.useEffect(() => {
     if (selectedCountry) {
-      const countryData = countriesJson.countries.find(c => c.name === selectedCountry);
+      const countryData = temporaryCountries.find(c => c.name === selectedCountry);
       if (countryData) {
         form.setValue("phoneCode", countryData.dial_code);
         form.setValue("businessPhoneCode", countryData.dial_code);
@@ -310,7 +320,7 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countriesJson.countries.map((country) => (
+                              {temporaryCountries.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
                                   {country.dial_code}
                                 </SelectItem>
@@ -353,7 +363,7 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countriesJson.countries.map((country) => (
+                              {temporaryCountries.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
                                   {country.dial_code}
                                 </SelectItem>
