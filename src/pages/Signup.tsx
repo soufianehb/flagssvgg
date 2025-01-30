@@ -95,15 +95,9 @@ const Signup = () => {
     if (country) {
       const countryData = countriesJson.countries.find(c => c.name === country);
       if (countryData) {
-        const currentPhoneCode = form.getValues("phoneCode");
-        const currentBusinessPhoneCode = form.getValues("businessPhoneCode");
-        
-        if (!currentPhoneCode) {
-          form.setValue("phoneCode", countryData.dial_code);
-        }
-        if (!currentBusinessPhoneCode) {
-          form.setValue("businessPhoneCode", countryData.dial_code);
-        }
+        // Always set the phone codes when country changes, replacing any existing values
+        form.setValue("phoneCode", countryData.dial_code);
+        form.setValue("businessPhoneCode", countryData.dial_code);
       }
     }
   }, [form.watch("country")]);
