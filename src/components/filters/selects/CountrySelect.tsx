@@ -1,7 +1,16 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import countriesJson from '/CountryCodes.json';
+
+// Temporary data until Supabase implementation
+const temporaryCountries = [
+  { name: "United States", dial_code: "+1", code: "US" },
+  { name: "United Kingdom", dial_code: "+44", code: "GB" },
+  { name: "France", dial_code: "+33", code: "FR" },
+  { name: "Germany", dial_code: "+49", code: "DE" },
+  { name: "Japan", dial_code: "+81", code: "JP" },
+  { name: "China", dial_code: "+86", code: "CN" },
+  { name: "India", dial_code: "+91", code: "IN" }
+];
 
 interface CountrySelectProps {
   value?: string;
@@ -11,7 +20,6 @@ interface CountrySelectProps {
 
 export function CountrySelect({ value, onChange, onValueChange }: CountrySelectProps) {
   const { t } = useTranslation();
-  const countryCodesData = countriesJson.countries;
 
   const handleValueChange = (newValue: string) => {
     if (onChange) onChange(newValue);
@@ -19,7 +27,7 @@ export function CountrySelect({ value, onChange, onValueChange }: CountrySelectP
   };
 
   const FlagImage = ({ country }: { country: string }) => {
-    const countryData = countryCodesData.find(c => c.name === country);
+    const countryData = temporaryCountries.find(c => c.name === country);
     if (!countryData) return null;
     
     return (
@@ -47,7 +55,7 @@ export function CountrySelect({ value, onChange, onValueChange }: CountrySelectP
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {countryCodesData.map((country) => (
+        {temporaryCountries.map((country) => (
           <SelectItem key={country.code} value={country.name}>
             <span className="flex items-center">
               <FlagImage country={country.name} />
