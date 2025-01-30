@@ -90,6 +90,23 @@ const Signup = () => {
     },
   });
 
+  // Add effect to update phone codes when country changes
+  React.useEffect(() => {
+    const country = form.watch("country");
+    if (country && phoneCodes[country]) {
+      // Only update if the fields haven't been manually changed
+      const currentPhoneCode = form.getValues("phoneCode");
+      const currentBusinessPhoneCode = form.getValues("businessPhoneCode");
+      
+      if (!currentPhoneCode) {
+        form.setValue("phoneCode", phoneCodes[country]);
+      }
+      if (!currentBusinessPhoneCode) {
+        form.setValue("businessPhoneCode", phoneCodes[country]);
+      }
+    }
+  }, [form.watch("country")]);
+
   const onSubmit = async (data: SignupFormValues) => {
     try {
       const personalData = {
@@ -277,7 +294,7 @@ const Signup = () => {
                 )}
               />
 
-              {/* Phone Numbers */}
+              {/* Phone Numbers with auto-filling codes */}
               <div className="space-y-4">
                 <FormItem>
                   <FormLabel>Personal Phone</FormLabel>
