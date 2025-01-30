@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import countriesJson from '../../../public/CountryCodes.json';
+import countriesJson from '@/../../public/CountryCodes.json';
 
 interface CountrySelectProps {
   value?: string;
