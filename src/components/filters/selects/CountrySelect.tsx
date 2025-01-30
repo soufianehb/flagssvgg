@@ -2,7 +2,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { countries } from "@/data/countries";
-import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 // Mapping of country names to their ISO codes
 const countryToCode: { [key: string]: string } = {
@@ -32,19 +31,20 @@ const countryToCode: { [key: string]: string } = {
   "Montenegro": "me", "Morocco": "ma", "Mozambique": "mz", "Myanmar": "mm", "Namibia": "na",
   "Nauru": "nr", "Nepal": "np", "Netherlands": "nl", "New Zealand": "nz", "Nicaragua": "ni",
   "Niger": "ne", "Nigeria": "ng", "North Macedonia": "mk", "Norway": "no", "Oman": "om",
-  "Pakistan": "pk", "Palau": "pw", "Panama": "pa", "Papua New Guinea": "pg", "Paraguay": "py",
-  "Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt", "Qatar": "qa",
-  "Romania": "ro", "Russia": "ru", "Rwanda": "rw", "Saint Kitts and Nevis": "kn", "Saint Lucia": "lc",
-  "Saint Vincent and the Grenadines": "vc", "Samoa": "ws", "San Marino": "sm", "Sao Tome and Principe": "st",
-  "Saudi Arabia": "sa", "Senegal": "sn", "Serbia": "rs", "Seychelles": "sc", "Sierra Leone": "sl",
-  "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si", "Solomon Islands": "sb", "Somalia": "so",
-  "South Africa": "za", "South Sudan": "ss", "Spain": "es", "Sri Lanka": "lk", "Sudan": "sd",
-  "Suriname": "sr", "Sweden": "se", "Switzerland": "ch", "Syria": "sy", "Taiwan": "tw",
-  "Tajikistan": "tj", "Tanzania": "tz", "Thailand": "th", "Timor-Leste": "tl", "Togo": "tg",
-  "Tonga": "to", "Trinidad and Tobago": "tt", "Tunisia": "tn", "Turkey": "tr", "Turkmenistan": "tm",
-  "Tuvalu": "tv", "Uganda": "ug", "Ukraine": "ua", "United Arab Emirates": "ae", "United Kingdom": "gb",
-  "United States": "us", "Uruguay": "uy", "Uzbekistan": "uz", "Vanuatu": "vu", "Vatican City": "va",
-  "Venezuela": "ve", "Vietnam": "vn", "Yemen": "ye", "Zambia": "zm", "Zimbabwe": "zw"
+  "Pakistan": "pk", "Palau": "pw", "Palestine": "ps", "Panama": "pa", "Papua New Guinea": "pg",
+  "Paraguay": "py", "Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt",
+  "Qatar": "qa", "Romania": "ro", "Russia": "ru", "Rwanda": "rw", "Saint Kitts and Nevis": "kn",
+  "Saint Lucia": "lc", "Saint Vincent and the Grenadines": "vc", "Samoa": "ws", "San Marino": "sm",
+  "Sao Tome and Principe": "st", "Saudi Arabia": "sa", "Senegal": "sn", "Serbia": "rs",
+  "Seychelles": "sc", "Sierra Leone": "sl", "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si",
+  "Solomon Islands": "sb", "Somalia": "so", "South Africa": "za", "South Sudan": "ss", "Spain": "es",
+  "Sri Lanka": "lk", "Sudan": "sd", "Suriname": "sr", "Sweden": "se", "Switzerland": "ch",
+  "Syria": "sy", "Taiwan": "tw", "Tajikistan": "tj", "Tanzania": "tz", "Thailand": "th",
+  "Timor-Leste": "tl", "Togo": "tg", "Tonga": "to", "Trinidad and Tobago": "tt", "Tunisia": "tn",
+  "Turkey": "tr", "Turkmenistan": "tm", "Tuvalu": "tv", "Uganda": "ug", "Ukraine": "ua",
+  "United Arab Emirates": "ae", "United Kingdom": "gb", "United States": "us", "Uruguay": "uy",
+  "Uzbekistan": "uz", "Vanuatu": "vu", "Vatican City": "va", "Venezuela": "ve", "Vietnam": "vn",
+  "Yemen": "ye", "Zambia": "zm", "Zimbabwe": "zw"
 };
 
 interface CountrySelectProps {
@@ -61,13 +61,29 @@ export function CountrySelect({ value, onChange, onValueChange }: CountrySelectP
     if (onValueChange) onValueChange(newValue);
   };
 
+  const FlagImage = ({ country }: { country: string }) => {
+    const code = countryToCode[country];
+    if (!code) return null;
+    
+    return (
+      <img
+        src={`/flags/4x3/${code}.svg`}
+        alt={`${country} flag`}
+        className="w-6 h-4 mr-2 inline-block object-cover"
+        onError={(e) => {
+          e.currentTarget.style.display = 'none';
+        }}
+      />
+    );
+  };
+
   return (
     <Select value={value} onValueChange={handleValueChange}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={t.filters.country.placeholder}>
           {value && (
             <span className="flex items-center">
-              <span className={cn("fi fi-" + countryToCode[value], "mr-2")} />
+              <FlagImage country={value} />
               {value}
             </span>
           )}
@@ -77,7 +93,7 @@ export function CountrySelect({ value, onChange, onValueChange }: CountrySelectP
         {countries.map((country) => (
           <SelectItem key={country} value={country}>
             <span className="flex items-center">
-              <span className={cn("fi fi-" + countryToCode[country], "mr-2")} />
+              <FlagImage country={country} />
               {country}
             </span>
           </SelectItem>
