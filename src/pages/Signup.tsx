@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import { phoneCodes } from "@/data/phoneCodes";
+import countryCodesData from '/CountryCodes.json';
 import {
   Select,
   SelectContent,
@@ -90,19 +90,20 @@ const Signup = () => {
     },
   });
 
-  // Add effect to update phone codes when country changes
   React.useEffect(() => {
     const country = form.watch("country");
-    if (country && phoneCodes[country]) {
-      // Only update if the fields haven't been manually changed
-      const currentPhoneCode = form.getValues("phoneCode");
-      const currentBusinessPhoneCode = form.getValues("businessPhoneCode");
-      
-      if (!currentPhoneCode) {
-        form.setValue("phoneCode", phoneCodes[country]);
-      }
-      if (!currentBusinessPhoneCode) {
-        form.setValue("businessPhoneCode", phoneCodes[country]);
+    if (country) {
+      const countryData = countryCodesData.find(c => c.name === country);
+      if (countryData) {
+        const currentPhoneCode = form.getValues("phoneCode");
+        const currentBusinessPhoneCode = form.getValues("businessPhoneCode");
+        
+        if (!currentPhoneCode) {
+          form.setValue("phoneCode", countryData.dial_code);
+        }
+        if (!currentBusinessPhoneCode) {
+          form.setValue("businessPhoneCode", countryData.dial_code);
+        }
       }
     }
   }, [form.watch("country")]);
@@ -314,9 +315,9 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {Object.entries(phoneCodes).map(([country, code]) => (
-                                <SelectItem key={country} value={code}>
-                                  {code}
+                              {countryCodesData.map((country) => (
+                                <SelectItem key={country.code} value={country.dial_code}>
+                                  {country.dial_code}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -357,9 +358,9 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {Object.entries(phoneCodes).map(([country, code]) => (
-                                <SelectItem key={country} value={code}>
-                                  {code}
+                              {countryCodesData.map((country) => (
+                                <SelectItem key={country.code} value={country.dial_code}>
+                                  {country.dial_code}
                                 </SelectItem>
                               ))}
                             </SelectContent>
