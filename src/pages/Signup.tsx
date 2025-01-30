@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import countryCodesData from '../../public/CountryCodes.json';
+import countriesJson from '../../public/CountryCodes.json';
 import {
   Select,
   SelectContent,
@@ -93,7 +93,7 @@ const Signup = () => {
   React.useEffect(() => {
     const country = form.watch("country");
     if (country) {
-      const countryData = countryCodesData.find(c => c.name === country);
+      const countryData = countriesJson.countries.find(c => c.name === country);
       if (countryData) {
         const currentPhoneCode = form.getValues("phoneCode");
         const currentBusinessPhoneCode = form.getValues("businessPhoneCode");
@@ -315,7 +315,7 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countryCodesData.map((country) => (
+                              {countriesJson.countries.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
                                   {country.dial_code}
                                 </SelectItem>
@@ -358,7 +358,7 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {countryCodesData.map((country) => (
+                              {countriesJson.countries.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
                                   {country.dial_code}
                                 </SelectItem>

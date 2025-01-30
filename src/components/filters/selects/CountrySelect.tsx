@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import countryCodesData from '../../../public/CountryCodes.json';
+import countriesJson from '../../../public/CountryCodes.json';
 
 interface CountrySelectProps {
   value?: string;
@@ -11,6 +11,7 @@ interface CountrySelectProps {
 
 export function CountrySelect({ value, onChange, onValueChange }: CountrySelectProps) {
   const { t } = useTranslation();
+  const countryCodesData = countriesJson.countries;
 
   const handleValueChange = (newValue: string) => {
     if (onChange) onChange(newValue);
