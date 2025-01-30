@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import countryCodesData from '/CountryCodes.json';
+import countryCodesData from '../../public/CountryCodes.json';
 import {
   Select,
   SelectContent,
