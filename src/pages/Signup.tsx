@@ -90,17 +90,18 @@ const Signup = () => {
     },
   });
 
+  // Fixed the useEffect to prevent infinite loops
+  const selectedCountry = form.watch("country");
+  
   React.useEffect(() => {
-    const country = form.watch("country");
-    if (country) {
-      const countryData = countriesJson.countries.find(c => c.name === country);
+    if (selectedCountry) {
+      const countryData = countriesJson.countries.find(c => c.name === selectedCountry);
       if (countryData) {
-        // Always set the phone codes when country changes, replacing any existing values
         form.setValue("phoneCode", countryData.dial_code);
         form.setValue("businessPhoneCode", countryData.dial_code);
       }
     }
-  }, [form.watch("country")]);
+  }, [selectedCountry, form.setValue]);
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
