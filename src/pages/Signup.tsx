@@ -27,17 +27,6 @@ import {
 } from "@/components/ui/select";
 import { useCountryCodes } from "@/hooks/useCountryCodes";
 
-// Temporary data until Supabase implementation
-const temporaryCountries = [
-  { name: "United States", dial_code: "+1", code: "US" },
-  { name: "United Kingdom", dial_code: "+44", code: "GB" },
-  { name: "France", dial_code: "+33", code: "FR" },
-  { name: "Germany", dial_code: "+49", code: "DE" },
-  { name: "Japan", dial_code: "+81", code: "JP" },
-  { name: "China", dial_code: "+86", code: "CN" },
-  { name: "India", dial_code: "+91", code: "IN" }
-];
-
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
@@ -81,6 +70,7 @@ const Signup = () => {
   const { t } = useTranslation();
   const { signup } = useAuth();
   const [passwordStrength, setPasswordStrength] = React.useState(0);
+  const { data: countries, isLoading } = useCountryCodes();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -101,18 +91,18 @@ const Signup = () => {
     },
   });
 
-  // Fixed the useEffect to prevent infinite loops
+  // Watch for country changes
   const selectedCountry = form.watch("country");
   
   React.useEffect(() => {
-    if (selectedCountry) {
-      const countryData = temporaryCountries.find(c => c.name === selectedCountry);
+    if (selectedCountry && countries) {
+      const countryData = countries.find(c => c.name === selectedCountry);
       if (countryData) {
         form.setValue("phoneCode", countryData.dial_code);
         form.setValue("businessPhoneCode", countryData.dial_code);
       }
     }
-  }, [selectedCountry, form.setValue]);
+  }, [selectedCountry, countries, form.setValue]);
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
@@ -305,7 +295,7 @@ const Signup = () => {
                 )}
               />
 
-              {/* Phone Numbers with auto-filling codes */}
+              {/* Phone Numbers with auto-filling codes but editable */}
               <div className="space-y-4">
                 <FormItem>
                   <FormLabel>Personal Phone</FormLabel>
@@ -325,9 +315,19 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {temporaryCountries.map((country) => (
+                              {countries?.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
-                                  {country.dial_code}
+                                  <span className="flex items-center">
+                                    <img
+                                      src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
+                                      alt={`${country.code} flag`}
+                                      className="w-4 h-3 mr-2 inline-block object-cover"
+                                      onError={(e) => {
+                                        e.currentTarget.style.display = 'none';
+                                      }}
+                                    />
+                                    {country.dial_code}
+                                  </span>
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -368,9 +368,19 @@ const Signup = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {temporaryCountries.map((country) => (
+                              {countries?.map((country) => (
                                 <SelectItem key={country.code} value={country.dial_code}>
-                                  {country.dial_code}
+                                  <span className="flex items-center">
+                                    <img
+                                      src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
+                                      alt={`${country.code} flag`}
+                                      className="w-4 h-3 mr-2 inline-block object-cover"
+                                      onError={(e) => {
+                                        e.currentTarget.style.display = 'none';
+                                      }}
+                                    />
+                                    {country.dial_code}
+                                  </span>
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -435,4 +445,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
