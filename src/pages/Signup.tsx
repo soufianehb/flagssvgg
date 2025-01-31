@@ -36,7 +36,7 @@ const temporaryCountries = [
   { name: "Japan", dial_code: "+81", code: "JP" },
   { name: "China", dial_code: "+86", code: "CN" },
   { name: "India", dial_code: "+91", code: "IN" }
-};
+];
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -435,3 +435,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
