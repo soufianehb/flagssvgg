@@ -8,6 +8,8 @@ import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import {
   Form,
   FormControl,
@@ -142,316 +144,322 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            {t.signup.title}
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            {t.signup.buttons.login}{' '}
-            <Link to="/login" className="font-medium text-accent hover:text-accent/90">
-              {t.nav.login}
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <main className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center">
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+              {t.signup.title}
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              {t.signup.buttons.login}{' '}
+              <Link to="/login" className="font-medium text-accent hover:text-accent/90">
+                {t.nav.login}
+              </Link>
+            </p>
+          </div>
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+              <div className="rounded-md shadow-sm space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.signup.labels.firstName}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t.signup.placeholders.firstName} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.signup.labels.lastName}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t.signup.placeholders.lastName} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.signup.labels.email}</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder={t.signup.placeholders.email} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.signup.labels.password}</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="password" 
+                          placeholder={t.signup.placeholders.password} 
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            setPasswordStrength(calculatePasswordStrength(e.target.value));
+                          }}
+                        />
+                      </FormControl>
+                      <Progress 
+                        value={passwordStrength} 
+                        className={`h-1 mt-2 ${getPasswordStrengthColor(passwordStrength)}`}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.signup.labels.address}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t.signup.placeholders.address} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="zipCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.signup.labels.zipCode}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t.signup.placeholders.zipCode} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.signup.labels.city}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t.signup.placeholders.city} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.signup.labels.country}</FormLabel>
+                      <FormControl>
+                        <CountrySelect
+                          value={field.value}
+                          onChange={field.onChange}
+                          onCountryCodeChange={(dialCode) => {
+                            form.setValue("phoneCode", dialCode);
+                            form.setValue("businessPhoneCode", dialCode);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="space-y-4">
+                  <FormItem>
+                    <FormLabel>Personal Phone</FormLabel>
+                    <div className="flex gap-2">
+                      <div className="w-29">
+                        <FormField
+                          control={form.control}
+                          name="phoneCode"
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Code" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {countries?.map((country) => (
+                                  <SelectItem key={country.code} value={country.dial_code}>
+                                    <span className="flex items-center">
+                                      <img
+                                        src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
+                                        alt={`${country.code} flag`}
+                                        className="w-4 h-3 mr-2 inline-block object-cover"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                      {country.dial_code}
+                                    </span>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <FormField
+                          control={form.control}
+                          name="phoneNumber"
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input placeholder="Phone number" {...field} />
+                            </FormControl>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <FormMessage>{form.formState.errors.phoneNumber?.message}</FormMessage>
+                  </FormItem>
+
+                  <FormItem>
+                    <FormLabel>Business Phone</FormLabel>
+                    <div className="flex gap-2">
+                      <div className="w-29">
+                        <FormField
+                          control={form.control}
+                          name="businessPhoneCode"
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Code" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {countries?.map((country) => (
+                                  <SelectItem key={country.code} value={country.dial_code}>
+                                    <span className="flex items-center">
+                                      <img
+                                        src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
+                                        alt={`${country.code} flag`}
+                                        className="w-4 h-3 mr-2 inline-block object-cover"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                      {country.dial_code}
+                                    </span>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <FormField
+                          control={form.control}
+                          name="businessPhone"
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input placeholder="Business phone" {...field} />
+                            </FormControl>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <FormMessage>{form.formState.errors.businessPhone?.message}</FormMessage>
+                  </FormItem>
+
+                  <FormField
+                    control={form.control}
+                    name="companyName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.signup.labels.companyName}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t.signup.placeholders.companyName} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="tradeRegisterNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Trade Register Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter your company's trade register number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? t.signup.buttons.loading : t.signup.buttons.submit}
+                </Button>
+              </div>
+            </form>
+          </Form>
+
+          <div className="text-center">
+            <Link
+              to="/"
+              className="font-medium text-accent hover:text-accent/90"
+            >
+              {t.signup.buttons.backHome}
             </Link>
-          </p>
+          </div>
         </div>
+      </main>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
-            <div className="rounded-md shadow-sm space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.firstName}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.firstName} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.lastName}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.lastName} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.email}</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder={t.signup.placeholders.email} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.password}</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="password" 
-                        placeholder={t.signup.placeholders.password} 
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          setPasswordStrength(calculatePasswordStrength(e.target.value));
-                        }}
-                      />
-                    </FormControl>
-                    <Progress 
-                      value={passwordStrength} 
-                      className={`h-1 mt-2 ${getPasswordStrengthColor(passwordStrength)}`}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.address}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t.signup.placeholders.address} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="zipCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.zipCode}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.zipCode} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.city}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.city} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.signup.labels.country}</FormLabel>
-                    <FormControl>
-                      <CountrySelect
-                        value={field.value}
-                        onChange={field.onChange}
-                        onCountryCodeChange={(dialCode) => {
-                          form.setValue("phoneCode", dialCode);
-                          form.setValue("businessPhoneCode", dialCode);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="space-y-4">
-                <FormItem>
-                  <FormLabel>Personal Phone</FormLabel>
-                  <div className="flex gap-2">
-                    <div className="w-29">
-                      <FormField
-                        control={form.control}
-                        name="phoneCode"
-                        render={({ field }) => (
-                          <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Code" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {countries?.map((country) => (
-                                <SelectItem key={country.code} value={country.dial_code}>
-                                  <span className="flex items-center">
-                                    <img
-                                      src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
-                                      alt={`${country.code} flag`}
-                                      className="w-4 h-3 mr-2 inline-block object-cover"
-                                      onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                      }}
-                                    />
-                                    {country.dial_code}
-                                  </span>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <FormField
-                        control={form.control}
-                        name="phoneNumber"
-                        render={({ field }) => (
-                          <FormControl>
-                            <Input placeholder="Phone number" {...field} />
-                          </FormControl>
-                        )}
-                      />
-                    </div>
-                  </div>
-                  <FormMessage>{form.formState.errors.phoneNumber?.message}</FormMessage>
-                </FormItem>
-
-                <FormItem>
-                  <FormLabel>Business Phone</FormLabel>
-                  <div className="flex gap-2">
-                    <div className="w-29">
-                      <FormField
-                        control={form.control}
-                        name="businessPhoneCode"
-                        render={({ field }) => (
-                          <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Code" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {countries?.map((country) => (
-                                <SelectItem key={country.code} value={country.dial_code}>
-                                  <span className="flex items-center">
-                                    <img
-                                      src={`/flags/4x3/${country.code.toLowerCase()}.svg`}
-                                      alt={`${country.code} flag`}
-                                      className="w-4 h-3 mr-2 inline-block object-cover"
-                                      onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                      }}
-                                    />
-                                    {country.dial_code}
-                                  </span>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <FormField
-                        control={form.control}
-                        name="businessPhone"
-                        render={({ field }) => (
-                          <FormControl>
-                            <Input placeholder="Business phone" {...field} />
-                          </FormControl>
-                        )}
-                      />
-                    </div>
-                  </div>
-                  <FormMessage>{form.formState.errors.businessPhone?.message}</FormMessage>
-                </FormItem>
-
-                <FormField
-                  control={form.control}
-                  name="companyName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.signup.labels.companyName}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t.signup.placeholders.companyName} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="tradeRegisterNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Trade Register Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your company's trade register number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={form.formState.isSubmitting}
-              >
-                {form.formState.isSubmitting ? t.signup.buttons.loading : t.signup.buttons.submit}
-              </Button>
-            </div>
-          </form>
-        </Form>
-
-        <div className="text-center">
-          <Link
-            to="/"
-            className="font-medium text-accent hover:text-accent/90"
-          >
-            {t.signup.buttons.backHome}
-          </Link>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };
