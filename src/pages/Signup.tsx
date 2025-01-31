@@ -300,7 +300,7 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>Personal Phone</FormLabel>
                   <div className="flex gap-2">
-                    <div className="w-32">
+                    <div className="w-29">
                       <FormField
                         control={form.control}
                         name="phoneCode"
@@ -353,7 +353,7 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>Business Phone</FormLabel>
                   <div className="flex gap-2">
-                    <div className="w-32">
+                    <div className="w-29">
                       <FormField
                         control={form.control}
                         name="businessPhoneCode"
