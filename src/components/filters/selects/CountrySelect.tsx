@@ -1,39 +1,39 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
-
-// Temporary data until Supabase implementation
-const temporaryCountries = [
-  { name: "United States", dial_code: "+1", code: "US" },
-  { name: "United Kingdom", dial_code: "+44", code: "GB" },
-  { name: "France", dial_code: "+33", code: "FR" },
-  { name: "Germany", dial_code: "+49", code: "DE" },
-  { name: "Japan", dial_code: "+81", code: "JP" },
-  { name: "China", dial_code: "+86", code: "CN" },
-  { name: "India", dial_code: "+91", code: "IN" }
-];
+import { useCountryCodes } from "@/hooks/useCountryCodes";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CountrySelectProps {
   value?: string;
   onChange?: (value: string) => void;
   onValueChange?: (value: string) => void;
+  onCountryCodeChange?: (dialCode: string) => void;
 }
 
-export function CountrySelect({ value, onChange, onValueChange }: CountrySelectProps) {
+export function CountrySelect({ value, onChange, onValueChange, onCountryCodeChange }: CountrySelectProps) {
   const { t } = useTranslation();
+  const { data: countries, isLoading } = useCountryCodes();
 
   const handleValueChange = (newValue: string) => {
     if (onChange) onChange(newValue);
     if (onValueChange) onValueChange(newValue);
+    
+    // Find the selected country and update the dial code
+    const selectedCountry = countries?.find(c => c.name === newValue);
+    if (selectedCountry && onCountryCodeChange) {
+      onCountryCodeChange(selectedCountry.dial_code);
+    }
   };
 
-  const FlagImage = ({ country }: { country: string }) => {
-    const countryData = temporaryCountries.find(c => c.name === country);
-    if (!countryData) return null;
-    
+  if (isLoading) {
+    return <Skeleton className="h-10 w-full" />;
+  }
+
+  const FlagImage = ({ countryCode }: { countryCode: string }) => {
     return (
       <img
-        src={`/flags/4x3/${countryData.code.toLowerCase()}.svg`}
-        alt={`${country} flag`}
+        src={`/flags/4x3/${countryCode.toLowerCase()}.svg`}
+        alt={`${countryCode} flag`}
         className="w-6 h-4 mr-2 inline-block object-cover"
         onError={(e) => {
           e.currentTarget.style.display = 'none';
@@ -46,19 +46,19 @@ export function CountrySelect({ value, onChange, onValueChange }: CountrySelectP
     <Select value={value} onValueChange={handleValueChange}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={t.filters.country.placeholder}>
-          {value && (
+          {value && countries && (
             <span className="flex items-center">
-              <FlagImage country={value} />
+              <FlagImage countryCode={countries.find(c => c.name === value)?.code || ''} />
               {value}
             </span>
           )}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {temporaryCountries.map((country) => (
+        {countries?.map((country) => (
           <SelectItem key={country.code} value={country.name}>
             <span className="flex items-center">
-              <FlagImage country={country.name} />
+              <FlagImage countryCode={country.code} />
               {country.name}
             </span>
           </SelectItem>

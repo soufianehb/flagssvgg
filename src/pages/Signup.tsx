@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCountryCodes } from "@/hooks/useCountryCodes";
 
 // Temporary data until Supabase implementation
 const temporaryCountries = [
@@ -35,7 +36,7 @@ const temporaryCountries = [
   { name: "Japan", dial_code: "+81", code: "JP" },
   { name: "China", dial_code: "+86", code: "CN" },
   { name: "India", dial_code: "+91", code: "IN" }
-];
+};
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -293,6 +294,10 @@ const Signup = () => {
                       <CountrySelect
                         value={field.value}
                         onChange={field.onChange}
+                        onCountryCodeChange={(dialCode) => {
+                          form.setValue("phoneCode", dialCode);
+                          form.setValue("businessPhoneCode", dialCode);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -430,4 +435,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
