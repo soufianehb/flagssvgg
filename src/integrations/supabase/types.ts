@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      country_codes: {
+      country_codes_dial: {
         Row: {
           code: string
           created_at: string | null
