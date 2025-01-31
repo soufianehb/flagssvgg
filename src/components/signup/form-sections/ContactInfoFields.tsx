@@ -128,7 +128,9 @@ export const ContactInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
               />
             </div>
           </div>
-          <FormMessage>{form.formState.errors.phoneNumber?.message}</FormMessage>
+          <FormMessage>
+            {form.formState.errors.phoneNumber?.message?.toString()}
+          </FormMessage>
         </FormItem>
 
         <FormItem>
@@ -181,7 +183,9 @@ export const ContactInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
               />
             </div>
           </div>
-          <FormMessage>{form.formState.errors.businessPhone?.message}</FormMessage>
+          <FormMessage>
+            {form.formState.errors.businessPhone?.message?.toString()}
+          </FormMessage>
         </FormItem>
       </div>
     </div>
