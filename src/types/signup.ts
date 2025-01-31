@@ -13,4 +13,5 @@ export interface ProfessionalData {
   businessPhone: string;
   phoneCode: string;
   businessPhoneCode: string;
+  tradeRegisterNumber: string;
 }

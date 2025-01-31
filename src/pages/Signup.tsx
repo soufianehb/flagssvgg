@@ -44,6 +44,7 @@ const signupSchema = z.object({
   businessPhone: z.string().min(1, "Business phone is required"),
   phoneCode: z.string().min(1, "Phone code is required"),
   businessPhoneCode: z.string().min(1, "Business phone code is required"),
+  tradeRegisterNumber: z.string().min(1, "Trade register number is required"),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -88,10 +89,10 @@ const Signup = () => {
       phoneCode: "",
       businessPhoneCode: "",
       companyName: "",
+      tradeRegisterNumber: "",
     },
   });
 
-  // Watch for country changes
   const selectedCountry = form.watch("country");
   
   React.useEffect(() => {
@@ -121,6 +122,7 @@ const Signup = () => {
         businessPhone: data.businessPhone,
         phoneCode: data.phoneCode,
         businessPhoneCode: data.businessPhoneCode,
+        tradeRegisterNumber: data.tradeRegisterNumber,
       };
 
       await signup(data.email, data.password, personalData, professionalData);
@@ -157,7 +159,6 @@ const Signup = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
             <div className="rounded-md shadow-sm space-y-4">
-              {/* Personal Information */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -188,7 +189,6 @@ const Signup = () => {
                 />
               </div>
 
-              {/* Email and Password */}
               <FormField
                 control={form.control}
                 name="email"
@@ -229,7 +229,6 @@ const Signup = () => {
                 )}
               />
 
-              {/* Address Information */}
               <FormField
                 control={form.control}
                 name="address"
@@ -295,7 +294,6 @@ const Signup = () => {
                 )}
               />
 
-              {/* Phone Numbers with auto-filling codes but editable */}
               <div className="space-y-4">
                 <FormItem>
                   <FormLabel>Personal Phone</FormLabel>
@@ -411,6 +409,20 @@ const Signup = () => {
                       <FormLabel>{t.signup.labels.companyName}</FormLabel>
                       <FormControl>
                         <Input placeholder={t.signup.placeholders.companyName} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="tradeRegisterNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Trade Register Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your company's trade register number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
