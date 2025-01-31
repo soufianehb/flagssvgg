@@ -131,9 +131,10 @@ const translations = {
         zipCode: "Zip code",
         city: "City",
         country: "Country",
-        phoneNumber: "Phone number",
+        phoneNumber: "Personal phone",
         businessPhone: "Business phone",
         companyName: "Company name",
+        tradeRegisterNumber: "Trade register number",
         terms: "I accept the terms of service and privacy policy"
       },
       placeholders: {
@@ -148,7 +149,9 @@ const translations = {
         country: "Select your country",
         phoneNumber: "Enter phone number",
         businessPhone: "Enter business phone",
-        companyName: "Enter company name"
+        companyName: "Enter company name",
+        tradeRegisterNumber: "Enter trade register number",
+        phoneCode: "Code"
       },
       validation: {
         required: "This field is required",
@@ -382,9 +385,10 @@ const translations = {
         zipCode: "Code postal",
         city: "Ville",
         country: "Pays",
-        phoneNumber: "Numéro de téléphone",
+        phoneNumber: "Téléphone personnel",
         businessPhone: "Téléphone professionnel",
         companyName: "Nom de l'entreprise",
+        tradeRegisterNumber: "Numéro RCS",
         terms: "J'accepte les conditions d'utilisation et la politique de confidentialité"
       },
       placeholders: {
@@ -397,9 +401,11 @@ const translations = {
         zipCode: "Entrez le code postal",
         city: "Entrez la ville",
         country: "Sélectionnez votre pays",
-        phoneNumber: "Entrez numéro de téléphone",
-        businessPhone: "Entrez téléphone professionnel",
-        companyName: "Entrez le nom de l'entreprise"
+        phoneNumber: "Entrez votre numéro",
+        businessPhone: "Entrez votre numéro professionnel",
+        companyName: "Entrez le nom de l'entreprise",
+        tradeRegisterNumber: "Entrez le numéro RCS",
+        phoneCode: "Code"
       },
       validation: {
         required: "Ce champ est requis",
@@ -636,6 +642,7 @@ const translations = {
         phoneNumber: "Número de teléfono",
         businessPhone: "Teléfono profesional",
         companyName: "Nombre de la empresa",
+        tradeRegisterNumber: "Número de registro mercantil",
         terms: "Acepto los términos de servicio y la política de privacidad"
       },
       placeholders: {
@@ -650,7 +657,9 @@ const translations = {
         country: "Seleccione su país",
         phoneNumber: "Ingrese número de teléfono",
         businessPhone: "Ingrese teléfono profesional",
-        companyName: "Ingrese nombre de la empresa"
+        companyName: "Ingrese nombre de la empresa",
+        tradeRegisterNumber: "Ingrese número de registro mercantil",
+        phoneCode: "Código"
       },
       validation: {
         required: "Este campo es requerido",
@@ -743,16 +752,16 @@ const translations = {
         }
       },
       general: {
-        title: "Información general",
-        comingSoon: "Configuración general próximamente"
+        title: "Ajustes generales",
+        comingSoon: "Ajustes generales próximamente"
       },
       security: {
-        title: "Configuración de seguridad",
-        comingSoon: "Configuración de seguridad próximamente"
+        title: "Ajustes de seguridad",
+        comingSoon: "Ajustes de seguridad próximamente"
       },
       preferences: {
         title: "Preferencias",
-        comingSoon: "Configuración de preferencias próximamente"
+        comingSoon: "Ajustes de preferencias próximamente"
       }
     }
   }
