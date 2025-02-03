@@ -27,9 +27,9 @@ export const CompanyInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
         name="tradeRegisterNumber"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Trade Register Number</FormLabel>
+            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
             <FormControl>
-              <Input placeholder="Enter your company's trade register number" {...field} />
+              <Input placeholder={t.signup.placeholders.tradeRegisterNumber} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
