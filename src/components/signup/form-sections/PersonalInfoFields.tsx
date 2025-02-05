@@ -1,9 +1,10 @@
+
 import { UseFormReturn } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/lib/i18n";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const calculatePasswordStrength = (password: string): number => {
   let strength = 0;
@@ -26,6 +27,14 @@ const getPasswordStrengthColor = (strength: number): string => {
 export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
   const { t } = useTranslation();
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Only try to focus if the ref is attached to an element
+    if (firstNameInputRef.current) {
+      firstNameInputRef.current.focus();
+    }
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -37,7 +46,16 @@ export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
             <FormItem>
               <FormLabel>{t.signup.labels.firstName}</FormLabel>
               <FormControl>
-                <Input placeholder={t.signup.placeholders.firstName} {...field} />
+                <Input 
+                  placeholder={t.signup.placeholders.firstName} 
+                  {...field} 
+                  ref={(e) => {
+                    field.ref(e);
+                    if (firstNameInputRef) {
+                      firstNameInputRef.current = e;
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
