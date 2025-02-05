@@ -22,13 +22,16 @@ const Signup = () => {
 
           <SignupForm />
 
-          <div className="mt-2 text-center text-sm">
-            <p className="text-gray-600">
-              {t.signup.buttons.login}{' '}
-              <Link to="/login" className="font-medium text-accent hover:text-accent/90">
+          <div className="mt-2 text-center">
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-gray-600">{t.signup.buttons.login}</span>
+              <Link 
+                to="/login" 
+                className="px-4 py-2 font-semibold text-accent hover:text-accent/90 transition-colors"
+              >
                 {t.nav.login}
               </Link>
-            </p>
+            </div>
           </div>
 
           <div className="text-center">
