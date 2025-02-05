@@ -4,6 +4,7 @@ import { useTranslation } from "@/lib/i18n";
 import { SignupForm } from "@/components/signup/SignupForm";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { Button } from "@/components/ui/button";
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -22,16 +23,18 @@ const Signup = () => {
 
           <SignupForm />
 
-          <div className="mt-2 text-center">
-            <div className="flex items-center justify-center space-x-2">
-              <span className="text-gray-600">{t.signup.buttons.login}</span>
-              <Link 
-                to="/login" 
-                className="px-4 py-2 font-semibold text-accent hover:text-accent/90 transition-colors"
+          <div className="space-y-4">
+            <p className="text-center text-gray-600">
+              {t.signup.buttons.login}
+            </p>
+            <Link to="/login">
+              <Button 
+                className="w-full bg-accent hover:bg-accent/90 text-white font-semibold"
+                variant="default"
               >
                 {t.nav.login}
-              </Link>
-            </div>
+              </Button>
+            </Link>
           </div>
 
           <div className="text-center">

@@ -86,7 +86,7 @@ export const SignupForm = () => {
         <div>
           <Button
             type="submit"
-            className="w-full bg-accent hover:bg-accent/90 text-white"
+            className="w-full bg-accent hover:bg-accent/90 text-white font-semibold"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? t.signup.buttons.loading : t.signup.buttons.submit}
