@@ -16,6 +16,7 @@ export const authService = {
     personalData: PersonalData,
     professionalData: ProfessionalData
   ) => {
+    // First, sign up the user with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -34,6 +35,15 @@ export const authService = {
       throw new Error('No user ID returned from signup');
     }
 
+    // Then sign in immediately to get an authenticated session
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (signInError) throw signInError;
+
+    // Now that we're authenticated, insert the professional info
     const { error: professionalError } = await supabase
       .from('professional_info')
       .insert({
@@ -51,6 +61,9 @@ export const authService = {
       });
 
     if (professionalError) throw professionalError;
+
+    // Sign out after registration since we want users to verify their email first
+    await supabase.auth.signOut();
 
     return authData;
   },
