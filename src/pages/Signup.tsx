@@ -27,9 +27,6 @@ const Signup = () => {
             <p className="text-center text-gray-600">
               {t.signup.buttons.login}
             </p>
-            <p className="text-center text-gray-600">
-              {t.signup.buttons.login}
-            </p>
             <Link to="/login">
               <Button 
                 className="w-full bg-accent hover:bg-accent/90 text-white font-semibold"
