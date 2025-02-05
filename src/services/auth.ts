@@ -35,12 +35,12 @@ export const authService = {
       throw new Error('No user ID returned from signup');
     }
 
-    // Since we're using RLS, we need to be authenticated to insert professional info
-    // The user is automatically authenticated after signup
-    const { error: professionalError } = await supabase
-      .from('professional_info')
-      .insert({
-        user_id: authData.user.id,
+    // Update the profile with professional info
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({
+        first_name: personalData.firstName,
+        last_name: personalData.lastName,
         address: professionalData.address,
         zip_code: professionalData.zipCode,
         city: professionalData.city,
@@ -51,11 +51,12 @@ export const authService = {
         phone_code: professionalData.phoneCode,
         business_phone_code: professionalData.businessPhoneCode,
         trade_register_number: professionalData.tradeRegisterNumber,
-      });
+      })
+      .eq('id', authData.user.id);
 
-    if (professionalError) {
-      console.error('Error inserting professional info:', professionalError);
-      throw professionalError;
+    if (profileError) {
+      console.error('Error updating profile:', profileError);
+      throw profileError;
     }
 
     // Sign out after registration since we want users to verify their email first

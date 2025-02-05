@@ -39,89 +39,60 @@ export type Database = {
         }
         Relationships: []
       }
-      professional_info: {
-        Row: {
-          address: string
-          business_phone: string | null
-          business_phone_code: string | null
-          city: string
-          company_name: string
-          country: string
-          created_at: string
-          id: string
-          phone_code: string | null
-          phone_number: string | null
-          trade_register_number: string | null
-          updated_at: string
-          user_id: string
-          zip_code: string
-        }
-        Insert: {
-          address: string
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city: string
-          company_name: string
-          country: string
-          created_at?: string
-          id?: string
-          phone_code?: string | null
-          phone_number?: string | null
-          trade_register_number?: string | null
-          updated_at?: string
-          user_id: string
-          zip_code: string
-        }
-        Update: {
-          address?: string
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city?: string
-          company_name?: string
-          country?: string
-          created_at?: string
-          id?: string
-          phone_code?: string | null
-          phone_number?: string | null
-          trade_register_number?: string | null
-          updated_at?: string
-          user_id?: string
-          zip_code?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "professional_info_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       profiles: {
         Row: {
+          address: string | null
+          business_phone: string | null
+          business_phone_code: string | null
+          city: string | null
+          company_name: string | null
+          country: string | null
           created_at: string
           email: string
           first_name: string | null
           id: string
           last_name: string | null
+          phone_code: string | null
+          phone_number: string | null
+          trade_register_number: string | null
           updated_at: string
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
+          business_phone?: string | null
+          business_phone_code?: string | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
           created_at?: string
           email: string
           first_name?: string | null
           id: string
           last_name?: string | null
+          phone_code?: string | null
+          phone_number?: string | null
+          trade_register_number?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
+          business_phone?: string | null
+          business_phone_code?: string | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
           created_at?: string
           email?: string
           first_name?: string | null
           id?: string
           last_name?: string | null
+          phone_code?: string | null
+          phone_number?: string | null
+          trade_register_number?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Relationships: []
       }
