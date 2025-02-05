@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (error) {
         console.error('Login error:', error);
         
-        // Handle specific error cases
         if (error.message.includes('Email not confirmed')) {
           toast({
             variant: "destructive",
@@ -98,7 +97,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: any) {
       console.error('Login error caught:', error);
-      // Error already handled above
       throw error;
     }
   };
