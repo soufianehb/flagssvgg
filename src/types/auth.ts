@@ -1,6 +1,4 @@
-
 import type { User } from '@supabase/supabase-js';
-import type { PersonalData, ProfessionalData } from '@/types/signup';
 
 export interface AuthContextType {
   isAuthenticated: boolean;
@@ -9,8 +7,7 @@ export interface AuthContextType {
   signup: (
     email: string, 
     password: string, 
-    personalData: PersonalData,
-    professionalData: ProfessionalData
+    metadata: Record<string, any>
   ) => Promise<void>;
   logout: () => Promise<void>;
 }
