@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         if (!data.user.email_confirmed_at) {
           toast({
-            variant: "warning",
+            variant: "destructive",
             title: "Email Not Verified",
             description: "Please check your email and verify your account before logging in.",
           });
