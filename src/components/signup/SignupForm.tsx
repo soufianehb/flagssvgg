@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -40,25 +39,23 @@ export const SignupForm = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      const personalData = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-      };
-
-      const professionalData = {
+      // Create the user metadata object with all fields
+      const userMetadata = {
+        first_name: data.firstName,
+        last_name: data.lastName,
         address: data.address,
-        zipCode: data.zipCode,
+        zip_code: data.zipCode,
         city: data.city,
         country: data.country,
-        companyName: data.companyName,
-        phoneNumber: data.phoneNumber,
-        businessPhone: data.businessPhone,
-        phoneCode: data.phoneCode,
-        businessPhoneCode: data.businessPhoneCode,
-        tradeRegisterNumber: data.tradeRegisterNumber,
+        company_name: data.companyName,
+        phone_number: data.phoneNumber,
+        business_phone: data.businessPhone,
+        phone_code: data.phoneCode,
+        business_phone_code: data.businessPhoneCode,
+        trade_register_number: data.tradeRegisterNumber,
       };
 
-      await signup(data.email, data.password, personalData, professionalData);
+      await signup(data.email, data.password, userMetadata);
       
       toast({
         title: t.signup.messages.success.title,

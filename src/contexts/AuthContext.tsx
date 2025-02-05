@@ -1,11 +1,9 @@
-
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from '@/hooks/useAuthState';
 import { authService } from '@/services/auth';
 import type { AuthContextType } from '@/types/auth';
-import type { PersonalData, ProfessionalData } from '@/types/signup';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -72,11 +70,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signup = async (
     email: string, 
     password: string, 
-    personalData: PersonalData,
-    professionalData: ProfessionalData
+    metadata: Record<string, any>
   ) => {
     try {
-      await authService.signup(email, password, personalData, professionalData);
+      const { data, error } = await authService.signup(email, password, metadata);
+
+      if (error) throw error;
 
       toast({
         title: "Signup Successful",
