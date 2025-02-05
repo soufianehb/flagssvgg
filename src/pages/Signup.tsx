@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/lib/i18n";
 import { SignupForm } from "@/components/signup/SignupForm";
@@ -17,15 +18,18 @@ const Signup = () => {
             <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
               {t.signup.title}
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
+          </div>
+
+          <SignupForm />
+
+          <div className="mt-2 text-center text-sm">
+            <p className="text-gray-600">
               {t.signup.buttons.login}{' '}
               <Link to="/login" className="font-medium text-accent hover:text-accent/90">
                 {t.nav.login}
               </Link>
             </p>
           </div>
-
-          <SignupForm />
 
           <div className="text-center">
             <Link

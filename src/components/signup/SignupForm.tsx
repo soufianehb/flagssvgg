@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -85,7 +86,7 @@ export const SignupForm = () => {
         <div>
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-accent hover:bg-accent/90 text-white"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? t.signup.buttons.loading : t.signup.buttons.submit}
