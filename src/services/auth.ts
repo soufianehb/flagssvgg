@@ -35,15 +35,8 @@ export const authService = {
       throw new Error('No user ID returned from signup');
     }
 
-    // Then sign in immediately to get an authenticated session
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (signInError) throw signInError;
-
-    // Now that we're authenticated, insert the professional info
+    // Since we're using RLS, we need to be authenticated to insert professional info
+    // The user is automatically authenticated after signup
     const { error: professionalError } = await supabase
       .from('professional_info')
       .insert({
@@ -60,7 +53,10 @@ export const authService = {
         trade_register_number: professionalData.tradeRegisterNumber,
       });
 
-    if (professionalError) throw professionalError;
+    if (professionalError) {
+      console.error('Error inserting professional info:', professionalError);
+      throw professionalError;
+    }
 
     // Sign out after registration since we want users to verify their email first
     await supabase.auth.signOut();
