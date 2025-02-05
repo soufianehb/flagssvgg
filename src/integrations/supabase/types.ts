@@ -51,6 +51,7 @@ export type Database = {
           id: string
           phone_code: string | null
           phone_number: string | null
+          trade_register_number: string | null
           updated_at: string
           user_id: string
           zip_code: string
@@ -66,6 +67,7 @@ export type Database = {
           id?: string
           phone_code?: string | null
           phone_number?: string | null
+          trade_register_number?: string | null
           updated_at?: string
           user_id: string
           zip_code: string
@@ -81,6 +83,7 @@ export type Database = {
           id?: string
           phone_code?: string | null
           phone_number?: string | null
+          trade_register_number?: string | null
           updated_at?: string
           user_id?: string
           zip_code?: string
