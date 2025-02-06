@@ -71,19 +71,22 @@ const Login = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    console.log("Login attempt started with email:", values.email);
     setIsLoading(true);
     try {
-      console.log("Login attempt with:", values);
-      login(values.email, values.password);
+      await login(values.email, values.password);
+      console.log("Login successful");
       toast({
         title: t.login.success,
-        description: t.login.success,
+        description: t.login.successMessage,
       });
-    } catch (error) {
+      navigate('/');
+    } catch (error: any) {
+      console.error("Login error:", error);
       toast({
         variant: "destructive",
         title: t.login.error,
-        description: t.login.error,
+        description: error.message || t.login.errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -191,7 +194,7 @@ const Login = () => {
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
-                            aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                            aria-label={showPassword ? t.login.password.hide : t.login.password.show}
                           >
                             {showPassword ? (
                               <EyeOff className="h-5 w-5" aria-hidden="true" />
@@ -213,7 +216,7 @@ const Login = () => {
                             aria-label={t.login.password.strength}
                           />
                           <p className="text-xs text-gray-500" id="password-strength">
-                            {t.login.password.strength} {passwordStrength}%
+                            {t.login.password.strength}: {passwordStrength}%
                           </p>
                         </div>
                       )}
