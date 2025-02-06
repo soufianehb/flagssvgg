@@ -1,20 +1,41 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { authService } from '@/services/auth';
 import type { AuthContextType } from '@/types/auth';
+import { User } from '@supabase/supabase-js';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Check for existing session
+    authService.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+      setUser(session?.user ?? null);
+    });
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = authService.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const login = async (email: string, password: string) => {
     try {
-      // Implement your own login logic here
-      console.log('Login attempt:', { email });
+      const { data } = await authService.login(email, password);
+      setIsAuthenticated(!!data.session);
+      setUser(data.session?.user ?? null);
       
       toast({
         title: "Success",
@@ -39,12 +60,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     metadata: Record<string, any>
   ) => {
     try {
-      // Implement your own signup logic here
-      console.log('Signup attempt:', { email, metadata });
+      const { data } = await authService.signup(email, password, metadata);
       
       toast({
         title: "Signup Successful",
-        description: "Account created successfully.",
+        description: "Account created successfully. Please check your email for verification.",
       });
       
       navigate('/login');
@@ -61,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      // Implement your own logout logic here
+      await authService.logout();
       setIsAuthenticated(false);
       setUser(null);
       
