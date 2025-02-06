@@ -39,63 +39,6 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
-        Row: {
-          address: string | null
-          business_phone: string | null
-          business_phone_code: string | null
-          city: string | null
-          company_name: string | null
-          country: string | null
-          created_at: string
-          email: string
-          first_name: string | null
-          id: string
-          last_name: string | null
-          phone_code: string | null
-          phone_number: string | null
-          trade_register_number: string | null
-          updated_at: string
-          zip_code: string | null
-        }
-        Insert: {
-          address?: string | null
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city?: string | null
-          company_name?: string | null
-          country?: string | null
-          created_at?: string
-          email: string
-          first_name?: string | null
-          id: string
-          last_name?: string | null
-          phone_code?: string | null
-          phone_number?: string | null
-          trade_register_number?: string | null
-          updated_at?: string
-          zip_code?: string | null
-        }
-        Update: {
-          address?: string | null
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city?: string | null
-          company_name?: string | null
-          country?: string | null
-          created_at?: string
-          email?: string
-          first_name?: string | null
-          id?: string
-          last_name?: string | null
-          phone_code?: string | null
-          phone_number?: string | null
-          trade_register_number?: string | null
-          updated_at?: string
-          zip_code?: string | null
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
