@@ -25,14 +25,14 @@ export const authService = {
 
     if (authError) throw authError;
 
-    // Wait a short moment to ensure the user is created in auth.users
+    // Wait for the auth session to be established
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Create profile after successful signup
     if (authData.user) {
       const { error: profileError } = await supabase
         .from('profiles')
-        .upsert([
+        .insert([
           {
             id: authData.user.id,
             user_id: authData.user.id,
@@ -50,10 +50,7 @@ export const authService = {
             zip_code: metadata.zip_code,
             trade_register_number: metadata.trade_register_number
           }
-        ],
-        {
-          onConflict: 'id'
-        });
+        ]);
 
       if (profileError) throw profileError;
     }
