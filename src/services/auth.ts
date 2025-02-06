@@ -28,7 +28,14 @@ export const authService = {
     // Wait for the auth session to be established
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Create profile after successful signup
+    // Get the current session to ensure we have a valid session
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      throw new Error("No valid session after signup");
+    }
+
+    // Create profile after successful signup and session establishment
     if (authData.user) {
       const { error: profileError } = await supabase
         .from('profiles')
