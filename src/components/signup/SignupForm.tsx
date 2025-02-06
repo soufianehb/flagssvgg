@@ -10,12 +10,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/lib/i18n";
 import { toast } from "@/components/ui/use-toast";
 import { signupSchema } from "./validation/signupSchema";
+import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 export const SignupForm = () => {
   const { t } = useTranslation();
   const { signup } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -61,6 +64,9 @@ export const SignupForm = () => {
         title: t.signup.messages.success.title,
         description: t.signup.messages.success.description,
       });
+
+      // Redirect to dashboard or home after successful signup
+      navigate("/");
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({
@@ -86,7 +92,14 @@ export const SignupForm = () => {
             className="w-full bg-accent hover:bg-accent/90 text-white font-semibold"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? t.signup.buttons.loading : t.signup.buttons.submit}
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t.signup.buttons.loading}
+              </>
+            ) : (
+              t.signup.buttons.submit
+            )}
           </Button>
         </div>
       </form>
