@@ -1,11 +1,9 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// Implement your own auth service here
 export const authService = {
   login: async (email: string, password: string) => {
-    return await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Implement your own login logic
+    console.log('Login attempt:', email);
+    return { data: null, error: null };
   },
 
   signup: async (
@@ -13,25 +11,29 @@ export const authService = {
     password: string, 
     metadata: Record<string, any>
   ) => {
-    return await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-        emailRedirectTo: `${window.location.origin}/login`,
-      },
-    });
+    // Implement your own signup logic
+    console.log('Signup attempt:', { email, metadata });
+    return { data: null, error: null };
   },
 
   logout: async () => {
-    return await supabase.auth.signOut();
+    // Implement your own logout logic
+    return { error: null };
   },
 
   getSession: async () => {
-    return await supabase.auth.getSession();
+    // Implement your own session management
+    return { data: { session: null } };
   },
 
   onAuthStateChange: (callback: (event: any, session: any) => void) => {
-    return supabase.auth.onAuthStateChange(callback);
+    // Implement your own auth state management
+    return {
+      data: {
+        subscription: {
+          unsubscribe: () => {}
+        }
+      }
+    };
   }
 };

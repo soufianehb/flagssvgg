@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -14,9 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const generalFormSchema = z.object({
@@ -40,8 +37,7 @@ type GeneralFormValues = z.infer<typeof generalFormSchema>;
 export function GeneralSettings() {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
@@ -62,77 +58,12 @@ export function GeneralSettings() {
     },
   });
 
-  useEffect(() => {
-    async function loadProfile() {
-      if (!user?.id) return;
-
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          // Map database fields to form fields
-          form.reset({
-            firstName: data.first_name || "",
-            lastName: data.last_name || "",
-            email: data.email || "",
-            phoneNumber: data.phone_number || "",
-            phoneCode: data.phone_code || "",
-            businessPhone: data.business_phone || "",
-            businessPhoneCode: data.business_phone_code || "",
-            company_name: data.company_name || "",
-            address: data.address || "",
-            city: data.city || "",
-            country: data.country || "",
-            zip_code: data.zip_code || "",
-            trade_register_number: data.trade_register_number || "",
-          });
-        }
-      } catch (error) {
-        console.error('Error loading profile:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load profile data. Please try refreshing the page.",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadProfile();
-  }, [user, form, toast]);
-
   async function onSubmit(data: GeneralFormValues) {
+    setLoading(true);
     try {
-      if (!user?.id) throw new Error("No user ID found");
-
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          first_name: data.firstName,
-          last_name: data.lastName,
-          email: data.email,
-          phone_number: data.phoneNumber,
-          phone_code: data.phoneCode,
-          business_phone: data.businessPhone,
-          business_phone_code: data.businessPhoneCode,
-          company_name: data.company_name,
-          address: data.address,
-          city: data.city,
-          country: data.country,
-          zip_code: data.zip_code,
-          trade_register_number: data.trade_register_number,
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
+      // Here you can implement your own save logic without Supabase
+      console.log('Form data:', data);
+      
       toast({
         title: "Settings updated",
         description: "Your general settings have been updated successfully.",
@@ -144,6 +75,8 @@ export function GeneralSettings() {
         title: "Error",
         description: error.message || "Failed to update profile. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
