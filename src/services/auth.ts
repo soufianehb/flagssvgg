@@ -29,10 +29,10 @@ export const authService = {
     if (authData.user) {
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert([
+        .upsert([
           {
-            id: authData.user.id, // Use this as primary key
-            user_id: authData.user.id, // This matches the RLS policy
+            id: authData.user.id, // This matches the RLS policy's user_id check
+            user_id: authData.user.id,
             email: email,
             first_name: metadata.first_name,
             last_name: metadata.last_name,
@@ -47,7 +47,11 @@ export const authService = {
             zip_code: metadata.zip_code,
             trade_register_number: metadata.trade_register_number
           }
-        ]);
+        ], 
+        { 
+          onConflict: 'id',
+          ignoreDuplicates: false
+        });
 
       if (profileError) throw profileError;
     }
