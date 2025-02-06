@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -17,7 +18,8 @@ export const authService = {
       email,
       password,
       options: {
-        data: metadata
+        data: metadata,
+        emailRedirectTo: window.location.origin,
       }
     });
 
@@ -29,7 +31,8 @@ export const authService = {
         .from('profiles')
         .insert([
           {
-            user_id: authData.user.id,
+            id: authData.user.id, // Use this as primary key
+            user_id: authData.user.id, // This matches the RLS policy
             email: email,
             first_name: metadata.first_name,
             last_name: metadata.last_name,
