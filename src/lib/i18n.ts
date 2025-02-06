@@ -89,14 +89,18 @@ const translations = {
           uppercase: "Password must contain at least one uppercase letter",
           number: "Password must contain at least one number"
         },
-        strength: "Password strength:",
-        forgot: "Forgot password?"
+        strength: "Password strength",
+        forgot: "Forgot password?",
+        show: "Show password",
+        hide: "Hide password"
       },
       rememberMe: "Remember me",
       submit: "Sign in",
       loading: "Signing in...",
       success: "Welcome!",
-      error: "Please check your credentials and try again",
+      successMessage: "You have successfully logged in",
+      error: "Login Failed",
+      errorMessage: "Invalid email or password",
       noAccount: "Don't have an account?",
       signUp: "Sign up",
       legal: {
@@ -343,14 +347,18 @@ const translations = {
           uppercase: "Le mot de passe doit contenir au moins une majuscule",
           number: "Le mot de passe doit contenir au moins un chiffre"
         },
-        strength: "Force du mot de passe :",
-        forgot: "Mot de passe oublié ?"
+        strength: "Force du mot de passe",
+        forgot: "Mot de passe oublié ?",
+        show: "Afficher le mot de passe",
+        hide: "Masquer le mot de passe"
       },
       rememberMe: "Se souvenir de moi",
       submit: "Se connecter",
       loading: "Connexion en cours...",
       success: "Bienvenue !",
-      error: "Veuillez vérifier vos identifiants et réessayer",
+      successMessage: "Vous êtes connecté avec succès",
+      error: "Échec de la connexion",
+      errorMessage: "Email ou mot de passe invalide",
       noAccount: "Vous n'avez pas de compte ?",
       signUp: "S'inscrire",
       legal: {
@@ -401,8 +409,8 @@ const translations = {
         zipCode: "Entrez le code postal",
         city: "Entrez la ville",
         country: "Sélectionnez votre pays",
-        phoneNumber: "Entrez votre numéro",
-        businessPhone: "Entrez votre numéro professionnel",
+        phoneNumber: "Entrez numéro de téléphone",
+        businessPhone: "Entrez numéro professionnel",
         companyName: "Entrez le nom de l'entreprise",
         tradeRegisterNumber: "Entrez le numéro RCS",
         phoneCode: "Code"
@@ -597,14 +605,18 @@ const translations = {
           uppercase: "La contraseña debe contener al menos una mayúscula",
           number: "La contraseña debe contener al menos un número"
         },
-        strength: "Fuerza de la contraseña:",
-        forgot: "¿Olvidó su contraseña?"
+        strength: "Fuerza de la contraseña",
+        forgot: "¿Olvidó su contraseña?",
+        show: "Mostrar contraseña",
+        hide: "Ocultar contraseña"
       },
       rememberMe: "Recordarme",
       submit: "Iniciar sesión",
       loading: "Iniciando sesión...",
       success: "¡Bienvenido!",
-      error: "Por favor verifique sus credenciales e intente nuevamente",
+      successMessage: "Has iniciado sesión correctamente",
+      error: "Error de inicio de sesión",
+      errorMessage: "Correo electrónico o contraseña inválidos",
       noAccount: "¿No tiene una cuenta?",
       signUp: "Registrarse",
       legal: {
