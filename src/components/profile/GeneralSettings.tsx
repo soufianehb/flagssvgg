@@ -14,9 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const generalFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -39,8 +40,9 @@ type GeneralFormValues = z.infer<typeof generalFormSchema>;
 export function GeneralSettings() {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const [profileData, setProfileData] = useState<any>(null);
 
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
@@ -61,11 +63,81 @@ export function GeneralSettings() {
     },
   });
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        if (!user?.email) return;
+
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('email', user.email)
+          .single();
+
+        if (error) throw error;
+
+        if (data) {
+          form.reset({
+            firstName: data.first_name || "",
+            lastName: data.last_name || "",
+            email: data.email || user.email || "",
+            phoneNumber: data.phone_number || "",
+            phoneCode: data.phone_code || "",
+            businessPhone: data.business_phone || "",
+            businessPhoneCode: data.business_phone_code || "",
+            company_name: data.company_name || "",
+            address: data.address || "",
+            city: data.city || "",
+            country: data.country || "",
+            zip_code: data.zip_code || "",
+            trade_register_number: data.trade_register_number || "",
+          });
+          setProfileData(data);
+        }
+      } catch (error: any) {
+        console.error('Error fetching profile:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load profile data. Please try again.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, [user, form, toast]);
+
   async function onSubmit(data: GeneralFormValues) {
-    setLoading(true);
     try {
-      // TODO: Implement profile update logic with Supabase
-      console.log('Form data:', data);
+      setLoading(true);
+      
+      if (!user?.email || !profileData?.id) {
+        throw new Error("User profile not found");
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          first_name: data.firstName,
+          last_name: data.lastName,
+          phone_number: data.phoneNumber,
+          phone_code: data.phoneCode,
+          business_phone: data.businessPhone,
+          business_phone_code: data.businessPhoneCode,
+          company_name: data.company_name,
+          address: data.address,
+          city: data.city,
+          country: data.country,
+          zip_code: data.zip_code,
+          trade_register_number: data.trade_register_number,
+          is_profile_complete: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', profileData.id);
+
+      if (error) throw error;
       
       toast({
         title: "Success",
@@ -130,7 +202,7 @@ export function GeneralSettings() {
             <FormItem>
               <FormLabel>{t.signup.labels.email}</FormLabel>
               <FormControl>
-                <Input {...field} type="email" />
+                <Input {...field} type="email" readOnly />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -252,10 +324,10 @@ export function GeneralSettings() {
 
         <Button 
           type="submit" 
-          disabled={form.formState.isSubmitting}
+          disabled={loading}
           className="w-full"
         >
-          {form.formState.isSubmitting ? (
+          {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Saving...
