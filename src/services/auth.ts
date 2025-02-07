@@ -14,30 +14,22 @@ export const authService = {
   },
 
   signup: async (email: string, password: string, profileData: Record<string, any>) => {
-    // First, create a pending profile
-    const { error: pendingProfileError } = await supabase
-      .from('pending_profiles')
-      .insert([
-        {
-          email,
-          first_name: profileData.first_name,
-          last_name: profileData.last_name,
-          phone_number: profileData.phone_number,
-          phone_code: profileData.phone_code,
-          business_phone: profileData.business_phone,
-          business_phone_code: profileData.business_phone_code,
-          company_name: profileData.company_name,
-          address: profileData.address,
-          city: profileData.city,
-          country: profileData.country,
-          zip_code: profileData.zip_code,
-          trade_register_number: profileData.trade_register_number
-        }
-      ]);
+    // Create the profile directly in the profiles table with pending status
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([{
+        email,
+        first_name: profileData.first_name,
+        last_name: profileData.last_name,
+        company_name: profileData.company_name,
+        is_profile_complete: false,
+        status: 'pending',
+        metadata: profileData.metadata || {}
+      }]);
 
-    if (pendingProfileError) {
-      console.error('Error creating pending profile:', pendingProfileError);
-      throw pendingProfileError;
+    if (profileError) {
+      console.error('Error creating profile:', profileError);
+      throw profileError;
     }
 
     // Then proceed with the signup
