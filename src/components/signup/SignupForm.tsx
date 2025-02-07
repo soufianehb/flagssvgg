@@ -63,7 +63,7 @@ export const SignupForm = () => {
       
       toast({
         title: t.signup.messages.success.title,
-        description: t.signup.messages.verification,
+        description: t.signup.messages.success.description,
       });
 
       // Redirect to login page after successful signup
@@ -71,17 +71,12 @@ export const SignupForm = () => {
     } catch (error: any) {
       console.error('Signup error:', error);
       
-      // More specific error messages based on the error type
-      const errorMessage = error.message.includes('pending_profiles') 
-        ? t.signup.messages.error.profile
-        : error.message.includes('auth') 
-          ? t.signup.messages.error.auth
-          : t.signup.messages.error.description;
+      let errorDescription = t.signup.messages.error.description;
 
       toast({
         variant: "destructive",
         title: t.signup.messages.error.title,
-        description: errorMessage,
+        description: errorDescription,
       });
     }
   };
