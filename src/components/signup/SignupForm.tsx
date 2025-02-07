@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -42,8 +43,8 @@ export const SignupForm = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      // Create the user metadata object with all fields
-      const userMetadata = {
+      // Create the profile data object
+      const profileData = {
         first_name: data.firstName,
         last_name: data.lastName,
         address: data.address,
@@ -58,21 +59,29 @@ export const SignupForm = () => {
         trade_register_number: data.tradeRegisterNumber,
       };
 
-      await signup(data.email, data.password, userMetadata);
+      await signup(data.email, data.password, profileData);
       
       toast({
         title: t.signup.messages.success.title,
-        description: t.signup.messages.success.description,
+        description: t.signup.messages.verification,
       });
 
-      // Redirect to dashboard or home after successful signup
-      navigate("/");
+      // Redirect to login page after successful signup
+      navigate("/login");
     } catch (error: any) {
       console.error('Signup error:', error);
+      
+      // More specific error messages based on the error type
+      const errorMessage = error.message.includes('pending_profiles') 
+        ? t.signup.messages.error.profile
+        : error.message.includes('auth') 
+          ? t.signup.messages.error.auth
+          : t.signup.messages.error.description;
+
       toast({
         variant: "destructive",
         title: t.signup.messages.error.title,
-        description: error.message || t.signup.messages.error.description,
+        description: errorMessage,
       });
     }
   };

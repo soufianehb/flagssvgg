@@ -13,45 +13,44 @@ export const authService = {
     return { data, error: null };
   },
 
-  signup: async (email: string, password: string, metadata: Record<string, any>) => {
+  signup: async (email: string, password: string, profileData: Record<string, any>) => {
+    // First, create a pending profile
+    const { error: pendingProfileError } = await supabase
+      .from('pending_profiles')
+      .insert([
+        {
+          email,
+          first_name: profileData.first_name,
+          last_name: profileData.last_name,
+          phone_number: profileData.phone_number,
+          phone_code: profileData.phone_code,
+          business_phone: profileData.business_phone,
+          business_phone_code: profileData.business_phone_code,
+          company_name: profileData.company_name,
+          address: profileData.address,
+          city: profileData.city,
+          country: profileData.country,
+          zip_code: profileData.zip_code,
+          trade_register_number: profileData.trade_register_number
+        }
+      ]);
+
+    if (pendingProfileError) {
+      console.error('Error creating pending profile:', pendingProfileError);
+      throw pendingProfileError;
+    }
+
+    // Then proceed with the signup
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: metadata,
         emailRedirectTo: window.location.origin,
       }
     });
 
     if (authError) throw authError;
     
-    // Create profile immediately after signup
-    if (authData.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: authData.user.id,
-            user_id: authData.user.id,
-            email: email,
-            first_name: metadata.first_name,
-            last_name: metadata.last_name,
-            phone_number: metadata.phone_number,
-            phone_code: metadata.phone_code,
-            business_phone: metadata.business_phone,
-            business_phone_code: metadata.business_phone_code,
-            company_name: metadata.company_name,
-            address: metadata.address,
-            city: metadata.city,
-            country: metadata.country,
-            zip_code: metadata.zip_code,
-            trade_register_number: metadata.trade_register_number
-          }
-        ]);
-
-      if (profileError) throw profileError;
-    }
-
     return { data: authData, error: null };
   },
 
