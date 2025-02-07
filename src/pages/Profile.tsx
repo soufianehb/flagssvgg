@@ -10,18 +10,30 @@ import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { SecuritySettings } from "@/components/profile/SecuritySettings";
 import { PreferenceSettings } from "@/components/profile/PreferenceSettings";
 import { UserListings } from "@/components/profile/UserListings";
+import { Loader2 } from "lucide-react";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Only redirect if we're sure the user is not authenticated
+    if (isAuthenticated === false) {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
+  // Show loading state while we determine auth status
+  if (isAuthenticated === undefined) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-accent" />
+      </div>
+    );
+  }
+
+  // Only render content when we're sure the user is authenticated
   if (!isAuthenticated) {
     return null;
   }

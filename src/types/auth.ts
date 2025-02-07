@@ -1,7 +1,8 @@
+
 import type { User } from '@supabase/supabase-js';
 
 export interface AuthContextType {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (
