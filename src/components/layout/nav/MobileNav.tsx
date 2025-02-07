@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Menu, Search, User, LogOut, X, Check } from "lucide-react";
@@ -34,7 +35,7 @@ export const MobileNav = () => {
   return (
     <>
       <div className="flex items-center gap-2 md:hidden">
-        <button className="flex items-center gap-1 rounded-lg bg-[#B08A38] px-3 py-1.5 text-sm text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
+        <button className="flex items-center gap-1 rounded-lg bg-[#B08A38] px-3 py-1.5 text-sm text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98] ml-2">
           <span>{t.nav.post}</span>
           <ArrowRight className="h-4 w-4" />
         </button>
