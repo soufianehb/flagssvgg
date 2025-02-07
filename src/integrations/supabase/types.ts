@@ -51,6 +51,7 @@ export type Database = {
           email: string
           first_name: string
           id: string
+          is_profile_complete: boolean | null
           last_name: string
           metadata: Json
           phone_code: string | null
@@ -70,6 +71,7 @@ export type Database = {
           email: string
           first_name: string
           id?: string
+          is_profile_complete?: boolean | null
           last_name: string
           metadata?: Json
           phone_code?: string | null
@@ -89,6 +91,7 @@ export type Database = {
           email?: string
           first_name?: string
           id?: string
+          is_profile_complete?: boolean | null
           last_name?: string
           metadata?: Json
           phone_code?: string | null
@@ -111,6 +114,7 @@ export type Database = {
           email: string
           first_name: string
           id: string
+          is_profile_complete: boolean | null
           last_name: string
           phone_code: string | null
           phone_number: string | null
@@ -130,6 +134,7 @@ export type Database = {
           email: string
           first_name: string
           id?: string
+          is_profile_complete?: boolean | null
           last_name: string
           phone_code?: string | null
           phone_number?: string | null
@@ -149,6 +154,7 @@ export type Database = {
           email?: string
           first_name?: string
           id?: string
+          is_profile_complete?: boolean | null
           last_name?: string
           phone_code?: string | null
           phone_number?: string | null
