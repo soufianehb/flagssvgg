@@ -19,6 +19,9 @@ const Signup = () => {
             <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
               {t.signup.title}
             </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              {t.signup.subtitle}
+            </p>
           </div>
 
           <SignupForm />
@@ -26,8 +29,6 @@ const Signup = () => {
           <div className="space-y-4">
             <p className="text-center text-gray-600">
               {t.signup.buttons.login}
-            </p>
-            <p>
             </p>
             <Link to="/login">
               <Button 

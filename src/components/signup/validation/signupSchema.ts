@@ -1,3 +1,4 @@
+
 import * as z from "zod";
 
 export const signupSchema = z.object({
@@ -10,14 +11,5 @@ export const signupSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number"),
-  phoneNumber: z.string().optional(),
-  phoneCode: z.string().optional(),
-  businessPhone: z.string().optional(),
-  businessPhoneCode: z.string().optional(),
   companyName: z.string().min(1, "Company name is required"),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  zipCode: z.string().optional(),
-  tradeRegisterNumber: z.string().optional(),
 });
