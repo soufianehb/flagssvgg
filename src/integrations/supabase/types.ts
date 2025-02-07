@@ -50,7 +50,6 @@ export type Database = {
           created_at: string
           email: string
           first_name: string
-          id: string
           is_profile_complete: boolean | null
           last_name: string
           metadata: Json
@@ -59,7 +58,7 @@ export type Database = {
           status: string
           trade_register_number: string | null
           updated_at: string
-          user_id: string | null
+          user_id: string
           zip_code: string | null
         }
         Insert: {
@@ -72,7 +71,6 @@ export type Database = {
           created_at?: string
           email: string
           first_name: string
-          id?: string
           is_profile_complete?: boolean | null
           last_name: string
           metadata?: Json
@@ -81,7 +79,7 @@ export type Database = {
           status?: string
           trade_register_number?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id: string
           zip_code?: string | null
         }
         Update: {
@@ -94,7 +92,6 @@ export type Database = {
           created_at?: string
           email?: string
           first_name?: string
-          id?: string
           is_profile_complete?: boolean | null
           last_name?: string
           metadata?: Json
@@ -103,7 +100,7 @@ export type Database = {
           status?: string
           trade_register_number?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
           zip_code?: string | null
         }
         Relationships: []

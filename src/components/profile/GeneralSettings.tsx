@@ -66,12 +66,12 @@ export function GeneralSettings() {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        if (!user?.email) return;
+        if (!user?.id) return;
 
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('email', user.email)
+          .eq('user_id', user.id)
           .maybeSingle();
 
         if (error) throw error;
@@ -118,7 +118,7 @@ export function GeneralSettings() {
     try {
       setLoading(true);
       
-      if (!user?.email) {
+      if (!user?.id) {
         throw new Error("User not authenticated");
       }
 
@@ -137,29 +137,14 @@ export function GeneralSettings() {
         trade_register_number: data.trade_register_number,
         is_profile_complete: true,
         updated_at: new Date().toISOString(),
-        status: 'active',
       };
 
-      let response;
-      
-      if (profileData?.id) {
-        // Update existing profile
-        response = await supabase
-          .from('profiles')
-          .update(updateData)
-          .eq('id', profileData.id);
-      } else {
-        // Insert new profile
-        response = await supabase
-          .from('profiles')
-          .insert({
-            ...updateData,
-            email: user.email,
-            user_id: user.id,
-          });
-      }
+      const { error } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('user_id', user.id);
 
-      if (response.error) throw response.error;
+      if (error) throw error;
       
       toast({
         title: "Success",
