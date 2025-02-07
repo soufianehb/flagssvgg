@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -15,6 +16,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const generalFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -38,13 +40,14 @@ export function GeneralSettings() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      email: user?.email || "",
       phoneNumber: "",
       phoneCode: "",
       businessPhone: "",
@@ -61,12 +64,12 @@ export function GeneralSettings() {
   async function onSubmit(data: GeneralFormValues) {
     setLoading(true);
     try {
-      // Here you can implement your own save logic without Supabase
+      // TODO: Implement profile update logic with Supabase
       console.log('Form data:', data);
       
       toast({
-        title: "Settings updated",
-        description: "Your general settings have been updated successfully.",
+        title: "Success",
+        description: "Your profile has been updated successfully.",
       });
     } catch (error: any) {
       console.error('Error updating profile:', error);

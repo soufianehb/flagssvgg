@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -13,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 const preferencesFormSchema = z.object({
   emailNotifications: z.boolean(),
@@ -35,12 +37,22 @@ export function PreferenceSettings() {
     },
   });
 
-  function onSubmit(data: PreferencesFormValues) {
-    toast({
-      title: "Preferences updated",
-      description: "Your preferences have been updated successfully.",
-    });
-    console.log(data);
+  async function onSubmit(data: PreferencesFormValues) {
+    try {
+      // TODO: Implement preferences update logic with Supabase
+      console.log(data);
+      
+      toast({
+        title: "Success",
+        description: "Your preferences have been updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update preferences. Please try again.",
+      });
+    }
   }
 
   return (
@@ -106,7 +118,20 @@ export function PreferenceSettings() {
             </FormItem>
           )}
         />
-        <Button type="submit">Save Preferences</Button>
+        <Button 
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          className="w-full"
+        >
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            'Save Preferences'
+          )}
+        </Button>
       </form>
     </Form>
   );

@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -13,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 const securityFormSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -38,12 +40,24 @@ export function SecuritySettings() {
     },
   });
 
-  function onSubmit(data: SecurityFormValues) {
-    toast({
-      title: "Password updated",
-      description: "Your password has been updated successfully.",
-    });
-    console.log(data);
+  async function onSubmit(data: SecurityFormValues) {
+    try {
+      // TODO: Implement password update logic with Supabase
+      console.log(data);
+      
+      toast({
+        title: "Success",
+        description: "Your password has been updated successfully.",
+      });
+      
+      form.reset();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update password. Please try again.",
+      });
+    }
   }
 
   return (
@@ -88,7 +102,20 @@ export function SecuritySettings() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update Password</Button>
+        <Button 
+          type="submit" 
+          disabled={form.formState.isSubmitting}
+          className="w-full"
+        >
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Updating...
+            </>
+          ) : (
+            'Update Password'
+          )}
+        </Button>
       </form>
     </Form>
   );

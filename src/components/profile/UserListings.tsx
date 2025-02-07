@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useTranslation } from "@/lib/i18n";
 import {
@@ -77,7 +78,7 @@ export const UserListings = () => {
   const handleDelete = (id: string) => {
     console.log("Delete listing:", id);
     toast({
-      title: "Listing deleted",
+      title: "Success",
       description: "The listing has been successfully deleted.",
     });
   };
@@ -85,7 +86,7 @@ export const UserListings = () => {
   const handleStatusChange = (id: string) => {
     console.log("Toggle status for listing:", id);
     toast({
-      title: "Status updated",
+      title: "Success",
       description: "The listing status has been updated successfully.",
     });
   };
