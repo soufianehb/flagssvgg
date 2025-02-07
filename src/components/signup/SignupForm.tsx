@@ -104,6 +104,20 @@ export const SignupForm = () => {
 
           <FormField
             control={form.control}
+            name="companyName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.signup.labels.companyName}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t.signup.placeholders.companyName} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
@@ -124,20 +138,6 @@ export const SignupForm = () => {
                 <FormLabel>{t.signup.labels.password}</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder={t.signup.placeholders.password} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t.signup.labels.companyName}</FormLabel>
-                <FormControl>
-                  <Input placeholder={t.signup.placeholders.companyName} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
