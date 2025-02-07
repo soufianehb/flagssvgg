@@ -72,7 +72,7 @@ export function GeneralSettings() {
           .from('profiles')
           .select('*')
           .eq('email', user.email)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 
@@ -93,6 +93,12 @@ export function GeneralSettings() {
             trade_register_number: data.trade_register_number || "",
           });
           setProfileData(data);
+        } else {
+          // No profile found, you might want to show a message or handle this case
+          toast({
+            title: "Profile not found",
+            description: "Please complete your profile information.",
+          });
         }
       } catch (error: any) {
         console.error('Error fetching profile:', error);
@@ -113,31 +119,47 @@ export function GeneralSettings() {
     try {
       setLoading(true);
       
-      if (!user?.email || !profileData?.id) {
-        throw new Error("User profile not found");
+      if (!user?.email) {
+        throw new Error("User not authenticated");
       }
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          first_name: data.firstName,
-          last_name: data.lastName,
-          phone_number: data.phoneNumber,
-          phone_code: data.phoneCode,
-          business_phone: data.businessPhone,
-          business_phone_code: data.businessPhoneCode,
-          company_name: data.company_name,
-          address: data.address,
-          city: data.city,
-          country: data.country,
-          zip_code: data.zip_code,
-          trade_register_number: data.trade_register_number,
-          is_profile_complete: true,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', profileData.id);
+      const updateData = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        phone_number: data.phoneNumber,
+        phone_code: data.phoneCode,
+        business_phone: data.businessPhone,
+        business_phone_code: data.businessPhoneCode,
+        company_name: data.company_name,
+        address: data.address,
+        city: data.city,
+        country: data.country,
+        zip_code: data.zip_code,
+        trade_register_number: data.trade_register_number,
+        is_profile_complete: true,
+        updated_at: new Date().toISOString(),
+      };
 
-      if (error) throw error;
+      let response;
+      
+      if (profileData?.id) {
+        // Update existing profile
+        response = await supabase
+          .from('profiles')
+          .update(updateData)
+          .eq('id', profileData.id);
+      } else {
+        // Insert new profile
+        response = await supabase
+          .from('profiles')
+          .insert({
+            ...updateData,
+            email: user.email,
+            user_id: user.id,
+          });
+      }
+
+      if (response.error) throw response.error;
       
       toast({
         title: "Success",
