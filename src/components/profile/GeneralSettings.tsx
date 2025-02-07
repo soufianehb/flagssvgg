@@ -94,7 +94,6 @@ export function GeneralSettings() {
           });
           setProfileData(data);
         } else {
-          // No profile found, you might want to show a message or handle this case
           toast({
             title: "Profile not found",
             description: "Please complete your profile information.",
@@ -138,6 +137,7 @@ export function GeneralSettings() {
         trade_register_number: data.trade_register_number,
         is_profile_complete: true,
         updated_at: new Date().toISOString(),
+        status: 'active',
       };
 
       let response;

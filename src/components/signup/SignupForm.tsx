@@ -39,11 +39,14 @@ export const SignupForm = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      // Create the profile data object with minimal required fields
       const profileData = {
         first_name: data.firstName,
         last_name: data.lastName,
         company_name: data.companyName,
+        email: data.email,
+        is_profile_complete: false,
+        status: 'pending',
+        metadata: {}
       };
 
       await signup(data.email, data.password, profileData);

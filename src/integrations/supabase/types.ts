@@ -39,7 +39,7 @@ export type Database = {
         }
         Relationships: []
       }
-      pending_profiles: {
+      profiles: {
         Row: {
           address: string | null
           business_phone: string | null
@@ -58,69 +58,8 @@ export type Database = {
           phone_number: string | null
           status: string
           trade_register_number: string | null
-          zip_code: string | null
-        }
-        Insert: {
-          address?: string | null
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city?: string | null
-          company_name: string
-          country?: string | null
-          created_at?: string
-          email: string
-          first_name: string
-          id?: string
-          is_profile_complete?: boolean | null
-          last_name: string
-          metadata?: Json
-          phone_code?: string | null
-          phone_number?: string | null
-          status?: string
-          trade_register_number?: string | null
-          zip_code?: string | null
-        }
-        Update: {
-          address?: string | null
-          business_phone?: string | null
-          business_phone_code?: string | null
-          city?: string | null
-          company_name?: string
-          country?: string | null
-          created_at?: string
-          email?: string
-          first_name?: string
-          id?: string
-          is_profile_complete?: boolean | null
-          last_name?: string
-          metadata?: Json
-          phone_code?: string | null
-          phone_number?: string | null
-          status?: string
-          trade_register_number?: string | null
-          zip_code?: string | null
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          address: string | null
-          business_phone: string | null
-          business_phone_code: string | null
-          city: string | null
-          company_name: string
-          country: string | null
-          created_at: string
-          email: string
-          first_name: string
-          id: string
-          is_profile_complete: boolean | null
-          last_name: string
-          phone_code: string | null
-          phone_number: string | null
-          trade_register_number: string | null
           updated_at: string
-          user_id: string
+          user_id: string | null
           zip_code: string | null
         }
         Insert: {
@@ -136,11 +75,13 @@ export type Database = {
           id?: string
           is_profile_complete?: boolean | null
           last_name: string
+          metadata?: Json
           phone_code?: string | null
           phone_number?: string | null
+          status?: string
           trade_register_number?: string | null
           updated_at?: string
-          user_id: string
+          user_id?: string | null
           zip_code?: string | null
         }
         Update: {
@@ -156,11 +97,13 @@ export type Database = {
           id?: string
           is_profile_complete?: boolean | null
           last_name?: string
+          metadata?: Json
           phone_code?: string | null
           phone_number?: string | null
+          status?: string
           trade_register_number?: string | null
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
           zip_code?: string | null
         }
         Relationships: []
