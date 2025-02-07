@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Menu, Search, User, LogOut, X, Check } from "lucide-react";
+import { Globe, Menu, Search, User, LogOut, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/lib/i18n";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,9 +35,8 @@ export const MobileNav = () => {
   return (
     <>
       <div className="flex items-center gap-2 md:hidden">
-        <button className="flex items-center gap-1 rounded-lg bg-[#B08A38] px-3 py-1.5 text-sm text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98] ml-2">
+        <button className="flex items-center rounded-lg bg-[#B08A38] px-3 py-1.5 text-sm text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98] ml-2">
           <span>{t.nav.post}</span>
-          <ArrowRight className="h-4 w-4" />
         </button>
 
         <button 
@@ -106,11 +105,11 @@ export const MobileNav = () => {
           </Link>
         )}
 
-        <button className="flex w-[calc(100%-2rem)] mx-4 items-center justify-center gap-2 rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
+        <button className="flex w-[calc(100%-2rem)] mx-4 items-center justify-center rounded-lg bg-[#B08A38] px-6 py-2.5 font-medium text-white transition-all duration-200 hover:opacity-90 transform hover:scale-[0.98]">
           <span>{t.nav.post}</span>
-          <ArrowRight className="h-5 w-5" />
         </button>
       </div>
     </>
   );
 };
+
