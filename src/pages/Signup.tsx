@@ -5,9 +5,31 @@ import { SignupForm } from "@/components/signup/SignupForm";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { Globe, Check } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type Language = 'en' | 'fr' | 'es';
 
 const Signup = () => {
-  const { t } = useTranslation();
+  const { t, language, setLanguage } = useTranslation();
+
+  const languages: Array<{ code: Language; label: string }> = [
+    { code: 'en', label: t.nav.language.en },
+    { code: 'fr', label: t.nav.language.fr },
+    { code: 'es', label: t.nav.language.es }
+  ];
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,6 +44,29 @@ const Signup = () => {
             <p className="mt-2 text-sm text-gray-600">
               {t.signup.subtitle}
             </p>
+          </div>
+
+          <div className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+                <Globe className="h-4 w-4" />
+                {t.nav.language[language]}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {languages.map((lang) => (
+                  <DropdownMenuItem
+                    key={lang.code}
+                    onClick={() => handleLanguageChange(lang.code)}
+                    className="flex items-center justify-between"
+                  >
+                    {lang.label}
+                    {language === lang.code && (
+                      <Check className="h-4 w-4 ml-2" />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           <SignupForm />
