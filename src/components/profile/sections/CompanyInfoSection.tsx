@@ -6,6 +6,7 @@ import { GeneralFormValues } from "../types/profile";
 import { useTranslation } from "@/lib/i18n";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCountryCodes } from "@/hooks/useCountryCodes";
+import { CountrySelect } from "@/components/filters/selects/CountrySelect";
 
 interface CompanyInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -97,7 +98,14 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
             <FormItem>
               <FormLabel>{t.signup.labels.country}</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <CountrySelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  onCountryCodeChange={(dialCode) => {
+                    form.setValue("phoneCode", dialCode);
+                    form.setValue("businessPhoneCode", dialCode);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
