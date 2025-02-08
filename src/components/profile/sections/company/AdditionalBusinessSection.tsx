@@ -13,6 +13,7 @@ interface AdditionalBusinessSectionProps {
 
 export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionProps) {
   const { t } = useTranslation();
+  const vatValue = form.watch('vat_number');
 
   return (
     <div className="space-y-6">
@@ -25,9 +26,11 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
             <FormItem>
               <FormLabel>
                 {t.profile.additionalInfo.vatNumber}
-                <span className="text-sm text-gray-500 ml-2">
-                  {t.profile.additionalInfo.vatNumberHint}
-                </span>
+                {!field.value && (
+                  <span className="text-sm text-gray-500 ml-2">
+                    {t.profile.additionalInfo.vatNumberHint}
+                  </span>
+                )}
               </FormLabel>
               <FormControl>
                 <Input {...field} />
@@ -45,7 +48,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
               <FormLabel>{t.profile.additionalInfo.businessType.label}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-[200px]">
                     <SelectValue placeholder={t.profile.additionalInfo.businessType.placeholder} />
                   </SelectTrigger>
                 </FormControl>
@@ -76,7 +79,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
               <FormLabel>{t.profile.additionalInfo.employeeCount.label}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-[200px]">
                     <SelectValue placeholder={t.profile.additionalInfo.employeeCount.placeholder} />
                   </SelectTrigger>
                 </FormControl>
@@ -111,8 +114,8 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         />
       </div>
 
-      {/* Third row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Descriptions section - single column, two rows */}
+      <div className="grid grid-cols-1 gap-6">
         <FormField
           control={form.control}
           name="business_description"
@@ -160,3 +163,4 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
     </div>
   );
 }
+
