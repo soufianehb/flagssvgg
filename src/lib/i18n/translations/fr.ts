@@ -248,7 +248,7 @@ export const fr = {
       sections: {
         personal: "Informations de l'interlocuteur",
         business: "Informations commerciales",
-        address: "Adresse de l'entreprise"
+        address: "Adresse"
       }
     },
     security: {
