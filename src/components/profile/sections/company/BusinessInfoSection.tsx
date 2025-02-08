@@ -2,7 +2,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
-import { useTranslation } from "@/lib/i18n";
+import { useTranslation } from "@/contexts/TranslationContext";
 import { GeneralFormValues } from "../../types/profile";
 
 interface BusinessInfoSectionProps {
@@ -13,8 +13,8 @@ export function BusinessInfoSection({ form }: BusinessInfoSectionProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-gray-900 pt-4">Business Information</h3>
+    <div className="space-y-8">
+      <h3 className="text-lg font-semibold text-gray-900 pt-8">Business Information</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField

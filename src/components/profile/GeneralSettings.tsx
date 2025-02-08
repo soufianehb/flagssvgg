@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -38,6 +37,7 @@ export function GeneralSettings() {
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
     defaultValues: {
+      title: "mr",
       firstName: "",
       lastName: "",
       email: user?.email || "",
