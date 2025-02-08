@@ -10,9 +10,10 @@ interface CountrySelectProps {
   onChange?: (value: string) => void;
   onValueChange?: (value: string) => void;
   onCountryCodeChange?: (dialCode: string) => void;
+  showLabel?: boolean;
 }
 
-export function CountrySelect({ value, onChange, onValueChange, onCountryCodeChange }: CountrySelectProps) {
+export function CountrySelect({ value, onChange, onValueChange, onCountryCodeChange, showLabel = true }: CountrySelectProps) {
   const { t } = useTranslation();
   const { data: countries, isLoading } = useCountryCodes();
 
@@ -46,9 +47,11 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="country-select" className="text-sm font-semibold text-gray-700 block">
-        {t.filters.country.label}
-      </Label>
+      {showLabel && (
+        <Label htmlFor="country-select" className="text-sm font-semibold text-gray-700 block">
+          {t.filters.country.label}
+        </Label>
+      )}
       <Select value={value} onValueChange={handleValueChange}>
         <SelectTrigger id="country-select" className="w-full">
           <SelectValue placeholder={t.filters.country.placeholder}>

@@ -72,6 +72,7 @@ export function AddressSection({ form }: AddressSectionProps) {
                     form.setValue("phoneCode", dialCode);
                     form.setValue("businessPhoneCode", dialCode);
                   }}
+                  showLabel={false}
                 />
               </FormControl>
               <FormMessage />
