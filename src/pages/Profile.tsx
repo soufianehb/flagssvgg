@@ -57,28 +57,28 @@ const Profile = () => {
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <Tabs defaultValue="general" className="w-full">
             <div className="border-b border-gray-100">
-              <TabsList className="w-full flex flex-col sm:flex-row gap-2 sm:gap-4 p-4 bg-transparent">
+              <TabsList className="w-full flex flex-row gap-2 sm:gap-4 p-4 bg-transparent overflow-x-auto">
                 <TabsTrigger 
                   value="general"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="whitespace-nowrap px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors"
                 >
                   {t.profile.tabs.general}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="whitespace-nowrap px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors"
                 >
                   {t.profile.tabs.security}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="whitespace-nowrap px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors"
                 >
                   {t.profile.tabs.preferences}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="whitespace-nowrap px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors"
                 >
                   {t.profile.tabs.listings.title}
                 </TabsTrigger>
