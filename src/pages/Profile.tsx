@@ -40,76 +40,76 @@ const Profile = () => {
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
+        <div className="mb-8 bg-white p-4 sm:p-6 rounded-lg shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <User className="h-8 w-8 text-primary" />
+            <div className="h-12 sm:h-16 w-12 sm:w-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <User className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 {t.profile.title}
               </h1>
-              <p className="text-gray-500">{user?.email}</p>
+              <p className="text-sm sm:text-base text-gray-500">{user?.email}</p>
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm">
           <Tabs defaultValue="general" className="w-full">
-            <div className="px-6 pt-4">
-              <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-100/50">
+            <div className="px-3 sm:px-6 pt-3 sm:pt-4">
+              <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 bg-gray-50/80 sm:bg-gray-100/50 py-2 sm:py-4">
                 <TabsTrigger 
                   value="general"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.general}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.security}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.preferences}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.listings.title}
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <TabsContent value="general" className="mt-0">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-gray-900">{t.profile.general.title}</h2>
+                <div className="space-y-4 sm:space-y-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{t.profile.general.title}</h2>
                   <GeneralSettings />
                 </div>
               </TabsContent>
 
               <TabsContent value="security" className="mt-0">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-gray-900">{t.profile.security.title}</h2>
+                <div className="space-y-4 sm:space-y-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{t.profile.security.title}</h2>
                   <SecuritySettings />
                 </div>
               </TabsContent>
 
               <TabsContent value="preferences" className="mt-0">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-gray-900">{t.profile.preferences.title}</h2>
+                <div className="space-y-4 sm:space-y-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{t.profile.preferences.title}</h2>
                   <PreferenceSettings />
                 </div>
               </TabsContent>
 
               <TabsContent value="listings" className="mt-0">
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-gray-900">{t.profile.tabs.listings.title}</h2>
+                <div className="space-y-4 sm:space-y-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{t.profile.tabs.listings.title}</h2>
                   <UserListings />
                 </div>
               </TabsContent>
@@ -124,3 +124,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
