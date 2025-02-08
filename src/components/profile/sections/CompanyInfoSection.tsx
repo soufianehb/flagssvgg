@@ -12,9 +12,10 @@ interface CompanyInfoSectionProps {
 export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   return (
     <div className="space-y-6">
-      <BusinessInfoSection form={form} />
-      <PhoneSection form={form} />
       <AddressSection form={form} />
+      <h3 className="text-lg font-semibold text-gray-900 pt-4">Contact</h3>
+      <PhoneSection form={form} />
+      <BusinessInfoSection form={form} />
     </div>
   );
 }

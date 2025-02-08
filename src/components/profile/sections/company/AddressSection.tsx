@@ -15,7 +15,7 @@ export function AddressSection({ form }: AddressSectionProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-gray-900 pt-4">{t.profile.general.sections.address}</h3>
+      <h3 className="text-lg font-semibold text-gray-900">Address</h3>
 
       <FormField
         control={form.control}
