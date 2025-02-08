@@ -27,14 +27,7 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => (
         <User className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
       </div>
       <div className="space-y-1">
-<h1 className="text-
-xl
- sm:text-
-2xl
- font-
-bold
- text-gray-900">          {t.profile.title}
-        </h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900"> {t.profile.title} </h1>
         <p className="text-gray-700 font-medium">
           {user?.user_metadata?.company_name || 'Company Name Not Set'}
         </p>
