@@ -19,7 +19,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
       <FormItem>
         <FormLabel>Personal Phone</FormLabel>
         <div className="flex gap-2">
-          <div className="w-[120px]">
+          <div className="w-[90px]">
             <FormField
               control={form.control}
               name="phoneCode"
@@ -74,7 +74,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
       <FormItem>
         <FormLabel>Business Phone</FormLabel>
         <div className="flex gap-2">
-          <div className="w-[120px]">
+          <div className="w-[90px]">
             <FormField
               control={form.control}
               name="businessPhoneCode"
