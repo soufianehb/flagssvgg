@@ -1,9 +1,8 @@
 
 export const general = {
   en: {
-    title: "Company Profile",
     sections: {
-      personal: "Contact Person Information",
+      personal: "Interlocutor Info",
       business: "Business Information",
       address: "Address"
     },
@@ -13,7 +12,6 @@ export const general = {
     }
   },
   fr: {
-    title: "Fiche de société",
     sections: {
       personal: "Informations de l'interlocuteur",
       business: "Informations commerciales",
@@ -25,9 +23,8 @@ export const general = {
     }
   },
   es: {
-    title: "Ficha de empresa",
     sections: {
-      personal: "Información de contacto",
+      personal: "Información del interlocutor",
       business: "Información comercial",
       address: "Dirección"
     },
@@ -37,4 +34,3 @@ export const general = {
     }
   }
 };
-

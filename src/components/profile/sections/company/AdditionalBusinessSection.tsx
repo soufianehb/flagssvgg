@@ -24,16 +24,11 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
           name="vat_number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                {t.profile.additionalInfo.vatNumber}
-                {!field.value && (
-                  <span className="text-sm text-gray-500 ml-2">
-                    {t.profile.additionalInfo.vatNumberHint}
-                  </span>
-                )}
-              </FormLabel>
+              <FormLabel>{t.profile.additionalInfo.vatNumber}</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <div className="relative">
+                  <Input {...field} placeholder={!field.value ? "(if you are in Europe)" : ""} />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -48,7 +43,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
               <FormLabel>{t.profile.additionalInfo.businessType.label}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger>
                     <SelectValue placeholder={t.profile.additionalInfo.businessType.placeholder} />
                   </SelectTrigger>
                 </FormControl>
@@ -79,7 +74,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
               <FormLabel>{t.profile.additionalInfo.employeeCount.label}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger>
                     <SelectValue placeholder={t.profile.additionalInfo.employeeCount.placeholder} />
                   </SelectTrigger>
                 </FormControl>
@@ -114,7 +109,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         />
       </div>
 
-      {/* Descriptions section - single column, two rows */}
+      {/* Descriptions section - single column */}
       <div className="grid grid-cols-1 gap-6">
         <FormField
           control={form.control}
@@ -163,4 +158,3 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
     </div>
   );
 }
-

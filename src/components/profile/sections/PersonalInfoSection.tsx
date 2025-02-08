@@ -18,7 +18,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
 
   return (
     <div className="space-y-8">
-      <h3 className="text-lg font-semibold text-gray-900">Contact Person Information</h3>
+      <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.personal}</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <FormField
@@ -29,7 +29,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
               <FormLabel>{t.profile.general.fields.title}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-[120px]">
                     <SelectValue placeholder="Select title" />
                   </SelectTrigger>
                 </FormControl>
