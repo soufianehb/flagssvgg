@@ -37,7 +37,8 @@ const Profile = () => {
   }
 
   const handleTabChange = (value: string) => {
-    const tabTrigger = document.querySelector(`[data-state][value="${value}"]`) as HTMLElement;
+    // Find the desktop tab trigger for the selected value
+    const tabTrigger = document.querySelector(`[role="tab"][value="${value}"]`) as HTMLElement;
     if (tabTrigger) {
       tabTrigger.click();
     }
