@@ -58,20 +58,6 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           </FormItem>
         )}
       />
-
-      <FormField
-        control={form.control}
-        name="phoneNumber"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
-            <FormControl>
-              <Input {...field} type="tel" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 }
