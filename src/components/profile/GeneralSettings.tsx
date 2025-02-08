@@ -61,26 +61,28 @@ export function GeneralSettings() {
     queryKey: ['profile', user?.id],
     queryFn: () => fetchProfileData(user?.id as string),
     enabled: !!user?.id,
-    onSuccess: (data) => {
-      if (data) {
-        form.reset({
-          firstName: data.first_name || "",
-          lastName: data.last_name || "",
-          email: data.email || user?.email || "",
-          phoneNumber: data.phone_number || "",
-          phoneCode: data.phone_code || "",
-          businessPhone: data.business_phone || "",
-          businessPhoneCode: data.business_phone_code || "",
-          company_name: data.company_name || "",
-          address: data.address || "",
-          city: data.city || "",
-          country: data.country || "",
-          zip_code: data.zip_code || "",
-          trade_register_number: data.trade_register_number || "",
-        });
-      }
-    },
   });
+
+  // Update form when profile data is fetched
+  useEffect(() => {
+    if (profileData) {
+      form.reset({
+        firstName: profileData.first_name || "",
+        lastName: profileData.last_name || "",
+        email: profileData.email || user?.email || "",
+        phoneNumber: profileData.phone_number || "",
+        phoneCode: profileData.phone_code || "",
+        businessPhone: profileData.business_phone || "",
+        businessPhoneCode: profileData.business_phone_code || "",
+        company_name: profileData.company_name || "",
+        address: profileData.address || "",
+        city: profileData.city || "",
+        country: profileData.country || "",
+        zip_code: profileData.zip_code || "",
+        trade_register_number: profileData.trade_register_number || "",
+      });
+    }
+  }, [profileData, user?.email, form]);
 
   // Use react-query for mutations
   const mutation = useMutation({
