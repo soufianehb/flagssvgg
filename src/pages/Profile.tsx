@@ -1,3 +1,4 @@
+
 import { useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,7 +27,7 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => (
         <User className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
       </div>
       <div className="space-y-1">
-        <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
           {t.profile.title}
         </h1>
         <p className="text-gray-700 font-medium">
@@ -113,3 +114,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
