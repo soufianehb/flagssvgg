@@ -34,10 +34,10 @@ export function AddressSection({ form }: AddressSectionProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <FormField
           control={form.control}
-          name="city"
+          name="zip_code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.city}</FormLabel>
+              <FormLabel>{t.signup.labels.zipCode}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -47,10 +47,10 @@ export function AddressSection({ form }: AddressSectionProps) {
         />
         <FormField
           control={form.control}
-          name="zip_code"
+          name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.zipCode}</FormLabel>
+              <FormLabel>{t.signup.labels.city}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

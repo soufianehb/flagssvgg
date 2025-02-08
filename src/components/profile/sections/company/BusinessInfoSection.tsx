@@ -22,7 +22,7 @@ export function BusinessInfoSection({ form }: BusinessInfoSectionProps) {
           name="company_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.companyName}</FormLabel>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.companyName}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -36,7 +36,67 @@ export function BusinessInfoSection({ form }: BusinessInfoSectionProps) {
           name="trade_register_number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.tradeRegisterNumber}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          control={form.control}
+          name="trade_register_delivered_by"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.deliveredBy}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="main_bank"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.mainBank}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          control={form.control}
+          name="export_license"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.exportLicense}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="import_license"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.profile.additionalInfo.companyDetails.importLicense}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

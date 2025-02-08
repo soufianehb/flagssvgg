@@ -15,6 +15,10 @@ export const generalFormSchema = z.object({
   country: z.string().optional(),
   zip_code: z.string().optional(),
   trade_register_number: z.string().optional(),
+  trade_register_delivered_by: z.string().optional(),
+  main_bank: z.string().optional(),
+  export_license: z.string().optional(),
+  import_license: z.string().optional(),
   vat_number: z.string().optional(),
   business_type: z.enum([
     "producer",

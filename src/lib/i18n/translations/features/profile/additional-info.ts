@@ -22,11 +22,19 @@ export const additionalInfo = {
     website: "Website URL",
     businessDescription: {
       label: "Business description",
-      hint: "Tell us about your company and its core activities.\nDescribe your main markets and areas of expertise.\nThis information will be visible to your future contacts."
+      hint: "Tell us about your company and its main activities.\nDescribe your products, services and target markets.\nShare your company's expertise and unique offerings."
     },
     capabilities: {
       label: "Capabilities",
-      hint: "Share key information about your company's capabilities.\nInclude details about turnover, certifications, and guarantees.\nThis helps establish trust with potential partners."
+      hint: "Specify your annual turnover and business scale.\nList your certifications and quality standards.\nDetail your guarantees and business credentials."
+    },
+    companyDetails: {
+      companyName: "Company name",
+      tradeRegisterNumber: "Trade register number",
+      deliveredBy: "Delivered by",
+      mainBank: "Main bank name",
+      exportLicense: "Export license number",
+      importLicense: "Import license number"
     }
   },
   fr: {
@@ -51,11 +59,19 @@ export const additionalInfo = {
     website: "Adresse de votre site web",
     businessDescription: {
       label: "Précisions sur votre activité",
-      hint: "Présentez votre entreprise et ses activités principales.\nDécrivez vos marchés et domaines d'expertise.\nCes informations seront visibles par vos futurs contacts."
+      hint: "Présentez votre entreprise et ses activités principales.\nDécrivez vos produits, services et marchés cibles.\nPartagez l'expertise et les atouts de votre entreprise."
     },
     capabilities: {
       label: "Indications sur vos capacités",
-      hint: "Partagez les informations clés sur les capacités de votre entreprise.\nMentionnez votre chiffre d'affaires, certifications et garanties.\nCela aide à établir la confiance avec vos partenaires potentiels."
+      hint: "Précisez votre chiffre d'affaires et votre envergure.\nListez vos certifications et normes de qualité.\nDétaillez vos garanties et références commerciales."
+    },
+    companyDetails: {
+      companyName: "Nom de l'entreprise",
+      tradeRegisterNumber: "Numéro RCS",
+      deliveredBy: "Délivré par",
+      mainBank: "Nom de votre banque principale",
+      exportLicense: "Numéro de licence d'exportation",
+      importLicense: "Numéro de licence d'importation"
     }
   },
   es: {
@@ -80,12 +96,19 @@ export const additionalInfo = {
     website: "Sitio web",
     businessDescription: {
       label: "Descripción del negocio",
-      hint: "Cuéntenos sobre su empresa y sus actividades principales.\nDescriba sus mercados y áreas de especialización.\nEsta información será visible para sus futuros contactos."
+      hint: "Cuéntenos sobre su empresa y sus actividades principales.\nDescriba sus productos, servicios y mercados objetivo.\nComparta la experiencia y ventajas de su empresa."
     },
     capabilities: {
       label: "Indicaciones sobre sus capacidades",
-      hint: "Comparta información clave sobre las capacidades de su empresa.\nIncluya detalles sobre facturación, certificaciones y garantías.\nEsto ayuda a establecer confianza con posibles socios."
+      hint: "Especifique su facturación y escala de negocio.\nEnumere sus certificaciones y estándares de calidad.\nDetalle sus garantías y credenciales comerciales."
+    },
+    companyDetails: {
+      companyName: "Nombre de la empresa",
+      tradeRegisterNumber: "Número de registro mercantil",
+      deliveredBy: "Entregado por",
+      mainBank: "Nombre del banco principal",
+      exportLicense: "Número de licencia de exportación",
+      importLicense: "Número de licencia de importación"
     }
   }
 };
-
