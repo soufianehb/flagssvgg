@@ -13,8 +13,8 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   return (
     <div className="space-y-6">
       <BusinessInfoSection form={form} />
-      <AddressSection form={form} />
       <PhoneSection form={form} />
+      <AddressSection form={form} />
     </div>
   );
 }
