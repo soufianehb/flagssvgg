@@ -248,7 +248,7 @@ export const es = {
       sections: {
         personal: "Información de contacto",
         business: "Información comercial",
-        address: "Dirección de la empresa"
+        address: "Dirección"
       }
     },
     security: {
