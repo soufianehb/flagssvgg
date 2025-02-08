@@ -11,13 +11,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { generalFormSchema, GeneralFormValues } from "./types/profile";
 import { PersonalInfoSection } from "./sections/PersonalInfoSection";
-import { ContactInfoSection } from "./sections/ContactInfoSection";
 import { CompanyInfoSection } from "./sections/CompanyInfoSection";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Memoize form sections
 const MemoizedPersonalInfoSection = memo(PersonalInfoSection);
-const MemoizedContactInfoSection = memo(ContactInfoSection);
 const MemoizedCompanyInfoSection = memo(CompanyInfoSection);
 
 const fetchProfileData = async (userId: string) => {
@@ -145,10 +143,12 @@ export function GeneralSettings() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <MemoizedPersonalInfoSection form={form} />
-        <MemoizedContactInfoSection form={form} />
-        <MemoizedCompanyInfoSection form={form} />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Fiche de société</h2>
+          <MemoizedPersonalInfoSection form={form} />
+          <MemoizedCompanyInfoSection form={form} />
+        </div>
 
         <Button 
           type="submit" 

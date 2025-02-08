@@ -13,7 +13,9 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   const { t } = useTranslation();
 
   return (
-    <>
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold text-gray-900">Business Information</h3>
+      
       <FormField
         control={form.control}
         name="company_name"
@@ -27,6 +29,22 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
           </FormItem>
         )}
       />
+
+      <FormField
+        control={form.control}
+        name="trade_register_number"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <h3 className="text-lg font-semibold text-gray-900 pt-4">Company Address</h3>
 
       <FormField
         control={form.control}
@@ -86,17 +104,17 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
 
       <FormField
         control={form.control}
-        name="trade_register_number"
+        name="businessPhone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
+            <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} type="tel" />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-    </>
+    </div>
   );
 }

@@ -13,7 +13,9 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
   const { t } = useTranslation();
 
   return (
-    <>
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold text-gray-900">Interlocuteur Information</h3>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
@@ -56,6 +58,20 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           </FormItem>
         )}
       />
-    </>
+
+      <FormField
+        control={form.control}
+        name="phoneNumber"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
+            <FormControl>
+              <Input {...field} type="tel" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
   );
 }
