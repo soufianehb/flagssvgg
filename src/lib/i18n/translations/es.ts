@@ -1,4 +1,3 @@
-
 export const es = {
   filters: {
     title: 'Filtros',
@@ -258,6 +257,35 @@ export const es = {
     preferences: {
       title: "Preferencias",
       comingSoon: "Configuración de preferencias próximamente"
+    },
+    additionalInfo: {
+      vatNumber: "Número de IVA",
+      vatNumberHint: "(si está en Europa)",
+      businessType: {
+        label: "Usted es",
+        placeholder: "Seleccione su tipo de negocio",
+        producer: "Productor",
+        manufacturer: "Fabricante",
+        wholesaler: "Mayorista",
+        broker: "Corredor",
+        retailer: "Minorista",
+        group: "Grupo",
+        association: "Asociación",
+        other: "Otro"
+      },
+      employeeCount: {
+        label: "Número de empleados",
+        placeholder: "Seleccione número de empleados"
+      },
+      website: "Sitio web",
+      businessDescription: {
+        label: "Descripción del negocio",
+        hint: "Aproveche este espacio para describir bien su empresa, su negocio, sus mercados, etc. Esta información se compartirá con sus contactos antes de cualquier interacción."
+      },
+      capabilities: {
+        label: "Indicaciones sobre sus capacidades",
+        hint: "Aproveche este espacio para especificar, si lo desea, su facturación, garantías o cualquier indicación que pueda garantizar la seriedad de su empresa."
+      }
     }
   }
 };

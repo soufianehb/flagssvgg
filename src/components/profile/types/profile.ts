@@ -15,6 +15,30 @@ export const generalFormSchema = z.object({
   country: z.string().optional(),
   zip_code: z.string().optional(),
   trade_register_number: z.string().optional(),
+  vat_number: z.string().optional(),
+  business_type: z.enum([
+    "producer",
+    "manufacturer",
+    "wholesaler",
+    "broker",
+    "retailer",
+    "group",
+    "association",
+    "other"
+  ]).optional(),
+  employee_count: z.enum([
+    "1",
+    "1-5",
+    "5-10",
+    "10-20",
+    "20-40",
+    "40-60",
+    "60-100",
+    "100+"
+  ]).optional(),
+  website: z.string().optional(),
+  business_description: z.string().min(25, "Description must be at least 25 words"),
+  capabilities_description: z.string().min(25, "Description must be at least 25 words"),
 });
 
 export type GeneralFormValues = z.infer<typeof generalFormSchema>;

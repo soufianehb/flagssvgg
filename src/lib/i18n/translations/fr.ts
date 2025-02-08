@@ -1,4 +1,3 @@
-
 export const fr = {
   filters: {
     title: 'Filtres',
@@ -258,6 +257,35 @@ export const fr = {
     preferences: {
       title: "Préférences",
       comingSoon: "Paramètres des préférences à venir"
+    },
+    additionalInfo: {
+      vatNumber: "N° de TVA intracommunautaire",
+      vatNumberHint: "(si vous êtes en Europe)",
+      businessType: {
+        label: "Vous êtes",
+        placeholder: "Sélectionnez votre type d'activité",
+        producer: "Producteur",
+        manufacturer: "Fabricant",
+        wholesaler: "Grossiste",
+        broker: "Courtier",
+        retailer: "Détaillant",
+        group: "Groupement",
+        association: "Association",
+        other: "Autre"
+      },
+      employeeCount: {
+        label: "Effectif",
+        placeholder: "Sélectionnez votre effectif"
+      },
+      website: "Adresse de votre site web",
+      businessDescription: {
+        label: "Précisions sur votre activité",
+        hint: "Profitez de cet espace pour bien décrire votre entreprise votre métier, vos marchés etc ... Ces informations seront diffusées à vos interlocuteurs avant toute prise de contact."
+      },
+      capabilities: {
+        label: "Indications sur vos capacités",
+        hint: "Profitez de cet espace pour précisier si vous le souhaitez votre chiffre d'affaire, vos garanties ou toute indication qui pourra garantir le sérieux de votre entreprise."
+      }
     }
   }
 };
