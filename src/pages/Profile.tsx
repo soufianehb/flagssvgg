@@ -56,29 +56,60 @@ const Profile = () => {
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <Tabs defaultValue="general" className="w-full">
-            <div className="border-b border-gray-100">
-              <TabsList className="w-full flex flex-col sm:flex-row gap-2 sm:gap-4 p-4 bg-transparent">
+            {/* Desktop Tabs */}
+            <div className="border-b border-gray-100 hidden sm:block">
+              <TabsList className="w-full flex gap-4 p-4 bg-transparent">
                 <TabsTrigger 
                   value="general"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.general}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.security}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.preferences}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
+                  className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-base py-2.5 transition-colors"
+                >
+                  {t.profile.tabs.listings.title}
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* Mobile Tabs */}
+            <div className="border-b border-gray-100 block sm:hidden">
+              <TabsList className="w-full overflow-x-auto flex gap-2 p-3 bg-transparent scrollbar-hide">
+                <TabsTrigger 
+                  value="general"
+                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                >
+                  {t.profile.tabs.general}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="security"
+                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                >
+                  {t.profile.tabs.security}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="preferences"
+                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                >
+                  {t.profile.tabs.preferences}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="listings"
+                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
                 >
                   {t.profile.tabs.listings.title}
                 </TabsTrigger>
