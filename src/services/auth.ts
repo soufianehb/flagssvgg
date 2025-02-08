@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -14,7 +13,6 @@ export const authService = {
   },
 
   signup: async (email: string, password: string, profileData: Record<string, any>) => {
-    // First proceed with the signup
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -25,7 +23,6 @@ export const authService = {
 
     if (authError) throw authError;
 
-    // Create the profile directly in the profiles table
     const { error: profileError } = await supabase
       .from('profiles')
       .insert([{
@@ -55,24 +52,22 @@ export const authService = {
 
   getSession: async () => {
     try {
-      // First try to get the current session
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) throw error;
 
-      // If no session exists, return null
       if (!session) {
         return { data: { session: null } };
       }
 
-      // Check if session is expired or about to expire (within 60 seconds)
       const expiryTime = new Date(session.expires_at! * 1000);
       const now = new Date();
       const timeUntilExpiry = expiryTime.getTime() - now.getTime();
 
-      if (timeUntilExpiry <= 60000) { // 60 seconds
-        console.log("Session expired or about to expire, refreshing...");
+      if (timeUntilExpiry <= 300000) { // 5 minutes
+        console.log("Session about to expire, refreshing...");
         const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
         if (refreshError) {
+          console.error("Error refreshing session:", refreshError);
           await supabase.auth.signOut();
           return { data: { session: null } };
         }
@@ -89,11 +84,7 @@ export const authService = {
 
   onAuthStateChange: (callback: (event: any, session: any) => void) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(callback);
-    return {
-      data: {
-        subscription
-      }
-    };
+    return { data: { subscription } };
   },
 
   refreshSession: async () => {

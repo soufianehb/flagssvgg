@@ -8,6 +8,7 @@ import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { Loader2, User } from "lucide-react";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { authService } from "@/services/auth";
+import { useToast } from "@/hooks/use-toast";
 
 // Memoize static components
 const MemoizedHeader = memo(Header);
@@ -41,6 +42,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
   const { t } = useTranslation();
+  const { toast } = useToast();
 
   useEffect(() => {
     const checkSession = async () => {
@@ -49,18 +51,34 @@ const Profile = () => {
         
         if (!session) {
           console.log("No session found, redirecting to login...");
+          toast({
+            variant: "destructive",
+            title: "Session Expired",
+            description: "Please log in again to continue.",
+          });
+          await logout();
           navigate("/login");
           return;
         }
       } catch (error) {
         console.error("Session check error:", error);
+        toast({
+          variant: "destructive",
+          title: "Authentication Error",
+          description: "Please log in again to continue.",
+        });
         await logout();
         navigate("/login");
       }
     };
 
     checkSession();
-  }, [navigate, logout]);
+
+    // Set up interval to periodically check session
+    const intervalId = setInterval(checkSession, 60000); // Check every minute
+
+    return () => clearInterval(intervalId);
+  }, [navigate, logout, toast]);
 
   if (isAuthenticated === undefined) {
     return <ProfileSkeleton />;

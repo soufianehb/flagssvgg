@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { authService } from '@/services/auth';
-import { supabase } from '@/integrations/supabase/client';
 
 export const useAuthState = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
@@ -10,6 +9,7 @@ export const useAuthState = () => {
 
   useEffect(() => {
     let mounted = true;
+    let intervalId: NodeJS.Timeout;
 
     const checkAndUpdateSession = async () => {
       try {
@@ -37,13 +37,13 @@ export const useAuthState = () => {
     // Initial check
     checkAndUpdateSession();
 
-    // Set up interval to periodically check session
-    const intervalId = setInterval(checkAndUpdateSession, 30000); // Check every 30 seconds
+    // Set up interval to check session every minute
+    intervalId = setInterval(checkAndUpdateSession, 60000);
 
     // Subscribe to auth changes
     const {
       data: { subscription },
-    } = authService.onAuthStateChange((_event, session) => {
+    } = authService.onAuthStateChange(async (_event, session) => {
       if (mounted) {
         setIsAuthenticated(!!session);
         setUser(session?.user ?? null);
