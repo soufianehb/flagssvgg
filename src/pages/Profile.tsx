@@ -2,7 +2,7 @@
 import { useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "@/contexts/TranslationContext"; // Update import path
+import { useTranslation } from "@/contexts/TranslationContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GeneralSettings } from "@/components/profile/GeneralSettings";
@@ -11,29 +11,34 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { authService } from "@/services/auth";
 import { useToast } from "@/hooks/use-toast";
 
-// Memoize static components
 const MemoizedHeader = memo(Header);
 const MemoizedFooter = memo(Footer);
 
-// Loading skeleton component
 const ProfileSkeleton = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
     <Loader2 className="h-8 w-8 animate-spin text-accent" />
   </div>
 );
 
-// User info header component
 const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => (
   <div className="mb-6 bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-    <div className="flex items-center gap-4">
+    <div className="flex items-start gap-4">
       <div className="h-12 sm:h-16 w-12 sm:w-16 rounded-full bg-primary/10 flex items-center justify-center">
         <User className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
       </div>
-      <div>
+      <div className="space-y-1">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
           {t.profile.title}
         </h1>
-        <p className="text-sm sm:text-base text-gray-500">{user?.email}</p>
+        <p className="text-gray-700 font-medium">
+          {user?.user_metadata?.company_name || 'Company Name Not Set'}
+        </p>
+        <p className="text-sm sm:text-base text-gray-500">
+          {user?.email}
+        </p>
+        <p className="text-sm sm:text-base text-gray-500">
+          {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || 'No Phone Number Set'}
+        </p>
       </div>
     </div>
   </div>
@@ -109,3 +114,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
