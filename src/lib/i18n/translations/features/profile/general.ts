@@ -8,7 +8,12 @@ export const general = {
     },
     fields: {
       title: "Title",
-      modifyEmail: "Modify Email Address"
+      modifyEmail: "Modify Email Address",
+      phoneNumber: "Phone Number",
+      businessPhone: "Business Phone",
+      personalPhone: "Personal Phone",
+      address: "Address",
+      contact: "Contact"
     }
   },
   fr: {
@@ -19,7 +24,12 @@ export const general = {
     },
     fields: {
       title: "Civilité",
-      modifyEmail: "Modifier l'adresse mail"
+      modifyEmail: "Modifier l'adresse mail",
+      phoneNumber: "Numéro de téléphone",
+      businessPhone: "Téléphone professionnel",
+      personalPhone: "Téléphone personnel",
+      address: "Adresse",
+      contact: "Contact"
     }
   },
   es: {
@@ -30,7 +40,13 @@ export const general = {
     },
     fields: {
       title: "Título",
-      modifyEmail: "Modificar dirección de correo"
+      modifyEmail: "Modificar dirección de correo",
+      phoneNumber: "Número de teléfono",
+      businessPhone: "Teléfono comercial",
+      personalPhone: "Teléfono personal",
+      address: "Dirección",
+      contact: "Contacto"
     }
   }
 };
+
