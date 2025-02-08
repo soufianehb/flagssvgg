@@ -46,7 +46,9 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="country-select">{t.filters.country.label}</Label>
+      <Label htmlFor="country-select" className="text-sm font-semibold text-gray-700 block">
+        {t.filters.country.label}
+      </Label>
       <Select value={value} onValueChange={handleValueChange}>
         <SelectTrigger id="country-select" className="w-full">
           <SelectValue placeholder={t.filters.country.placeholder}>
