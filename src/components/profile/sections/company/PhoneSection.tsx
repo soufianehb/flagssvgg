@@ -15,7 +15,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
   const { data: countries } = useCountryCodes();
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <FormItem>
         <FormLabel>Personal Phone</FormLabel>
         <div className="flex gap-2">
