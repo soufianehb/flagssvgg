@@ -30,7 +30,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Code" />
+                      <SelectValue>{field.value}</SelectValue>
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -85,7 +85,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Code" />
+                      <SelectValue>{field.value}</SelectValue>
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -128,3 +128,4 @@ export function PhoneSection({ form }: PhoneSectionProps) {
     </div>
   );
 }
+
