@@ -22,11 +22,11 @@ export const additionalInfo = {
     website: "Website URL",
     businessDescription: {
       label: "Business description",
-      hint: "Use this space to describe your company, your business, your markets, etc. This information will be shared with your contacts before any interaction."
+      hint: "Tell us about your company and its core activities.\nDescribe your main markets and areas of expertise.\nThis information will be visible to your future contacts."
     },
     capabilities: {
       label: "Capabilities",
-      hint: "Use this space to specify, if you wish, your turnover, guarantees, or any indication that can guarantee the seriousness of your company."
+      hint: "Share key information about your company's capabilities.\nInclude details about turnover, certifications, and guarantees.\nThis helps establish trust with potential partners."
     }
   },
   fr: {
@@ -51,11 +51,11 @@ export const additionalInfo = {
     website: "Adresse de votre site web",
     businessDescription: {
       label: "Précisions sur votre activité",
-      hint: "Profitez de cet espace pour bien décrire votre entreprise votre métier, vos marchés etc ... Ces informations seront diffusées à vos interlocuteurs avant toute prise de contact."
+      hint: "Présentez votre entreprise et ses activités principales.\nDécrivez vos marchés et domaines d'expertise.\nCes informations seront visibles par vos futurs contacts."
     },
     capabilities: {
       label: "Indications sur vos capacités",
-      hint: "Profitez de cet espace pour précisier si vous le souhaitez votre chiffre d'affaire, vos garanties ou toute indication qui pourra garantir le sérieux de votre entreprise."
+      hint: "Partagez les informations clés sur les capacités de votre entreprise.\nMentionnez votre chiffre d'affaires, certifications et garanties.\nCela aide à établir la confiance avec vos partenaires potentiels."
     }
   },
   es: {
@@ -80,11 +80,12 @@ export const additionalInfo = {
     website: "Sitio web",
     businessDescription: {
       label: "Descripción del negocio",
-      hint: "Aproveche este espacio para describir bien su empresa, su negocio, sus mercados, etc. Esta información se compartirá con sus contactos antes de cualquier interacción."
+      hint: "Cuéntenos sobre su empresa y sus actividades principales.\nDescriba sus mercados y áreas de especialización.\nEsta información será visible para sus futuros contactos."
     },
     capabilities: {
       label: "Indicaciones sobre sus capacidades",
-      hint: "Aproveche este espacio para especificar, si lo desea, su facturación, garantías o cualquier indicación que pueda garantizar la seriedad de su empresa."
+      hint: "Comparta información clave sobre las capacidades de su empresa.\nIncluya detalles sobre facturación, certificaciones y garantías.\nEsto ayuda a establecer confianza con posibles socios."
     }
   }
 };
+
