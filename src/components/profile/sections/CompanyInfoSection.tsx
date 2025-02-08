@@ -14,7 +14,7 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-gray-900">Business Information</h3>
+      <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.business}</h3>
       
       <FormField
         control={form.control}
@@ -44,7 +44,7 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
         )}
       />
 
-      <h3 className="text-lg font-semibold text-gray-900 pt-4">Company Address</h3>
+      <h3 className="text-lg font-semibold text-gray-900 pt-4">{t.profile.general.sections.address}</h3>
 
       <FormField
         control={form.control}
@@ -118,3 +118,4 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
     </div>
   );
 }
+
