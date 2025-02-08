@@ -7,7 +7,7 @@ import { additionalInfo } from './profile/additional-info';
 export const profile = {
   en: {
     title: "Profile Settings",
-    ...tabs.en,
+    tabs: { ...tabs.en },
     general: {
       ...general.en,
     },
@@ -18,7 +18,7 @@ export const profile = {
   },
   fr: {
     title: "Paramètres du profil",
-    ...tabs.fr,
+    tabs: { ...tabs.fr },
     general: {
       ...general.fr,
     },
@@ -29,7 +29,7 @@ export const profile = {
   },
   es: {
     title: "Configuración del perfil",
-    ...tabs.es,
+    tabs: { ...tabs.es },
     general: {
       ...general.es,
     },
