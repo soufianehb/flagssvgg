@@ -9,43 +9,53 @@ export const useAuthState = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     const checkAndUpdateSession = async () => {
-      const { data: { session } } = await authService.getSession();
-      
-      if (!session) {
-        setIsAuthenticated(false);
-        setUser(null);
-        return;
-      }
+      try {
+        const { data: { session } } = await authService.getSession();
+        
+        if (!mounted) return;
 
-      // Check if session is expired
-      const expiryTime = new Date(session.expires_at! * 1000);
-      if (expiryTime < new Date()) {
-        console.log("Session expired, updating state...");
-        setIsAuthenticated(false);
-        setUser(null);
-        await supabase.auth.signOut();
-        return;
-      }
+        if (!session) {
+          setIsAuthenticated(false);
+          setUser(null);
+          return;
+        }
 
-      setIsAuthenticated(true);
-      setUser(session.user);
+        setIsAuthenticated(true);
+        setUser(session.user);
+      } catch (error) {
+        console.error("Error checking session:", error);
+        if (mounted) {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      }
     };
 
     // Initial check
     checkAndUpdateSession();
 
+    // Set up interval to periodically check session
+    const intervalId = setInterval(checkAndUpdateSession, 30000); // Check every 30 seconds
+
     // Subscribe to auth changes
     const {
       data: { subscription },
     } = authService.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      setUser(session?.user ?? null);
+      if (mounted) {
+        setIsAuthenticated(!!session);
+        setUser(session?.user ?? null);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      clearInterval(intervalId);
+      subscription.unsubscribe();
+    };
   }, []);
 
   return { isAuthenticated, user };
 };
-

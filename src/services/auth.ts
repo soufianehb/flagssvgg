@@ -54,19 +54,37 @@ export const authService = {
   },
 
   getSession: async () => {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) throw error;
+    try {
+      // First try to get the current session
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) throw error;
 
-    // If there's a session, check if it's expired
-    if (data.session) {
-      const expiryTime = new Date(data.session.expires_at! * 1000);
-      if (expiryTime < new Date()) {
-        await supabase.auth.signOut();
+      // If no session exists, return null
+      if (!session) {
         return { data: { session: null } };
       }
-    }
 
-    return { data };
+      // Check if session is expired or about to expire (within 60 seconds)
+      const expiryTime = new Date(session.expires_at! * 1000);
+      const now = new Date();
+      const timeUntilExpiry = expiryTime.getTime() - now.getTime();
+
+      if (timeUntilExpiry <= 60000) { // 60 seconds
+        console.log("Session expired or about to expire, refreshing...");
+        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) {
+          await supabase.auth.signOut();
+          return { data: { session: null } };
+        }
+        return { data: refreshData };
+      }
+
+      return { data: { session } };
+    } catch (error) {
+      console.error("Error in getSession:", error);
+      await supabase.auth.signOut();
+      return { data: { session: null } };
+    }
   },
 
   onAuthStateChange: (callback: (event: any, session: any) => void) => {
@@ -79,9 +97,13 @@ export const authService = {
   },
 
   refreshSession: async () => {
-    const { data, error } = await supabase.auth.refreshSession();
-    if (error) throw error;
-    return { data };
+    try {
+      const { data, error } = await supabase.auth.refreshSession();
+      if (error) throw error;
+      return { data };
+    } catch (error) {
+      console.error("Error refreshing session:", error);
+      throw error;
+    }
   }
 };
-

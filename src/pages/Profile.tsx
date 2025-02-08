@@ -1,4 +1,3 @@
-
 import { useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { Loader2, User } from "lucide-react";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
-import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/services/auth";
 
 // Memoize static components
 const MemoizedHeader = memo(Header);
@@ -45,18 +44,16 @@ const Profile = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        // If no session, redirect to login
-        navigate("/login");
-        return;
-      }
-
-      // Check if session is expired
-      const expiryTime = new Date(session.expires_at! * 1000);
-      if (expiryTime < new Date()) {
-        console.log("Session expired, logging out...");
+      try {
+        const { data: { session } } = await authService.getSession();
+        
+        if (!session) {
+          console.log("No session found, redirecting to login...");
+          navigate("/login");
+          return;
+        }
+      } catch (error) {
+        console.error("Session check error:", error);
         await logout();
         navigate("/login");
       }
@@ -93,4 +90,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
