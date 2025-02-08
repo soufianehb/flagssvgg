@@ -36,6 +36,13 @@ const Profile = () => {
     return null;
   }
 
+  const handleTabChange = (value: string) => {
+    const tabTrigger = document.querySelector(`[data-state][value="${value}"]`) as HTMLElement;
+    if (tabTrigger) {
+      tabTrigger.click();
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -89,10 +96,7 @@ const Profile = () => {
 
             {/* Mobile Select Dropdown */}
             <div className="block sm:hidden p-4 border-b border-gray-100">
-              <Select defaultValue="general" onValueChange={(value) => {
-                const trigger = document.querySelector(`[data-value="${value}"]`) as HTMLElement;
-                if (trigger) trigger.click();
-              }}>
+              <Select defaultValue="general" onValueChange={handleTabChange}>
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select tab" />
                 </SelectTrigger>
