@@ -54,31 +54,31 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <Tabs defaultValue="general" className="w-full">
-            <div className="px-3 sm:px-6 pt-3 sm:pt-4">
-              <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 bg-gray-50/80 sm:bg-gray-100/50 py-2 sm:py-4">
+            <div className="px-2 sm:px-4 pt-2 sm:pt-4 bg-gray-50/80">
+              <TabsList className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 bg-transparent">
                 <TabsTrigger 
                   value="general"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
+                  className="w-full data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.general}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
+                  className="w-full data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.security}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
+                  className="w-full data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.preferences}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm sm:text-base py-2"
+                  className="w-full data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2"
                 >
                   {t.profile.tabs.listings.title}
                 </TabsTrigger>
@@ -124,4 +124,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
