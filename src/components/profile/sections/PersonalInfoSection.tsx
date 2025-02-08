@@ -20,44 +20,6 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
     <div className="space-y-8">
       <h3 className="text-lg font-semibold text-gray-900">Contact Person Information</h3>
       
-      <FormField
-        control={form.control}
-        name="company_name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.profile.additionalInfo.companyDetails.companyName}</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <div className="flex gap-4 items-start">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>{t.signup.labels.email}</FormLabel>
-              <FormControl>
-                <Input {...field} type="email" readOnly />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button 
-          type="button"
-          variant="outline"
-          className="mt-8"
-          onClick={() => navigate('/profile/security')}
-        >
-          {t.profile.general.fields.modifyEmail}
-        </Button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <FormField
           control={form.control}
@@ -106,6 +68,30 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             </FormItem>
           )}
         />
+      </div>
+
+      <div className="flex gap-4 items-start">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>{t.signup.labels.email}</FormLabel>
+              <FormControl>
+                <Input {...field} type="email" readOnly />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button 
+          type="button"
+          variant="outline"
+          className="mt-8"
+          onClick={() => navigate('/profile/security')}
+        >
+          {t.profile.general.fields.modifyEmail}
+        </Button>
       </div>
     </div>
   );
