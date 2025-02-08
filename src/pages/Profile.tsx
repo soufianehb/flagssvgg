@@ -1,7 +1,8 @@
+
 import { useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "@/lib/i18n";
+import { useTranslation } from "@/contexts/TranslationContext"; // Update import path
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GeneralSettings } from "@/components/profile/GeneralSettings";
