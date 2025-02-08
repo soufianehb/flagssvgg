@@ -216,52 +216,52 @@ const translations = {
     profile: {
       title: "Profile Settings",
       tabs: {
-        general: "Général",
-        security: "Sécurité",
-        preferences: "Préférences",
+        general: "General",
+        security: "Security",
+        preferences: "Preferences",
         listings: {
-          title: "Mes Annonces",
-          empty: "Vous n'avez pas encore publié d'annonces",
+          title: "My Anuncios",
+          empty: "You have not yet published any ads",
           status: {
             active: "Active",
-            pending: "En attente",
-            expired: "Expirée"
+            pending: "Pending",
+            expired: "Expired"
           },
           filters: {
-            all: "Toutes les annonces",
-            active: "Actives",
-            pending: "En attente",
-            expired: "Expirées",
-            search: "Rechercher dans vos annonces..."
+            all: "All ads",
+            active: "Active",
+            pending: "Pending",
+            expired: "Expired",
+            search: "Search in your ads..."
           },
           sort: {
-            newest: "Plus récentes",
-            oldest: "Plus anciennes",
-            mostViewed: "Plus vues"
+            newest: "Most recent",
+            oldest: "Oldest",
+            mostViewed: "Most viewed"
           },
           actions: {
-            edit: "Modifier",
-            delete: "Supprimer",
-            deactivate: "Désactiver",
-            activate: "Activer"
+            edit: "Edit",
+            delete: "Delete",
+            deactivate: "Deactivate",
+            activate: "Activate"
           }
         }
       },
       general: {
-        title: "Fiche de société",
+        title: "Company Profile",
         sections: {
-          personal: "Informations de l'interlocuteur",
-          business: "Informations commerciales",
-          address: "Adresse de l'entreprise"
+          personal: "Contact Person Information",
+          business: "Business Information",
+          address: "Company Address"
         }
       },
       security: {
-        title: "Paramètres de sécurité",
-        comingSoon: "Paramètres de sécurité à venir"
+        title: "Security Settings",
+        comingSoon: "Security settings coming soon"
       },
       preferences: {
-        title: "Préférences",
-        comingSoon: "Paramètres des préférences à venir"
+        title: "Preferences",
+        comingSoon: "Preference settings coming soon"
       }
     }
   },
@@ -510,8 +510,12 @@ const translations = {
         }
       },
       general: {
-        title: "Informations générales",
-        comingSoon: "Paramètres généraux à venir"
+        title: "Fiche de société",
+        sections: {
+          personal: "Informations de l'interlocuteur",
+          business: "Informations commerciales",
+          address: "Adresse de l'entreprise"
+        }
       },
       security: {
         title: "Paramètres de sécurité",
@@ -734,7 +738,7 @@ const translations = {
       }
     },
     profile: {
-      title: "Ajustes de perfil",
+      title: "Configuración del perfil",
       tabs: {
         general: "General",
         security: "Seguridad",
@@ -768,16 +772,20 @@ const translations = {
         }
       },
       general: {
-        title: "Ajustes generales",
-        comingSoon: "Ajustes generales próximamente"
+        title: "Ficha de empresa",
+        sections: {
+          personal: "Información de contacto",
+          business: "Información comercial",
+          address: "Dirección de la empresa"
+        }
       },
       security: {
-        title: "Ajustes de seguridad",
-        comingSoon: "Ajustes de seguridad próximamente"
+        title: "Configuración de seguridad",
+        comingSoon: "Configuración de seguridad próximamente"
       },
       preferences: {
         title: "Preferencias",
-        comingSoon: "Ajustes de preferencias próximamente"
+        comingSoon: "Configuración de preferencias próximamente"
       }
     }
   }
