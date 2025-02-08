@@ -88,32 +88,34 @@ const Profile = () => {
 
             {/* Mobile Tabs - New grid layout */}
             <div className="block sm:hidden p-4 border-b border-gray-100">
-              <div className="grid grid-cols-2 gap-3">
-                <TabsTrigger 
-                  value="general"
-                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                >
-                  <span className="text-sm font-medium">{t.profile.tabs.general}</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="security"
-                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                >
-                  <span className="text-sm font-medium">{t.profile.tabs.security}</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="preferences"
-                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                >
-                  <span className="text-sm font-medium">{t.profile.tabs.preferences}</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="listings"
-                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                >
-                  <span className="text-sm font-medium">{t.profile.tabs.listings.title}</span>
-                </TabsTrigger>
-              </div>
+              <TabsList className="w-full bg-transparent">
+                <div className="grid grid-cols-2 gap-3">
+                  <TabsTrigger 
+                    value="general"
+                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
+                  >
+                    <span className="text-sm font-medium">{t.profile.tabs.general}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="security"
+                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
+                  >
+                    <span className="text-sm font-medium">{t.profile.tabs.security}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="preferences"
+                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
+                  >
+                    <span className="text-sm font-medium">{t.profile.tabs.preferences}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="listings"
+                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
+                  >
+                    <span className="text-sm font-medium">{t.profile.tabs.listings.title}</span>
+                  </TabsTrigger>
+                </div>
+              </TabsList>
             </div>
 
             <div className="px-4 sm:px-6 pt-6 pb-8">
@@ -163,4 +165,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
