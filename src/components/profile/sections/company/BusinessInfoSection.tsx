@@ -16,33 +16,35 @@ export function BusinessInfoSection({ form }: BusinessInfoSectionProps) {
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-900 pt-4">Business Information</h3>
       
-      <FormField
-        control={form.control}
-        name="company_name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.companyName}</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          control={form.control}
+          name="company_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.signup.labels.companyName}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        control={form.control}
-        name="trade_register_number"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={form.control}
+          name="trade_register_number"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 }
