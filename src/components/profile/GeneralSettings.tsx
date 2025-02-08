@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -145,7 +146,6 @@ export function GeneralSettings() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">{t.profile.general.title}</h2>
           <MemoizedPersonalInfoSection form={form} />
           <MemoizedCompanyInfoSection form={form} />
         </div>
