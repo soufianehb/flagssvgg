@@ -80,6 +80,21 @@ export function AddressSection({ form }: AddressSectionProps) {
           )}
         />
       </div>
+
+      <FormField
+        control={form.control}
+        name="trade_register_number"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }
+
