@@ -86,34 +86,34 @@ const Profile = () => {
               </TabsList>
             </div>
 
-            {/* Mobile Tabs */}
-            <div className="border-b border-gray-100 block sm:hidden">
-              <TabsList className="w-full overflow-x-auto flex gap-2 p-3 bg-transparent scrollbar-hide">
+            {/* Mobile Tabs - New grid layout */}
+            <div className="block sm:hidden p-4 border-b border-gray-100">
+              <div className="grid grid-cols-2 gap-3">
                 <TabsTrigger 
                   value="general"
-                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
                 >
-                  {t.profile.tabs.general}
+                  <span className="text-sm font-medium">{t.profile.tabs.general}</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
                 >
-                  {t.profile.tabs.security}
+                  <span className="text-sm font-medium">{t.profile.tabs.security}</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
                 >
-                  {t.profile.tabs.preferences}
+                  <span className="text-sm font-medium">{t.profile.tabs.preferences}</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm px-4 py-2.5 transition-colors"
+                  className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
                 >
-                  {t.profile.tabs.listings.title}
+                  <span className="text-sm font-medium">{t.profile.tabs.listings.title}</span>
                 </TabsTrigger>
-              </TabsList>
+              </div>
             </div>
 
             <div className="px-4 sm:px-6 pt-6 pb-8">
