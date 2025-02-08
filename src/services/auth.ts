@@ -56,6 +56,16 @@ export const authService = {
   getSession: async () => {
     const { data, error } = await supabase.auth.getSession();
     if (error) throw error;
+
+    // If there's a session, check if it's expired
+    if (data.session) {
+      const expiryTime = new Date(data.session.expires_at! * 1000);
+      if (expiryTime < new Date()) {
+        await supabase.auth.signOut();
+        return { data: { session: null } };
+      }
+    }
+
     return { data };
   },
 
@@ -66,5 +76,12 @@ export const authService = {
         subscription
       }
     };
+  },
+
+  refreshSession: async () => {
+    const { data, error } = await supabase.auth.refreshSession();
+    if (error) throw error;
+    return { data };
   }
 };
+

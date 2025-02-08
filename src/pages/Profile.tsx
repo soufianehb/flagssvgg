@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { Loader2, User } from "lucide-react";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { supabase } from "@/integrations/supabase/client";
 
 // Memoize static components
 const MemoizedHeader = memo(Header);
@@ -39,14 +40,30 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => (
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (isAuthenticated === false) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        // If no session, redirect to login
+        navigate("/login");
+        return;
+      }
+
+      // Check if session is expired
+      const expiryTime = new Date(session.expires_at! * 1000);
+      if (expiryTime < new Date()) {
+        console.log("Session expired, logging out...");
+        await logout();
+        navigate("/login");
+      }
+    };
+
+    checkSession();
+  }, [navigate, logout]);
 
   if (isAuthenticated === undefined) {
     return <ProfileSkeleton />;
