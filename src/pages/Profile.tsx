@@ -54,38 +54,38 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <Tabs defaultValue="general" className="w-full">
-            <div className="border-b border-gray-100 overflow-x-auto">
-              <TabsList className="min-w-full inline-flex flex-nowrap p-4 bg-transparent">
+            <div className="border-b border-gray-100">
+              <TabsList className="w-full flex flex-col sm:flex-row gap-2 sm:gap-4 p-4 bg-transparent">
                 <TabsTrigger 
                   value="general"
-                  className="shrink-0 px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors"
+                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.general}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security"
-                  className="shrink-0 px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors ml-2 sm:ml-4"
+                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.security}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="preferences"
-                  className="shrink-0 px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors ml-2 sm:ml-4"
+                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.preferences}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="listings"
-                  className="shrink-0 px-4 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base transition-colors ml-2 sm:ml-4"
+                  className="w-full flex-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md text-sm sm:text-base py-2.5 transition-colors"
                 >
                   {t.profile.tabs.listings.title}
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            <div className="p-4 sm:p-6">
+            <div className="px-4 sm:px-6 pt-6 pb-8">
               <TabsContent value="general" className="mt-0 focus-visible:outline-none">
                 <div className="space-y-4 sm:space-y-6">
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
@@ -132,3 +132,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
