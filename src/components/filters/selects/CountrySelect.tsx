@@ -1,7 +1,9 @@
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/lib/i18n";
 import { useCountryCodes } from "@/hooks/useCountryCodes";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FormLabel } from "@/components/ui/form";
 
 interface CountrySelectProps {
   value?: string;
@@ -43,27 +45,30 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
   };
 
   return (
-    <Select value={value} onValueChange={handleValueChange}>
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder={t.filters.country.placeholder}>
-          {value && countries && (
-            <span className="flex items-center">
-              <FlagImage countryCode={countries.find(c => c.name === value)?.code || ''} />
-              {value}
-            </span>
-          )}
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        {countries?.map((country) => (
-          <SelectItem key={country.code} value={country.name}>
-            <span className="flex items-center">
-              <FlagImage countryCode={country.code} />
-              {country.name}
-            </span>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="space-y-2">
+      <FormLabel>{t.filters.country.label}</FormLabel>
+      <Select value={value} onValueChange={handleValueChange}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={t.filters.country.placeholder}>
+            {value && countries && (
+              <span className="flex items-center">
+                <FlagImage countryCode={countries.find(c => c.name === value)?.code || ''} />
+                {value}
+              </span>
+            )}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {countries?.map((country) => (
+            <SelectItem key={country.code} value={country.name}>
+              <span className="flex items-center">
+                <FlagImage countryCode={country.code} />
+                {country.name}
+              </span>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
