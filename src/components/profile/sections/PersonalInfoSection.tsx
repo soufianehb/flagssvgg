@@ -86,8 +86,8 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
         />
         <Button 
           type="button"
-          variant="outline"
-          className="mt-8"
+          variant="default"
+          className="mt-8 bg-primary hover:bg-accent"
           onClick={() => navigate('/profile/security')}
         >
           {t.profile.general.fields.modifyEmail}
