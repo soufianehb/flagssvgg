@@ -12,12 +12,13 @@ interface PhoneSectionProps {
 }
 
 export function PhoneSection({ form }: PhoneSectionProps) {
+  const { t } = useTranslation();
   const { data: countries } = useCountryCodes();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <FormItem>
-        <FormLabel>Personal Phone</FormLabel>
+        <FormLabel>{t.profile.general.fields.personalPhone}</FormLabel>
         <div className="flex gap-2">
           <div className="w-[90px]">
             <FormField
@@ -60,7 +61,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
               name="phoneNumber"
               render={({ field }) => (
                 <FormControl>
-                  <Input placeholder="Phone number" {...field} type="tel" />
+                  <Input placeholder={t.profile.general.fields.phoneNumber} {...field} type="tel" />
                 </FormControl>
               )}
             />
@@ -72,7 +73,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
       </FormItem>
 
       <FormItem>
-        <FormLabel>Business Phone</FormLabel>
+        <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
         <div className="flex gap-2">
           <div className="w-[90px]">
             <FormField
@@ -115,7 +116,7 @@ export function PhoneSection({ form }: PhoneSectionProps) {
               name="businessPhone"
               render={({ field }) => (
                 <FormControl>
-                  <Input placeholder="Business phone" {...field} type="tel" />
+                  <Input placeholder={t.profile.general.fields.businessPhone} {...field} type="tel" />
                 </FormControl>
               )}
             />
@@ -128,4 +129,3 @@ export function PhoneSection({ form }: PhoneSectionProps) {
     </div>
   );
 }
-

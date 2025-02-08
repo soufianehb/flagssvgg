@@ -15,14 +15,14 @@ export function AddressSection({ form }: AddressSectionProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+      <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.address}</h3>
 
       <FormField
         control={form.control}
         name="address"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t.signup.labels.address}</FormLabel>
+            <FormLabel>{t.profile.general.fields.address}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
