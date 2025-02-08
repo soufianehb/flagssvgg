@@ -22,8 +22,10 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              N° de TVA intracommunautaire
-              <span className="text-sm text-gray-500 ml-2">(si vous êtes en Europe)</span>
+              {t.profile.additionalInfo.vatNumber}
+              <span className="text-sm text-gray-500 ml-2">
+                {t.profile.additionalInfo.vatNumberHint}
+              </span>
             </FormLabel>
             <FormControl>
               <Input {...field} />
@@ -38,22 +40,22 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         name="business_type"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Vous êtes</FormLabel>
+            <FormLabel>{t.profile.additionalInfo.businessType.label}</FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionnez votre type d'activité" />
+                  <SelectValue placeholder={t.profile.additionalInfo.businessType.placeholder} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="producer">Producteur</SelectItem>
-                <SelectItem value="manufacturer">Fabricant</SelectItem>
-                <SelectItem value="wholesaler">Grossiste</SelectItem>
-                <SelectItem value="broker">Courtier</SelectItem>
-                <SelectItem value="retailer">Détaillant</SelectItem>
-                <SelectItem value="group">Groupement</SelectItem>
-                <SelectItem value="association">Association</SelectItem>
-                <SelectItem value="other">Autre</SelectItem>
+                <SelectItem value="producer">{t.profile.additionalInfo.businessType.producer}</SelectItem>
+                <SelectItem value="manufacturer">{t.profile.additionalInfo.businessType.manufacturer}</SelectItem>
+                <SelectItem value="wholesaler">{t.profile.additionalInfo.businessType.wholesaler}</SelectItem>
+                <SelectItem value="broker">{t.profile.additionalInfo.businessType.broker}</SelectItem>
+                <SelectItem value="retailer">{t.profile.additionalInfo.businessType.retailer}</SelectItem>
+                <SelectItem value="group">{t.profile.additionalInfo.businessType.group}</SelectItem>
+                <SelectItem value="association">{t.profile.additionalInfo.businessType.association}</SelectItem>
+                <SelectItem value="other">{t.profile.additionalInfo.businessType.other}</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />
@@ -66,11 +68,11 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         name="employee_count"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Effectif</FormLabel>
+            <FormLabel>{t.profile.additionalInfo.employeeCount.label}</FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionnez votre effectif" />
+                  <SelectValue placeholder={t.profile.additionalInfo.employeeCount.placeholder} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -94,7 +96,7 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         name="website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Adresse de votre site web</FormLabel>
+            <FormLabel>{t.profile.additionalInfo.website}</FormLabel>
             <FormControl>
               <Input {...field} placeholder="https://" />
             </FormControl>
@@ -109,10 +111,9 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              Précisions sur votre activité
+              {t.profile.additionalInfo.businessDescription.label}
               <span className="block text-sm text-gray-500">
-                Profitez de cet espace pour bien décrire votre entreprise votre métier, vos marchés etc ... 
-                Ces informations seront diffusées à vos interlocuteurs avant toute prise de contact.
+                {t.profile.additionalInfo.businessDescription.hint}
               </span>
             </FormLabel>
             <FormControl>
@@ -132,10 +133,9 @@ export function AdditionalBusinessSection({ form }: AdditionalBusinessSectionPro
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              Indications sur vos capacités
+              {t.profile.additionalInfo.capabilities.label}
               <span className="block text-sm text-gray-500">
-                Profitez de cet espace pour précisier si vous le souhaitez votre chiffre d'affaire, 
-                vos garanties ou toute indication qui pourra garantir le sérieux de votre entreprise.
+                {t.profile.additionalInfo.capabilities.hint}
               </span>
             </FormLabel>
             <FormControl>
