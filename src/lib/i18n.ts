@@ -216,48 +216,52 @@ const translations = {
     profile: {
       title: "Profile Settings",
       tabs: {
-        general: "General",
-        security: "Security",
-        preferences: "Preferences",
+        general: "Général",
+        security: "Sécurité",
+        preferences: "Préférences",
         listings: {
-          title: "My Listings",
-          empty: "You haven't published any listings yet",
+          title: "Mes Annonces",
+          empty: "Vous n'avez pas encore publié d'annonces",
           status: {
             active: "Active",
-            pending: "Pending",
-            expired: "Expired"
+            pending: "En attente",
+            expired: "Expirée"
           },
           filters: {
-            all: "All Listings",
-            active: "Active",
-            pending: "Pending",
-            expired: "Expired",
-            search: "Search in your listings..."
+            all: "Toutes les annonces",
+            active: "Actives",
+            pending: "En attente",
+            expired: "Expirées",
+            search: "Rechercher dans vos annonces..."
           },
           sort: {
-            newest: "Newest First",
-            oldest: "Oldest First",
-            mostViewed: "Most Viewed"
+            newest: "Plus récentes",
+            oldest: "Plus anciennes",
+            mostViewed: "Plus vues"
           },
           actions: {
-            edit: "Edit",
-            delete: "Delete",
-            deactivate: "Deactivate",
-            activate: "Activate"
+            edit: "Modifier",
+            delete: "Supprimer",
+            deactivate: "Désactiver",
+            activate: "Activer"
           }
         }
       },
       general: {
-        title: "General Information",
-        comingSoon: "General settings coming soon"
+        title: "Fiche de société",
+        sections: {
+          personal: "Informations de l'interlocuteur",
+          business: "Informations commerciales",
+          address: "Adresse de l'entreprise"
+        }
       },
       security: {
-        title: "Security Settings",
-        comingSoon: "Security settings coming soon"
+        title: "Paramètres de sécurité",
+        comingSoon: "Paramètres de sécurité à venir"
       },
       preferences: {
-        title: "Preferences",
-        comingSoon: "Preference settings coming soon"
+        title: "Préférences",
+        comingSoon: "Paramètres des préférences à venir"
       }
     }
   },

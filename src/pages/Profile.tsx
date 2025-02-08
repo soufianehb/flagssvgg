@@ -65,9 +65,6 @@ const Profile = () => {
 
         <ErrorBoundary>
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6">
-              {t.profile.general.title}
-            </h2>
             <GeneralSettings />
           </div>
         </ErrorBoundary>
@@ -79,3 +76,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
