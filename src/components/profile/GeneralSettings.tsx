@@ -5,7 +5,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,13 +13,29 @@ import { generalFormSchema, GeneralFormValues } from "./types/profile";
 import { PersonalInfoSection } from "./sections/PersonalInfoSection";
 import { ContactInfoSection } from "./sections/ContactInfoSection";
 import { CompanyInfoSection } from "./sections/CompanyInfoSection";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+// Memoize form sections
+const MemoizedPersonalInfoSection = memo(PersonalInfoSection);
+const MemoizedContactInfoSection = memo(ContactInfoSection);
+const MemoizedCompanyInfoSection = memo(CompanyInfoSection);
+
+const fetchProfileData = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+};
 
 export function GeneralSettings() {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const [profileData, setProfileData] = useState<any>(null);
+  const queryClient = useQueryClient();
 
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
@@ -40,64 +56,36 @@ export function GeneralSettings() {
     },
   });
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        if (!user?.id) return;
-
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (error) throw error;
-
-        if (data) {
-          form.reset({
-            firstName: data.first_name || "",
-            lastName: data.last_name || "",
-            email: data.email || user.email || "",
-            phoneNumber: data.phone_number || "",
-            phoneCode: data.phone_code || "",
-            businessPhone: data.business_phone || "",
-            businessPhoneCode: data.business_phone_code || "",
-            company_name: data.company_name || "",
-            address: data.address || "",
-            city: data.city || "",
-            country: data.country || "",
-            zip_code: data.zip_code || "",
-            trade_register_number: data.trade_register_number || "",
-          });
-          setProfileData(data);
-        } else {
-          toast({
-            title: "Profile not found",
-            description: "Please complete your profile information.",
-          });
-        }
-      } catch (error: any) {
-        console.error('Error fetching profile:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load profile data. Please try again.",
+  // Use react-query for data fetching
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: () => fetchProfileData(user?.id as string),
+    enabled: !!user?.id,
+    onSuccess: (data) => {
+      if (data) {
+        form.reset({
+          firstName: data.first_name || "",
+          lastName: data.last_name || "",
+          email: data.email || user?.email || "",
+          phoneNumber: data.phone_number || "",
+          phoneCode: data.phone_code || "",
+          businessPhone: data.business_phone || "",
+          businessPhoneCode: data.business_phone_code || "",
+          company_name: data.company_name || "",
+          address: data.address || "",
+          city: data.city || "",
+          country: data.country || "",
+          zip_code: data.zip_code || "",
+          trade_register_number: data.trade_register_number || "",
         });
-      } finally {
-        setLoading(false);
       }
-    };
+    },
+  });
 
-    fetchProfileData();
-  }, [user, form, toast]);
-
-  async function onSubmit(data: GeneralFormValues) {
-    try {
-      setLoading(true);
-      
-      if (!user?.id) {
-        throw new Error("User not authenticated");
-      }
+  // Use react-query for mutations
+  const mutation = useMutation({
+    mutationFn: async (data: GeneralFormValues) => {
+      if (!user?.id) throw new Error("User not authenticated");
 
       const updateData = {
         first_name: data.firstName,
@@ -122,24 +110,30 @@ export function GeneralSettings() {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      
+      return updateData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       toast({
         title: "Success",
         description: "Your profile has been updated successfully.",
       });
-    } catch (error: any) {
+    },
+    onError: (error: Error) => {
       console.error('Error updating profile:', error);
       toast({
         variant: "destructive",
         title: "Error",
         description: error.message || "Failed to update profile. Please try again.",
       });
-    } finally {
-      setLoading(false);
-    }
-  }
+    },
+  });
 
-  if (loading) {
+  const onSubmit = useCallback(async (data: GeneralFormValues) => {
+    mutation.mutate(data);
+  }, [mutation]);
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -150,16 +144,16 @@ export function GeneralSettings() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <PersonalInfoSection form={form} />
-        <ContactInfoSection form={form} />
-        <CompanyInfoSection form={form} />
+        <MemoizedPersonalInfoSection form={form} />
+        <MemoizedContactInfoSection form={form} />
+        <MemoizedCompanyInfoSection form={form} />
 
         <Button 
           type="submit" 
-          disabled={loading}
+          disabled={mutation.isPending || !form.formState.isDirty}
           className="w-full"
         >
-          {loading ? (
+          {mutation.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Saving...
