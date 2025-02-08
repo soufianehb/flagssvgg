@@ -17,19 +17,19 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12 border-b border-gray-200">
       <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.personal}</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="md:col-span-1">
               <FormLabel>{t.profile.general.fields.title}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[120px]">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select title" />
                   </SelectTrigger>
                 </FormControl>
@@ -46,7 +46,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           control={form.control}
           name="firstName"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="md:col-span-2">
               <FormLabel>{t.signup.labels.firstName}</FormLabel>
               <FormControl>
                 <Input {...field} />
@@ -59,7 +59,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           control={form.control}
           name="lastName"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="md:col-span-3">
               <FormLabel>{t.signup.labels.lastName}</FormLabel>
               <FormControl>
                 <Input {...field} />

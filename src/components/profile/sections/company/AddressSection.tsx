@@ -14,7 +14,7 @@ export function AddressSection({ form }: AddressSectionProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-12">
       <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.address}</h3>
 
       <FormField
