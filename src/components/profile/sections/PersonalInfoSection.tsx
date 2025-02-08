@@ -26,7 +26,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>{t.profile.general.fields.title}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -90,7 +90,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           className="mt-8"
           onClick={() => navigate('/profile/security')}
         >
-          Change Email
+          {t.profile.general.fields.modifyEmail}
         </Button>
       </div>
     </div>

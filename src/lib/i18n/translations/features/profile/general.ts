@@ -6,6 +6,10 @@ export const general = {
       personal: "Contact Person Information",
       business: "Business Information",
       address: "Address"
+    },
+    fields: {
+      title: "Title",
+      modifyEmail: "Modify Email Address"
     }
   },
   fr: {
@@ -14,6 +18,10 @@ export const general = {
       personal: "Informations de l'interlocuteur",
       business: "Informations commerciales",
       address: "Adresse"
+    },
+    fields: {
+      title: "Civilité",
+      modifyEmail: "Modifier l'adresse mail"
     }
   },
   es: {
@@ -22,6 +30,11 @@ export const general = {
       personal: "Información de contacto",
       business: "Información comercial",
       address: "Dirección"
+    },
+    fields: {
+      title: "Título",
+      modifyEmail: "Modificar dirección de correo"
     }
   }
 };
+
