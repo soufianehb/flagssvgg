@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTranslation } from "@/lib/i18n";
 import { useCountryCodes } from "@/hooks/useCountryCodes";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FormLabel } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 
 interface CountrySelectProps {
   value?: string;
@@ -46,9 +46,9 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
 
   return (
     <div className="space-y-2">
-      <FormLabel>{t.filters.country.label}</FormLabel>
+      <Label htmlFor="country-select">{t.filters.country.label}</Label>
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger id="country-select" className="w-full">
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
               <span className="flex items-center">
