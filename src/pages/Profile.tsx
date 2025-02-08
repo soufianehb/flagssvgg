@@ -10,7 +10,8 @@ import { GeneralSettings } from "@/components/profile/GeneralSettings";
 import { SecuritySettings } from "@/components/profile/SecuritySettings";
 import { PreferenceSettings } from "@/components/profile/PreferenceSettings";
 import { UserListings } from "@/components/profile/UserListings";
-import { Loader2, User } from "lucide-react";
+import { Loader2, User, ChevronDown } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -86,36 +87,22 @@ const Profile = () => {
               </TabsList>
             </div>
 
-            {/* Mobile Tabs - New grid layout */}
+            {/* Mobile Select Dropdown */}
             <div className="block sm:hidden p-4 border-b border-gray-100">
-              <TabsList className="w-full bg-transparent">
-                <div className="grid grid-cols-2 gap-3">
-                  <TabsTrigger 
-                    value="general"
-                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                  >
-                    <span className="text-sm font-medium">{t.profile.tabs.general}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="security"
-                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                  >
-                    <span className="text-sm font-medium">{t.profile.tabs.security}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="preferences"
-                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                  >
-                    <span className="text-sm font-medium">{t.profile.tabs.preferences}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="listings"
-                    className="flex flex-col items-center justify-center h-20 bg-gray-50 hover:bg-gray-100 data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-colors p-2 text-center"
-                  >
-                    <span className="text-sm font-medium">{t.profile.tabs.listings.title}</span>
-                  </TabsTrigger>
-                </div>
-              </TabsList>
+              <Select defaultValue="general" onValueChange={(value) => {
+                const trigger = document.querySelector(`[data-value="${value}"]`) as HTMLElement;
+                if (trigger) trigger.click();
+              }}>
+                <SelectTrigger className="w-full bg-white">
+                  <SelectValue placeholder="Select tab" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">{t.profile.tabs.general}</SelectItem>
+                  <SelectItem value="security">{t.profile.tabs.security}</SelectItem>
+                  <SelectItem value="preferences">{t.profile.tabs.preferences}</SelectItem>
+                  <SelectItem value="listings">{t.profile.tabs.listings.title}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="px-4 sm:px-6 pt-6 pb-8">
