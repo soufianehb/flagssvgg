@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,7 +17,6 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
-import { AuthChangeEvent } from "@supabase/supabase-js";
 
 const passwordFormSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -99,10 +97,10 @@ export function SecuritySettings() {
   }, [user?.email]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === AuthChangeEvent.EMAIL_CHANGE_CONFIRM) {
+      if (event === 'EMAIL_CHANGE_CONFIRM') {
         console.log('Email change confirmed:', session?.user.email);
         setEmailUpdateStatus('updating_profile');
         
@@ -223,7 +221,6 @@ export function SecuritySettings() {
 
   return (
     <div className="space-y-10">
-      {/* Email Change Section */}
       <div className="space-y-6">
         <div>
           <h3 className="text-lg font-medium">Email Settings</h3>
@@ -284,7 +281,6 @@ export function SecuritySettings() {
         </Form>
       </div>
 
-      {/* Password Change Section */}
       <div className="space-y-6">
         <div>
           <h3 className="text-lg font-medium">Password Settings</h3>
@@ -357,4 +353,3 @@ export function SecuritySettings() {
     </div>
   );
 }
-
