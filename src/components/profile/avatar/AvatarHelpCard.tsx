@@ -19,22 +19,22 @@ export const AvatarHelpCard = () => {
       <HoverCardContent className="w-80">
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-gray-600 mb-2">{t.profile.settings.avatar.uploadInstructions}</p>
+            <p className="text-sm text-gray-600 mb-2">{t.profile.settings.upload.uploadInstructions}</p>
           </div>
           <div className="space-y-2">
-            <h4 className="font-semibold">{t.profile.settings.avatar.specifications.title}</h4>
+            <h4 className="font-semibold">{t.profile.settings.upload.specifications.title}</h4>
             <ul className="text-sm space-y-1 text-gray-600">
               <li className="flex items-center gap-2">
-                <span className="font-medium">{t.profile.settings.avatar.specifications.format}</span> 
-                {t.profile.settings.avatar.specifications.formatTypes}
+                <span className="font-medium">{t.profile.settings.upload.specifications.format}</span> 
+                {t.profile.settings.upload.specifications.formatTypes}
               </li>
               <li className="flex items-center gap-2">
-                <span className="font-medium">{t.profile.settings.avatar.specifications.maxSize}</span> 
-                {t.profile.settings.avatar.specifications.maxSizeValue}
+                <span className="font-medium">{t.profile.settings.upload.specifications.maxSize}</span> 
+                {t.profile.settings.upload.specifications.maxSizeValue}
               </li>
               <li className="flex items-center gap-2">
-                <span className="font-medium">{t.profile.settings.avatar.specifications.minDimensions}</span> 
-                {t.profile.settings.avatar.specifications.minDimensionsValue}
+                <span className="font-medium">{t.profile.settings.upload.specifications.minDimensions}</span> 
+                {t.profile.settings.upload.specifications.minDimensionsValue}
               </li>
             </ul>
           </div>

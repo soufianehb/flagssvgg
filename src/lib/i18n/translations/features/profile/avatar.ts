@@ -17,6 +17,16 @@ export const avatar = {
         invalidType: "Invalid file type. Please upload an image file.",
         tooLarge: "File is too large. Maximum size is 2MB."
       }
+    },
+    uploadInstructions: "Click or drag and drop an image to update your profile picture.",
+    specifications: {
+      title: "Image Specifications",
+      format: "Format:",
+      formatTypes: "JPEG or PNG",
+      maxSize: "Max size:",
+      maxSizeValue: "2MB",
+      minDimensions: "Min dimensions:",
+      minDimensionsValue: "200x200 pixels"
     }
   },
   fr: {
@@ -36,6 +46,16 @@ export const avatar = {
         invalidType: "Type de fichier invalide. Veuillez télécharger un fichier image.",
         tooLarge: "Le fichier est trop volumineux. La taille maximale est de 2 Mo."
       }
+    },
+    uploadInstructions: "Cliquez ou faites glisser une image pour mettre à jour votre photo de profil.",
+    specifications: {
+      title: "Spécifications de l'image",
+      format: "Format :",
+      formatTypes: "JPEG ou PNG",
+      maxSize: "Taille max :",
+      maxSizeValue: "2Mo",
+      minDimensions: "Dimensions min :",
+      minDimensionsValue: "200x200 pixels"
     }
   },
   es: {
@@ -55,7 +75,16 @@ export const avatar = {
         invalidType: "Tipo de archivo inválido. Por favor, suba un archivo de imagen.",
         tooLarge: "El archivo es demasiado grande. El tamaño máximo es de 2MB."
       }
+    },
+    uploadInstructions: "Haga clic o arrastre una imagen para actualizar su foto de perfil.",
+    specifications: {
+      title: "Especificaciones de la imagen",
+      format: "Formato:",
+      formatTypes: "JPEG o PNG",
+      maxSize: "Tamaño máximo:",
+      maxSizeValue: "2MB",
+      minDimensions: "Dimensiones mínimas:",
+      minDimensionsValue: "200x200 píxeles"
     }
   }
 };
-
