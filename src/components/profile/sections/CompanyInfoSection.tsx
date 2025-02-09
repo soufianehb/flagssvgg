@@ -4,6 +4,7 @@ import { GeneralFormValues } from "../types/profile";
 import { AddressSection } from "./company/AddressSection";
 import { PhoneSection } from "./company/PhoneSection";
 import { BusinessInfoSection } from "./company/BusinessInfoSection";
+import { QuestionsSection } from "./company/QuestionsSection";
 import { useTranslation } from "@/lib/i18n";
 import { Separator } from "@/components/ui/separator";
 
@@ -31,6 +32,10 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
         <h3 className="text-lg font-semibold text-gray-900 mb-6">{t.profile.general.sections.business}</h3>
         <BusinessInfoSection form={form} />
       </div>
+
+      <Separator className="my-8" />
+      
+      <QuestionsSection form={form} />
     </div>
   );
 }

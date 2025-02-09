@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export const generalFormSchema = z.object({
@@ -44,6 +43,26 @@ export const generalFormSchema = z.object({
   website: z.string().optional(),
   business_description: z.string().min(25, "Description must be at least 25 words"),
   capabilities_description: z.string().min(25, "Description must be at least 25 words"),
+  metadata: z.object({
+    questionnaire: z.object({
+      hasCompanyRegistration: z.boolean().default(false),
+      acceptsDocumentSharing: z.boolean().default(false),
+      acceptsReferences: z.boolean().default(false),
+      hasFinancialCapacity: z.boolean().default(false)
+    }).default({
+      hasCompanyRegistration: false,
+      acceptsDocumentSharing: false,
+      acceptsReferences: false,
+      hasFinancialCapacity: false
+    })
+  }).default({
+    questionnaire: {
+      hasCompanyRegistration: false,
+      acceptsDocumentSharing: false,
+      acceptsReferences: false,
+      hasFinancialCapacity: false
+    }
+  })
 });
 
 export type GeneralFormValues = z.infer<typeof generalFormSchema>;
