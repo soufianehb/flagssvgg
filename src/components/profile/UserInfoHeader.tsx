@@ -12,35 +12,56 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayId, setDisplayId] = useState<string | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!user?.id) return;
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-        
-      if (error) {
-        console.error('Error fetching profile:', error);
+      if (!user?.id) {
+        setIsLoading(false);
         return;
       }
+      
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+          
+        if (error) {
+          console.error('Error fetching profile:', error);
+          setIsLoading(false);
+          return;
+        }
 
-      if (data) {
-        setProfile(data);
-        setAvatarUrl(data.avatar_url);
-        setDisplayId(data.display_id?.startsWith('EXP-') ? data.display_id : `EXP-${data.display_id}`);
+        if (data) {
+          setProfile(data);
+          setAvatarUrl(data.avatar_url);
+          setDisplayId(data.display_id?.startsWith('EXP-') ? data.display_id : `EXP-${data.display_id}`);
+        }
+      } catch (error) {
+        console.error('Error in profile fetch:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProfile();
   }, [user?.id]);
 
+  // Use profile data first, fall back to user metadata, then to empty states
   const companyName = profile?.company_name || user?.user_metadata?.company_name || t.profile.general.emptyStates.companyName;
   const phoneNumber = profile?.business_phone || profile?.phone_number || user?.user_metadata?.businessPhone || user?.user_metadata?.phoneNumber || t.profile.general.emptyStates.phoneNumber;
+  const email = profile?.email || user?.email;
+
+  if (isLoading) {
+    return (
+      <div className="mb-6 bg-white p-4 sm:p-6 rounded-lg shadow-sm animate-pulse">
+        <div className="h-20 bg-gray-200 rounded"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-6 bg-white p-4 sm:p-6 rounded-lg shadow-sm">
@@ -60,7 +81,7 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
             {companyName}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
-            {profile?.email || user?.email}
+            {email}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
             {phoneNumber}

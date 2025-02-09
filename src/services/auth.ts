@@ -19,27 +19,40 @@ export const authService = {
       password,
       options: {
         emailRedirectTo: window.location.origin,
+        data: {
+          first_name: profileData.first_name,
+          last_name: profileData.last_name,
+          company_name: profileData.company_name
+        }
       }
     });
 
     if (authError) throw authError;
 
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert([{
-        user_id: authData.user?.id,
-        email,
-        first_name: profileData.first_name,
-        last_name: profileData.last_name,
-        company_name: profileData.company_name,
-        is_profile_complete: false,
-        status: 'active',
-        metadata: profileData.metadata || {}
-      }]);
+    if (authData.user) {
+      try {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([{
+            user_id: authData.user.id,
+            email,
+            first_name: profileData.first_name,
+            last_name: profileData.last_name,
+            company_name: profileData.company_name,
+            is_profile_complete: false,
+            status: 'active',
+            metadata: profileData.metadata || {}
+          }]);
 
-    if (profileError) {
-      console.error('Error creating profile:', profileError);
-      throw profileError;
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+          // Still return auth data even if profile creation fails
+          // The profile can be created later
+          return { data: authData, error: null };
+        }
+      } catch (error) {
+        console.error('Error in profile creation:', error);
+      }
     }
     
     return { data: authData, error: null };
@@ -49,17 +62,19 @@ export const authService = {
     try {
       const { error } = await supabase.auth.signOut();
       
-      // If the error is session_not_found, we can safely ignore it
-      // as the user is effectively already logged out
-      if (error && error.message !== 'Session not found') {
+      if (error) {
+        // If the error is session_not_found, we can safely ignore it
+        if (error.message === 'session_not_found' || error.message.includes('JWT')) {
+          console.log('No active session found during logout');
+          return { error: null };
+        }
         throw error;
       }
       
       return { error: null };
     } catch (error) {
       console.error('Logout error:', error);
-      // We still want to clear the local state even if the server 
-      // session removal failed
+      // Still clear local state even if server logout fails
       return { error: null };
     }
   },
@@ -73,19 +88,26 @@ export const authService = {
         return { data: { session: null } };
       }
 
+      // Check if session is about to expire (within 5 minutes)
       const expiryTime = new Date(session.expires_at! * 1000);
       const now = new Date();
       const timeUntilExpiry = expiryTime.getTime() - now.getTime();
 
       if (timeUntilExpiry <= 300000) { // 5 minutes
         console.log("Session about to expire, refreshing...");
-        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
-        if (refreshError) {
-          console.error("Error refreshing session:", refreshError);
+        try {
+          const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+          if (refreshError) {
+            console.error("Error refreshing session:", refreshError);
+            await supabase.auth.signOut();
+            return { data: { session: null } };
+          }
+          return { data: refreshData };
+        } catch (refreshError) {
+          console.error("Error in session refresh:", refreshError);
           await supabase.auth.signOut();
           return { data: { session: null } };
         }
-        return { data: refreshData };
       }
 
       return { data: { session } };
