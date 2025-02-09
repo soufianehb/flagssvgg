@@ -18,7 +18,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleNameUpdate = (title: string, firstName: string, lastName: string) => {
+  const handleNameUpdate = (title: "mr" | "mrs", firstName: string, lastName: string) => {
     form.setValue('title', title);
     form.setValue('firstName', firstName);
     form.setValue('lastName', lastName);

@@ -16,11 +16,11 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NameModificationDialogProps {
-  initialTitle: string;
+  initialTitle: "mr" | "mrs";
   initialFirstName: string;
   initialLastName: string;
   userId: string;
-  onUpdate: (title: string, firstName: string, lastName: string) => void;
+  onUpdate: (title: "mr" | "mrs", firstName: string, lastName: string) => void;
 }
 
 export function NameModificationDialog({
@@ -31,7 +31,7 @@ export function NameModificationDialog({
   onUpdate,
 }: NameModificationDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState(initialTitle);
+  const [title, setTitle] = useState<"mr" | "mrs">(initialTitle);
   const [firstName, setFirstName] = useState(initialFirstName);
   const [lastName, setLastName] = useState(initialLastName);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,7 @@ export function NameModificationDialog({
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Select value={title} onValueChange={setTitle}>
+            <Select value={title} onValueChange={(value: "mr" | "mrs") => setTitle(value)}>
               <SelectTrigger>
                 <SelectValue placeholder={t.profile.general.fields.title} />
               </SelectTrigger>
