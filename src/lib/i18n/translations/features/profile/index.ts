@@ -11,7 +11,7 @@ export const profile = {
     general: {
       ...general.en,
     },
-    ...settings.en,
+    settings: settings.en,
     additionalInfo: {
       ...additionalInfo.en,
     }
@@ -22,7 +22,7 @@ export const profile = {
     general: {
       ...general.fr,
     },
-    ...settings.fr,
+    settings: settings.fr,
     additionalInfo: {
       ...additionalInfo.fr,
     }
@@ -33,9 +33,10 @@ export const profile = {
     general: {
       ...general.es,
     },
-    ...settings.es,
+    settings: settings.es,
     additionalInfo: {
       ...additionalInfo.es,
     }
   }
 };
+

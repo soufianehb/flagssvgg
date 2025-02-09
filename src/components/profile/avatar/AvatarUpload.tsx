@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { User, Upload, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -200,3 +201,4 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
     </div>
   );
 };
+
