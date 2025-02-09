@@ -70,7 +70,7 @@ const Profile = () => {
       <MemoizedHeader />
       
       <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl">
-        <UserInfoHeader user={user} t={t} />
+        <UserInfoHeader user={user} />
 
         <ErrorBoundary>
           <div className="bg-white rounded-lg shadow-sm p-6">
@@ -85,3 +85,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

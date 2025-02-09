@@ -4,12 +4,14 @@ import { AvatarUpload } from "./avatar/AvatarUpload";
 import { UserInfoHeaderProps } from "./types/profile-types";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
-export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
+export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayId, setDisplayId] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProfile = async () => {
