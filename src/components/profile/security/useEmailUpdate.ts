@@ -5,6 +5,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
+import { verifyPassword, updateUserEmail } from "./utils/emailValidation";
+import { updateProfileEmail } from "./utils/profileSync";
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -31,7 +33,7 @@ export const useEmailUpdate = () => {
         
         if (session?.user.email) {
           setCurrentEmail(session.user.email);
-          updateProfileEmail(session.user.email);
+          handleProfileUpdate(session.user.email);
         }
         
         setEmailUpdateStatus('idle');
@@ -43,50 +45,26 @@ export const useEmailUpdate = () => {
     };
   }, []);
 
-  const updateProfileEmail = async (newEmail: string) => {
+  const handleProfileUpdate = async (newEmail: string) => {
     if (!user?.id) return;
     
-    let retryCount = 0;
-    const maxRetries = 3;
+    setSyncingProfile(true);
+    const { error, success } = await updateProfileEmail(user.id, newEmail);
     
-    while (retryCount < maxRetries) {
-      try {
-        setSyncingProfile(true);
-        console.log('Updating profile email:', newEmail);
-        
-        const { error } = await supabase
-          .from('profiles')
-          .update({ email: newEmail })
-          .eq('user_id', user.id);
-
-        if (error) throw error;
-
-        console.log('Profile email updated successfully');
-        toast({
-          title: t.profile.settings.security.email.success.title,
-          description: t.profile.settings.security.email.success.message,
-        });
-        return true;
-      } catch (error: any) {
-        console.error(`Error updating profile email (attempt ${retryCount + 1}):`, error);
-        retryCount++;
-        
-        if (retryCount === maxRetries) {
-          toast({
-            variant: "destructive",
-            title: t.profile.settings.security.email.error.title,
-            description: t.profile.settings.security.email.error.message,
-          });
-          return false;
-        }
-        
-        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
-      } finally {
-        if (retryCount === maxRetries - 1) {
-          setSyncingProfile(false);
-        }
-      }
+    if (success) {
+      toast({
+        title: t.profile.settings.security.email.success.title,
+        description: t.profile.settings.security.email.success.message,
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: t.profile.settings.security.email.error.title,
+        description: t.profile.settings.security.email.error.message,
+      });
     }
+    
+    setSyncingProfile(false);
   };
 
   const handleEmailUpdate = async (data: EmailFormValues) => {
@@ -95,10 +73,7 @@ export const useEmailUpdate = () => {
       setEmailUpdateStatus('pending');
       console.log('Starting email change process');
       
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: currentEmail,
-        password: data.password,
-      });
+      const { error: signInError } = await verifyPassword(currentEmail, data.password);
 
       if (signInError) {
         console.error('Password verification failed:', signInError);
@@ -108,9 +83,7 @@ export const useEmailUpdate = () => {
       console.log('Password verified, proceeding with email update');
       setEmailUpdateStatus('confirming');
 
-      const { error: updateError } = await supabase.auth.updateUser({
-        email: data.newEmail,
-      });
+      const { error: updateError } = await updateUserEmail(data.newEmail);
 
       if (updateError) {
         console.error('Email update error:', updateError);
@@ -119,7 +92,7 @@ export const useEmailUpdate = () => {
       
       toast({
         title: t.profile.settings.security.email.success.title,
-        description: t.profile.settings.security.email.success.confirmationEmail,
+        description: t.profile.settings.security.email.confirmationEmail,
       });
       
       return true;
