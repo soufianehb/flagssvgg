@@ -68,4 +68,3 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
 });
 
 UserInfoHeader.displayName = "UserInfoHeader";
-
