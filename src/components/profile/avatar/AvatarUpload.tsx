@@ -3,6 +3,7 @@ import { User, Upload, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { useTranslation } from "@/lib/i18n";
 
 interface AvatarUploadProps {
   user: any;
@@ -13,6 +14,7 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const validateImageDimensions = (file: File): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -171,19 +173,27 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
           </button>
         </HoverCardTrigger>
         <HoverCardContent className="w-80">
-          <div className="space-y-2">
-            <h4 className="font-semibold">Spécifications du logo</h4>
-            <ul className="text-sm space-y-1 text-gray-600">
-              <li className="flex items-center gap-2">
-                <span className="font-medium">Format:</span> JPG ou GIF
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="font-medium">Taille maximale:</span> 100KB
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="font-medium">Dimensions minimales:</span> 200x200 pixels
-              </li>
-            </ul>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">{t.profile.settings.avatar.uploadInstructions}</p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-semibold">{t.profile.settings.avatar.specifications.title}</h4>
+              <ul className="text-sm space-y-1 text-gray-600">
+                <li className="flex items-center gap-2">
+                  <span className="font-medium">{t.profile.settings.avatar.specifications.format}</span> 
+                  {t.profile.settings.avatar.specifications.formatTypes}
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="font-medium">{t.profile.settings.avatar.specifications.maxSize}</span> 
+                  {t.profile.settings.avatar.specifications.maxSizeValue}
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="font-medium">{t.profile.settings.avatar.specifications.minDimensions}</span> 
+                  {t.profile.settings.avatar.specifications.minDimensionsValue}
+                </li>
+              </ul>
+            </div>
           </div>
         </HoverCardContent>
       </HoverCard>

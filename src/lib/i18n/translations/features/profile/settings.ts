@@ -10,7 +10,7 @@ export const settings = {
       comingSoon: "Preference settings coming soon"
     },
     avatar: {
-      uploadInstructions: "Click on your image to modify it",
+      uploadInstructions: "Click on your image or drag and drop a new file here to update your profile picture",
       specifications: {
         title: "Logo specifications",
         format: "Format:",
@@ -32,7 +32,7 @@ export const settings = {
       comingSoon: "Paramètres des préférences à venir"
     },
     avatar: {
-      uploadInstructions: "Cliquez sur votre image pour la modifier",
+      uploadInstructions: "Cliquez sur votre image ou glissez-déposez un nouveau fichier ici pour mettre à jour votre photo de profil",
       specifications: {
         title: "Spécifications du logo",
         format: "Format :",
@@ -54,7 +54,7 @@ export const settings = {
       comingSoon: "Configuración de preferencias próximamente"
     },
     avatar: {
-      uploadInstructions: "Haga clic en su imagen para modificarla",
+      uploadInstructions: "Haga clic en su imagen o arrastre y suelte un nuevo archivo aquí para actualizar su foto de perfil",
       specifications: {
         title: "Especificaciones del logo",
         format: "Formato:",
@@ -67,4 +67,3 @@ export const settings = {
     }
   }
 };
-
