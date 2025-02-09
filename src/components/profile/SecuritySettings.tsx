@@ -43,32 +43,52 @@ export function SecuritySettings() {
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [currentEmail, setCurrentEmail] = useState(user?.email || '');
   const [isSyncingProfile, setSyncingProfile] = useState(false);
+  const [emailUpdateStatus, setEmailUpdateStatus] = useState<'idle' | 'pending' | 'confirming' | 'updating_profile'>('idle');
 
   const updateProfileEmail = async (newEmail: string) => {
     if (!user?.id) return;
     
-    try {
-      setSyncingProfile(true);
-      const { error } = await supabase
-        .from('profiles')
-        .update({ email: newEmail })
-        .eq('user_id', user.id);
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    while (retryCount < maxRetries) {
+      try {
+        setSyncingProfile(true);
+        console.log('Updating profile email:', newEmail);
+        
+        const { error } = await supabase
+          .from('profiles')
+          .update({ email: newEmail })
+          .eq('user_id', user.id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "Your email has been updated in your profile.",
-      });
-    } catch (error: any) {
-      console.error('Error updating profile email:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update profile email. Please contact support.",
-      });
-    } finally {
-      setSyncingProfile(false);
+        console.log('Profile email updated successfully');
+        toast({
+          title: t('settings.security.email.success.title'),
+          description: t('settings.security.email.success.profileUpdate'),
+        });
+        return true;
+      } catch (error: any) {
+        console.error('Error updating profile email (attempt ${retryCount + 1}):', error);
+        retryCount++;
+        
+        if (retryCount === maxRetries) {
+          toast({
+            variant: "destructive",
+            title: t('settings.security.email.error.title'),
+            description: t('settings.security.email.error.profileUpdate'),
+          });
+          return false;
+        }
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+      } finally {
+        if (retryCount === maxRetries - 1) {
+          setSyncingProfile(false);
+        }
+      }
     }
   };
 
@@ -80,9 +100,18 @@ export function SecuritySettings() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'USER_UPDATED' && session?.user.email) {
-        setCurrentEmail(session.user.email);
-        await updateProfileEmail(session.user.email);
+      console.log('Auth state change event:', event);
+      
+      if (event === 'EMAIL_CHANGE_CONFIRM') {
+        console.log('Email change confirmed:', session?.user.email);
+        setEmailUpdateStatus('updating_profile');
+        
+        if (session?.user.email) {
+          setCurrentEmail(session.user.email);
+          await updateProfileEmail(session.user.email);
+        }
+        
+        setEmailUpdateStatus('idle');
       }
     });
 
@@ -117,16 +146,17 @@ export function SecuritySettings() {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: "Your password has been updated successfully.",
+        title: t('settings.security.password.success.title'),
+        description: t('settings.security.password.success.message'),
       });
       
       passwordForm.reset();
     } catch (error: any) {
+      console.error('Password update error:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to update password. Please try again.",
+        title: t('settings.security.password.error.title'),
+        description: error.message || t('settings.security.password.error.message'),
       });
     }
   }
@@ -134,6 +164,8 @@ export function SecuritySettings() {
   async function onEmailSubmit(data: EmailFormValues) {
     try {
       setIsChangingEmail(true);
+      setEmailUpdateStatus('pending');
+      console.log('Starting email change process');
       
       // First verify the current password
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -141,46 +173,70 @@ export function SecuritySettings() {
         password: data.password,
       });
 
-      if (signInError) throw new Error("Current password is incorrect");
+      if (signInError) {
+        console.error('Password verification failed:', signInError);
+        throw new Error(t('settings.security.email.error.invalidPassword'));
+      }
+
+      console.log('Password verified, proceeding with email update');
+      setEmailUpdateStatus('confirming');
 
       // If password is correct, proceed with email update
       const { error: updateError } = await supabase.auth.updateUser({
         email: data.newEmail,
       });
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error('Email update error:', updateError);
+        throw updateError;
+      }
       
       toast({
-        title: "Email Update Initiated",
-        description: "Please check your new email address for a confirmation link.",
+        title: t('settings.security.email.success.title'),
+        description: t('settings.security.email.success.confirmation'),
       });
       
       emailForm.reset();
     } catch (error: any) {
+      console.error('Email change error:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to update email. Please try again.",
+        title: t('settings.security.email.error.title'),
+        description: error.message || t('settings.security.email.error.message'),
       });
+      setEmailUpdateStatus('idle');
     } finally {
       setIsChangingEmail(false);
     }
   }
+
+  const getEmailButtonText = () => {
+    switch (emailUpdateStatus) {
+      case 'pending':
+        return t('settings.security.email.updating');
+      case 'confirming':
+        return t('settings.security.email.confirming');
+      case 'updating_profile':
+        return t('settings.security.email.updatingProfile');
+      default:
+        return t('settings.security.email.updateButton');
+    }
+  };
 
   return (
     <div className="space-y-10">
       {/* Email Change Section */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-medium">Email Settings</h3>
+          <h3 className="text-lg font-medium">{t('settings.security.email.title')}</h3>
           <p className="text-sm text-muted-foreground">
-            Update your email address. A confirmation will be sent to the new address.
+            {t('settings.security.email.description')}
           </p>
           <p className="text-sm mt-2">
-            Current email: <span className="font-medium">{currentEmail}</span>
+            {t('settings.security.email.current')}: <span className="font-medium">{currentEmail}</span>
             {isSyncingProfile && (
               <span className="ml-2 text-muted-foreground">
-                (Synchronizing...)
+                ({t('settings.security.email.synchronizing')})
               </span>
             )}
           </p>
@@ -193,9 +249,9 @@ export function SecuritySettings() {
               name="newEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Email Address</FormLabel>
+                  <FormLabel>{t('settings.security.email.newEmail')}</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Enter new email address" />
+                    <Input {...field} type="email" placeholder={t('settings.security.email.newEmailPlaceholder')} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,9 +263,9 @@ export function SecuritySettings() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel>{t('settings.security.email.currentPassword')}</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="Enter your current password" />
+                    <Input {...field} type="password" placeholder={t('settings.security.email.passwordPlaceholder')} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -218,17 +274,13 @@ export function SecuritySettings() {
 
             <Button 
               type="submit" 
-              disabled={isChangingEmail}
+              disabled={isChangingEmail || emailUpdateStatus !== 'idle'}
               className="w-full"
             >
-              {isChangingEmail ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Updating Email...
-                </>
-              ) : (
-                'Update Email'
+              {isChangingEmail && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
+              {getEmailButtonText()}
             </Button>
           </form>
         </Form>
@@ -237,9 +289,9 @@ export function SecuritySettings() {
       {/* Password Change Section */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-medium">Password Settings</h3>
+          <h3 className="text-lg font-medium">{t('settings.security.password.title')}</h3>
           <p className="text-sm text-muted-foreground">
-            Update your password to keep your account secure.
+            {t('settings.security.password.description')}
           </p>
         </div>
 
@@ -250,7 +302,7 @@ export function SecuritySettings() {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel>{t('settings.security.password.currentPassword')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -264,7 +316,7 @@ export function SecuritySettings() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel>{t('settings.security.password.newPassword')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -278,7 +330,7 @@ export function SecuritySettings() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormLabel>{t('settings.security.password.confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -295,10 +347,10 @@ export function SecuritySettings() {
               {passwordForm.formState.isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Updating Password...
+                  {t('settings.security.password.updating')}
                 </>
               ) : (
-                'Update Password'
+                t('settings.security.password.updateButton')
               )}
             </Button>
           </form>
