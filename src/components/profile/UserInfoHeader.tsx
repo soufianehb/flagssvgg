@@ -18,6 +18,11 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
         .eq('user_id', user.id)
         .single();
         
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return;
+      }
+
       if (data) {
         setAvatarUrl(data.avatar_url);
         setDisplayId(data.display_id);
