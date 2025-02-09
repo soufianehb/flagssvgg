@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { User, Upload, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -165,10 +164,10 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
       <HoverCard>
         <HoverCardTrigger asChild>
           <button 
-            className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm hover:bg-gray-50"
+            className="absolute -top-2 -right-2 bg-white rounded-full p-1.5 shadow-sm hover:bg-gray-50"
             type="button"
           >
-            <HelpCircle className="w-4 h-4 text-gray-400" />
+            <HelpCircle className="w-5 h-5 text-accent hover:text-accent/80" />
           </button>
         </HoverCardTrigger>
         <HoverCardContent className="w-80">
@@ -191,4 +190,3 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
     </div>
   );
 };
-
