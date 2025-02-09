@@ -28,7 +28,8 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
 
       if (data) {
         setAvatarUrl(data.avatar_url);
-        setDisplayId(data.display_id);
+        // Ensure the display_id starts with "EXP-"
+        setDisplayId(data.display_id?.startsWith('EXP-') ? data.display_id : `EXP-${data.display_id}`);
       }
     };
 
@@ -43,7 +44,7 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
           <div className="flex flex-col gap-1">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
             {displayId && (
-              <span className="text-sm font-medium bg-accent text-accent-foreground px-3 py-1.5 rounded-md inline-block w-fit">
+              <span className="text-sm font-medium bg-[#B08A38] text-white px-3 py-1.5 rounded-md inline-block w-fit">
                 ID: {displayId}
               </span>
             )}
