@@ -17,19 +17,19 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
 
   const questions = [
     {
-      field: "metadata.questionnaire.hasCompanyRegistration",
+      field: "metadata.questionnaire.hasCompanyRegistration" as const,
       translation: t.profile.additionalInfo.questions.companyRegistration
     },
     {
-      field: "metadata.questionnaire.acceptsDocumentSharing",
+      field: "metadata.questionnaire.acceptsDocumentSharing" as const,
       translation: t.profile.additionalInfo.questions.documentSharing
     },
     {
-      field: "metadata.questionnaire.acceptsReferences",
+      field: "metadata.questionnaire.acceptsReferences" as const,
       translation: t.profile.additionalInfo.questions.references
     },
     {
-      field: "metadata.questionnaire.hasFinancialCapacity",
+      field: "metadata.questionnaire.hasFinancialCapacity" as const,
       translation: t.profile.additionalInfo.questions.financialCapacity
     }
   ];
@@ -90,3 +90,4 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
     </div>
   );
 }
+
