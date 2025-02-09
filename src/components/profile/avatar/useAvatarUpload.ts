@@ -112,3 +112,4 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
     handleImageUpload
   };
 };
+
