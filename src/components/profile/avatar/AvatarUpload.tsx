@@ -1,8 +1,9 @@
 
 import { useState } from "react";
-import { User, Upload, Loader2 } from "lucide-react";
+import { User, Upload, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 interface AvatarUploadProps {
   user: any;
@@ -114,49 +115,80 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
   };
 
   return (
-    <div
-      className="relative group"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      <label 
-        htmlFor="avatar-upload"
-        className="cursor-pointer block h-24 sm:h-32 w-24 sm:w-32 rounded-full bg-primary/10 overflow-hidden"
+    <div className="relative">
+      <div
+        className="relative group"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        {user?.user_metadata?.avatar_url ? (
-          <img 
-            src={user.user_metadata.avatar_url} 
-            alt="Profile" 
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center">
-            <User className="h-12 sm:h-16 w-12 sm:w-16 text-primary" />
+        <label 
+          htmlFor="avatar-upload"
+          className="cursor-pointer block h-24 sm:h-32 w-24 sm:w-32 rounded-full bg-primary/10 overflow-hidden"
+        >
+          {user?.user_metadata?.avatar_url ? (
+            <img 
+              src={user.user_metadata.avatar_url} 
+              alt="Profile" 
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center">
+              <User className="h-12 sm:h-16 w-12 sm:w-16 text-primary" />
+            </div>
+          )}
+          
+          {/* Overlay on hover */}
+          {isHovering && !isUploading && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
+              <Upload className="h-8 w-8 text-white" />
+            </div>
+          )}
+          
+          {/* Loading spinner */}
+          {isUploading && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
+              <Loader2 className="h-8 w-8 text-white animate-spin" />
+            </div>
+          )}
+        </label>
+        <input
+          type="file"
+          id="avatar-upload"
+          className="hidden"
+          accept=".jpg,.jpeg,.gif"
+          onChange={handleImageUpload}
+          disabled={isUploading}
+        />
+      </div>
+
+      {/* Help Information HoverCard */}
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <button 
+            className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm hover:bg-gray-50"
+            type="button"
+          >
+            <HelpCircle className="w-4 h-4 text-gray-400" />
+          </button>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-80">
+          <div className="space-y-2">
+            <h4 className="font-semibold">Spécifications du logo</h4>
+            <ul className="text-sm space-y-1 text-gray-600">
+              <li className="flex items-center gap-2">
+                <span className="font-medium">Format:</span> JPG ou GIF
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="font-medium">Taille maximale:</span> 100KB
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="font-medium">Dimensions minimales:</span> 200x200 pixels
+              </li>
+            </ul>
           </div>
-        )}
-        
-        {/* Overlay on hover */}
-        {isHovering && !isUploading && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
-            <Upload className="h-8 w-8 text-white" />
-          </div>
-        )}
-        
-        {/* Loading spinner */}
-        {isUploading && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
-            <Loader2 className="h-8 w-8 text-white animate-spin" />
-          </div>
-        )}
-      </label>
-      <input
-        type="file"
-        id="avatar-upload"
-        className="hidden"
-        accept=".jpg,.jpeg,.gif"
-        onChange={handleImageUpload}
-        disabled={isUploading}
-      />
+        </HoverCardContent>
+      </HoverCard>
     </div>
   );
 };
+
