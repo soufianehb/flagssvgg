@@ -1,3 +1,4 @@
+
 import {
   Select,
   SelectContent,
@@ -7,30 +8,11 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { FilterX } from "lucide-react";
+import { FilterX, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/lib/i18n";
-
-const categories = [
-  "Architecture & Design",
-  "Agriculture",
-  "Aeronautics",
-  "Medical",
-  "Maritime",
-  "Industry",
-];
-
-const subcategories = {
-  "Architecture & Design": ["Interior Design", "Urban Planning", "Landscape"],
-  "Agriculture": ["Farming", "Livestock", "Forestry"],
-  // ... other categories
-};
-
-const subSubcategories = {
-  "Interior Design": ["Residential", "Commercial", "Industrial"],
-  "Farming": ["Organic", "Traditional", "Hydroponics"],
-  // ... other subcategories
-};
+import { useCategories } from "@/hooks/useCategories";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface CategoryFiltersProps {
   selectedCategory: string;
@@ -46,6 +28,7 @@ export const CategoryFilters = ({
   onFilterChange 
 }: CategoryFiltersProps) => {
   const { t } = useTranslation();
+  const { categories, subcategories, subSubcategories, isLoading, error } = useCategories();
 
   const handleCategoryChange = (value: string) => {
     onFilterChange(value, "", "");
@@ -74,6 +57,16 @@ export const CategoryFilters = ({
     "!duration-200"
   );
 
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertDescription>
+          An error occurred while loading categories. Please try again later.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-4">
@@ -84,12 +77,19 @@ export const CategoryFilters = ({
           </Label>
           <Select value={selectedCategory} onValueChange={handleCategoryChange}>
             <SelectTrigger id="category" className={selectClasses}>
-              <SelectValue placeholder={t.filters.category.placeholder} />
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                <SelectValue placeholder={t.filters.category.placeholder} />
+              )}
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {categories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -104,16 +104,23 @@ export const CategoryFilters = ({
           <Select
             value={selectedSubcategory}
             onValueChange={handleSubcategoryChange}
-            disabled={!selectedCategory}
+            disabled={!selectedCategory || isLoading}
           >
             <SelectTrigger id="subcategory" className={selectClasses}>
-              <SelectValue placeholder={t.filters.subcategory.placeholder} />
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                <SelectValue placeholder={t.filters.subcategory.placeholder} />
+              )}
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedCategory &&
-                subcategories[selectedCategory as keyof typeof subcategories]?.map((subcat) => (
-                  <SelectItem key={subcat} value={subcat}>
-                    {subcat}
+                subcategories[selectedCategory]?.map((subcategory) => (
+                  <SelectItem key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
                   </SelectItem>
                 ))}
             </SelectContent>
@@ -128,20 +135,25 @@ export const CategoryFilters = ({
           <Select
             value={selectedSubSubcategory}
             onValueChange={handleSubSubcategoryChange}
-            disabled={!selectedSubcategory}
+            disabled={!selectedSubcategory || isLoading}
           >
             <SelectTrigger id="subsubcategory" className={selectClasses}>
-              <SelectValue placeholder={t.filters.subsubcategory.placeholder} />
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                <SelectValue placeholder={t.filters.subsubcategory.placeholder} />
+              )}
             </SelectTrigger>
             <SelectContent className={selectContentClasses}>
               {selectedSubcategory &&
-                subSubcategories[selectedSubcategory as keyof typeof subSubcategories]?.map(
-                  (subsubcat) => (
-                    <SelectItem key={subsubcat} value={subsubcat}>
-                      {subsubcat}
-                    </SelectItem>
-                  )
-                )}
+                subSubcategories[selectedSubcategory]?.map((subsubcat) => (
+                  <SelectItem key={subsubcat.id} value={subsubcat.id}>
+                    {subsubcat.name}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
@@ -155,6 +167,7 @@ export const CategoryFilters = ({
             variant="outline"
             onClick={handleClearFilters}
             className="w-full bg-[#B08A38] hover:bg-[#B08A38]/90 text-white border-[#B08A38]"
+            disabled={isLoading}
           >
             <FilterX className="mr-2 h-5 w-5" />
             {t.filters.actions.clearFilters}
