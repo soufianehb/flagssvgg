@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const passwordFormSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -41,6 +41,27 @@ export function SecuritySettings() {
   const { toast } = useToast();
   const { user } = useAuth();
   const [isChangingEmail, setIsChangingEmail] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState(user?.email || '');
+
+  useEffect(() => {
+    // Mettre à jour l'email affiché quand l'utilisateur change
+    if (user?.email) {
+      setCurrentEmail(user.email);
+    }
+  }, [user?.email]);
+
+  // Écouter les changements d'état d'authentification
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user.email) {
+        setCurrentEmail(session.user.email);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const passwordForm = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordFormSchema),
@@ -88,7 +109,7 @@ export function SecuritySettings() {
       
       // First verify the current password
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: user?.email || '',
+        email: currentEmail,
         password: data.password,
       });
 
@@ -126,6 +147,9 @@ export function SecuritySettings() {
           <h3 className="text-lg font-medium">Email Settings</h3>
           <p className="text-sm text-muted-foreground">
             Update your email address. A confirmation will be sent to the new address.
+          </p>
+          <p className="text-sm mt-2">
+            Current email: <span className="font-medium">{currentEmail}</span>
           </p>
         </div>
 
