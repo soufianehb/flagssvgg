@@ -1,8 +1,8 @@
 
-import { tabs } from './profile/tabs';
-import { general } from './profile/general';
-import { settings } from './profile/settings';
-import { additionalInfo } from './profile/additional-info';
+import { tabs } from './tabs';
+import { general } from './general';
+import { settings } from './settings';
+import { additionalInfo } from './additional-info';
 
 export const profile = {
   en: {
