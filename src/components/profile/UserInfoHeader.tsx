@@ -45,19 +45,19 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
             {displayId && (
               <span className="text-sm font-medium px-3 py-1.5 inline-block w-fit">
-  <span className="text-primary font-bold">ID: </span>
-  <span className="text-[#B08A38]">{displayId}</span>
-</span>
+                <span className="text-primary font-bold">ID: </span>
+                <span className="text-[#B08A38]">{displayId}</span>
+              </span>
             )}
           </div>
           <p className="text-gray-700 font-medium mt-2">
-            {user?.user_metadata?.company_name || 'Company Name Not Set'}
+            {user?.user_metadata?.company_name || t.general.emptyStates.companyName}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
             {user?.email}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
-            {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || 'No Phone Number Set'}
+            {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || t.general.emptyStates.phoneNumber}
           </p>
         </div>
       </div>

@@ -14,6 +14,10 @@ export const general = {
       personalPhone: "Personal Phone",
       address: "Address",
       contact: "Contact"
+    },
+    emptyStates: {
+      companyName: "Company Name Not Set",
+      phoneNumber: "No Phone Number Set"
     }
   },
   fr: {
@@ -30,6 +34,10 @@ export const general = {
       personalPhone: "Téléphone personnel",
       address: "Adresse",
       contact: "Contact"
+    },
+    emptyStates: {
+      companyName: "Nom de l'entreprise non défini",
+      phoneNumber: "Aucun numéro de téléphone défini"
     }
   },
   es: {
@@ -46,6 +54,10 @@ export const general = {
       personalPhone: "Teléfono personal",
       address: "Dirección",
       contact: "Contacto"
+    },
+    emptyStates: {
+      companyName: "Nombre de empresa no establecido",
+      phoneNumber: "Número de teléfono no establecido"
     }
   }
 };
