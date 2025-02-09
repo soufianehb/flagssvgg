@@ -5,8 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
-import { verifyPassword, updateUserEmail } from "./utils/emailValidation";
-import { updateProfileEmail } from "./utils/profileSync";
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -16,6 +14,7 @@ export const useEmailUpdate = () => {
   const [currentEmail, setCurrentEmail] = useState(user?.email || '');
   const [isSyncingProfile, setSyncingProfile] = useState(false);
   const [emailUpdateStatus, setEmailUpdateStatus] = useState<EmailUpdateStatus>('idle');
+  const [lastEmailAttempt, setLastEmailAttempt] = useState<Date | null>(null);
 
   useEffect(() => {
     if (user?.email) {
@@ -49,31 +48,73 @@ export const useEmailUpdate = () => {
     if (!user?.id) return;
     
     setSyncingProfile(true);
-    const { error, success } = await updateProfileEmail(user.id, newEmail);
-    
-    if (success) {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ email: newEmail })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
       toast({
         title: t.profile.settings.security.email.success.title,
         description: t.profile.settings.security.email.success.message,
       });
-    } else {
+    } catch (error: any) {
+      console.error('Profile update error:', error);
       toast({
         variant: "destructive",
         title: t.profile.settings.security.email.error.title,
         description: t.profile.settings.security.email.error.message,
       });
+    } finally {
+      setSyncingProfile(false);
     }
-    
-    setSyncingProfile(false);
+  };
+
+  const validateEmailChange = (newEmail: string): boolean => {
+    // Rate limiting check
+    if (lastEmailAttempt) {
+      const timeSinceLastAttempt = new Date().getTime() - lastEmailAttempt.getTime();
+      if (timeSinceLastAttempt < 60000) { // 1 minute
+        toast({
+          variant: "destructive",
+          title: "Rate Limited",
+          description: "Please wait a minute before trying again",
+        });
+        return false;
+      }
+    }
+
+    // Current email check
+    if (newEmail === currentEmail) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Email",
+        description: "New email must be different from current email",
+      });
+      return false;
+    }
+
+    return true;
   };
 
   const handleEmailUpdate = async (data: EmailFormValues) => {
     try {
+      if (!validateEmailChange(data.newEmail)) {
+        return false;
+      }
+
       setIsChangingEmail(true);
       setEmailUpdateStatus('pending');
+      setLastEmailAttempt(new Date());
       console.log('Starting email change process');
-      
-      const { error: signInError } = await verifyPassword(currentEmail, data.password);
+
+      // Verify current password
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: currentEmail,
+        password: data.password,
+      });
 
       if (signInError) {
         console.error('Password verification failed:', signInError);
@@ -83,7 +124,10 @@ export const useEmailUpdate = () => {
       console.log('Password verified, proceeding with email update');
       setEmailUpdateStatus('confirming');
 
-      const { error: updateError } = await updateUserEmail(data.newEmail);
+      // Update email
+      const { error: updateError } = await supabase.auth.updateUser({
+        email: data.newEmail,
+      });
 
       if (updateError) {
         console.error('Email update error:', updateError);

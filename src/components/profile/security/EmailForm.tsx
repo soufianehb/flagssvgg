@@ -15,6 +15,8 @@ import { useTranslation } from "@/lib/i18n";
 import { Loader2 } from "lucide-react";
 import { emailFormSchema, type EmailFormValues } from "./types";
 import { useEmailUpdate } from "./useEmailUpdate";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 export function EmailForm() {
   const { t } = useTranslation();
@@ -59,6 +61,16 @@ export function EmailForm() {
         </p>
       </div>
 
+      {emailUpdateStatus === 'confirming' && (
+        <Alert>
+          <Info className="h-4 w-4" />
+          <AlertTitle>Confirmation Required</AlertTitle>
+          <AlertDescription>
+            Please check your new email address for a confirmation link. Click the link to complete the email change.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -68,7 +80,12 @@ export function EmailForm() {
               <FormItem>
                 <FormLabel>{t.profile.settings.security.email.newEmail}</FormLabel>
                 <FormControl>
-                  <Input {...field} type="email" placeholder={t.profile.settings.security.email.newEmailPlaceholder} />
+                  <Input 
+                    {...field} 
+                    type="email" 
+                    placeholder={t.profile.settings.security.email.newEmailPlaceholder}
+                    disabled={emailUpdateStatus === 'confirming'} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -82,7 +99,12 @@ export function EmailForm() {
               <FormItem>
                 <FormLabel>{t.profile.settings.security.email.currentPassword}</FormLabel>
                 <FormControl>
-                  <Input {...field} type="password" placeholder={t.profile.settings.security.email.passwordPlaceholder} />
+                  <Input 
+                    {...field} 
+                    type="password" 
+                    placeholder={t.profile.settings.security.email.passwordPlaceholder}
+                    disabled={emailUpdateStatus === 'confirming'} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
