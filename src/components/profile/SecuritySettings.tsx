@@ -18,6 +18,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
+import { AuthChangeEvent } from "@supabase/supabase-js";
 
 const passwordFormSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -65,24 +66,23 @@ export function SecuritySettings() {
 
         console.log('Profile email updated successfully');
         toast({
-          title: t('settings.security.email.success.title'),
-          description: t('settings.security.email.success.profileUpdate'),
+          title: "Success",
+          description: "Profile email updated successfully",
         });
         return true;
       } catch (error: any) {
-        console.error('Error updating profile email (attempt ${retryCount + 1}):', error);
+        console.error(`Error updating profile email (attempt ${retryCount + 1}):`, error);
         retryCount++;
         
         if (retryCount === maxRetries) {
           toast({
             variant: "destructive",
-            title: t('settings.security.email.error.title'),
-            description: t('settings.security.email.error.profileUpdate'),
+            title: "Error",
+            description: "Failed to update profile email",
           });
           return false;
         }
         
-        // Wait before retrying
         await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
       } finally {
         if (retryCount === maxRetries - 1) {
@@ -99,7 +99,7 @@ export function SecuritySettings() {
   }, [user?.email]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
       console.log('Auth state change event:', event);
       
       if (event === 'EMAIL_CHANGE_CONFIRM') {
@@ -146,8 +146,8 @@ export function SecuritySettings() {
       if (error) throw error;
       
       toast({
-        title: t('settings.security.password.success.title'),
-        description: t('settings.security.password.success.message'),
+        title: "Success",
+        description: "Password updated successfully",
       });
       
       passwordForm.reset();
@@ -155,8 +155,8 @@ export function SecuritySettings() {
       console.error('Password update error:', error);
       toast({
         variant: "destructive",
-        title: t('settings.security.password.error.title'),
-        description: error.message || t('settings.security.password.error.message'),
+        title: "Error",
+        description: error.message || "Failed to update password",
       });
     }
   }
@@ -167,7 +167,6 @@ export function SecuritySettings() {
       setEmailUpdateStatus('pending');
       console.log('Starting email change process');
       
-      // First verify the current password
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: currentEmail,
         password: data.password,
@@ -175,13 +174,12 @@ export function SecuritySettings() {
 
       if (signInError) {
         console.error('Password verification failed:', signInError);
-        throw new Error(t('settings.security.email.error.invalidPassword'));
+        throw new Error("Invalid password");
       }
 
       console.log('Password verified, proceeding with email update');
       setEmailUpdateStatus('confirming');
 
-      // If password is correct, proceed with email update
       const { error: updateError } = await supabase.auth.updateUser({
         email: data.newEmail,
       });
@@ -192,8 +190,8 @@ export function SecuritySettings() {
       }
       
       toast({
-        title: t('settings.security.email.success.title'),
-        description: t('settings.security.email.success.confirmation'),
+        title: "Success",
+        description: "Please check your new email for confirmation",
       });
       
       emailForm.reset();
@@ -201,8 +199,8 @@ export function SecuritySettings() {
       console.error('Email change error:', error);
       toast({
         variant: "destructive",
-        title: t('settings.security.email.error.title'),
-        description: error.message || t('settings.security.email.error.message'),
+        title: "Error",
+        description: error.message || "Failed to update email",
       });
       setEmailUpdateStatus('idle');
     } finally {
@@ -213,13 +211,13 @@ export function SecuritySettings() {
   const getEmailButtonText = () => {
     switch (emailUpdateStatus) {
       case 'pending':
-        return t('settings.security.email.updating');
+        return "Updating Email...";
       case 'confirming':
-        return t('settings.security.email.confirming');
+        return "Waiting for Confirmation...";
       case 'updating_profile':
-        return t('settings.security.email.updatingProfile');
+        return "Updating Profile...";
       default:
-        return t('settings.security.email.updateButton');
+        return "Update Email";
     }
   };
 
@@ -228,15 +226,15 @@ export function SecuritySettings() {
       {/* Email Change Section */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-medium">{t('settings.security.email.title')}</h3>
+          <h3 className="text-lg font-medium">Email Settings</h3>
           <p className="text-sm text-muted-foreground">
-            {t('settings.security.email.description')}
+            Update your email address. A confirmation will be sent to the new address.
           </p>
           <p className="text-sm mt-2">
-            {t('settings.security.email.current')}: <span className="font-medium">{currentEmail}</span>
+            Current email: <span className="font-medium">{currentEmail}</span>
             {isSyncingProfile && (
               <span className="ml-2 text-muted-foreground">
-                ({t('settings.security.email.synchronizing')})
+                (Synchronizing...)
               </span>
             )}
           </p>
@@ -249,9 +247,9 @@ export function SecuritySettings() {
               name="newEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('settings.security.email.newEmail')}</FormLabel>
+                  <FormLabel>New Email Address</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" placeholder={t('settings.security.email.newEmailPlaceholder')} />
+                    <Input {...field} type="email" placeholder="Enter new email address" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -263,9 +261,9 @@ export function SecuritySettings() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('settings.security.email.currentPassword')}</FormLabel>
+                  <FormLabel>Current Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder={t('settings.security.email.passwordPlaceholder')} />
+                    <Input {...field} type="password" placeholder="Enter your current password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -289,9 +287,9 @@ export function SecuritySettings() {
       {/* Password Change Section */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-medium">{t('settings.security.password.title')}</h3>
+          <h3 className="text-lg font-medium">Password Settings</h3>
           <p className="text-sm text-muted-foreground">
-            {t('settings.security.password.description')}
+            Update your password to keep your account secure.
           </p>
         </div>
 
@@ -302,7 +300,7 @@ export function SecuritySettings() {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('settings.security.password.currentPassword')}</FormLabel>
+                  <FormLabel>Current Password</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -316,7 +314,7 @@ export function SecuritySettings() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('settings.security.password.newPassword')}</FormLabel>
+                  <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -330,7 +328,7 @@ export function SecuritySettings() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('settings.security.password.confirmPassword')}</FormLabel>
+                  <FormLabel>Confirm New Password</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -347,10 +345,10 @@ export function SecuritySettings() {
               {passwordForm.formState.isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t('settings.security.password.updating')}
+                  Updating Password...
                 </>
               ) : (
-                t('settings.security.password.updateButton')
+                "Update Password"
               )}
             </Button>
           </form>
@@ -359,3 +357,4 @@ export function SecuritySettings() {
     </div>
   );
 }
+
