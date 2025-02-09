@@ -42,19 +42,47 @@ export function SecuritySettings() {
   const { user } = useAuth();
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [currentEmail, setCurrentEmail] = useState(user?.email || '');
+  const [isSyncingProfile, setSyncingProfile] = useState(false);
+
+  const updateProfileEmail = async (newEmail: string) => {
+    if (!user?.id) return;
+    
+    try {
+      setSyncingProfile(true);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ email: newEmail })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Your email has been updated in your profile.",
+      });
+    } catch (error: any) {
+      console.error('Error updating profile email:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update profile email. Please contact support.",
+      });
+    } finally {
+      setSyncingProfile(false);
+    }
+  };
 
   useEffect(() => {
-    // Mettre à jour l'email affiché quand l'utilisateur change
     if (user?.email) {
       setCurrentEmail(user.email);
     }
   }, [user?.email]);
 
-  // Écouter les changements d'état d'authentification
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user.email) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'USER_UPDATED' && session?.user.email) {
         setCurrentEmail(session.user.email);
+        await updateProfileEmail(session.user.email);
       }
     });
 
@@ -150,6 +178,11 @@ export function SecuritySettings() {
           </p>
           <p className="text-sm mt-2">
             Current email: <span className="font-medium">{currentEmail}</span>
+            {isSyncingProfile && (
+              <span className="ml-2 text-muted-foreground">
+                (Synchronizing...)
+              </span>
+            )}
           </p>
         </div>
 
