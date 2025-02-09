@@ -110,7 +110,7 @@ export const useEmailUpdate = () => {
       setLastEmailAttempt(new Date());
       console.log('Starting email change process');
 
-      // Verify current password
+      // Use signInWithPassword with the current email
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: currentEmail,
         password: data.password,
@@ -118,7 +118,10 @@ export const useEmailUpdate = () => {
 
       if (signInError) {
         console.error('Password verification failed:', signInError);
-        throw new Error(t.profile.settings.security.email.error.invalidPassword);
+        if (signInError.message.includes('Invalid login credentials')) {
+          throw new Error('The current password is incorrect. Please verify and try again.');
+        }
+        throw signInError;
       }
 
       console.log('Password verified, proceeding with email update');
