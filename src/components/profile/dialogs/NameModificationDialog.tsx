@@ -53,7 +53,6 @@ export function NameModificationDialog({
       const { error } = await supabase
         .from('profiles')
         .update({
-          title: title,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
         })
