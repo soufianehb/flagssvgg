@@ -40,8 +40,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!validTypes.includes(file.type)) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.invalidType.title,
-          description: t.profile.settings.avatar.invalidType.message,
+          title: t.profile.avatar.upload.error.title,
+          description: t.profile.avatar.upload.error.invalidType,
         });
         return;
       }
@@ -50,8 +50,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (file.size > maxSize) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.fileSize.title,
-          description: t.profile.settings.avatar.fileSize.message,
+          title: t.profile.avatar.upload.error.title,
+          description: t.profile.avatar.upload.error.tooLarge,
         });
         return;
       }
@@ -60,8 +60,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!hasSufficientDimensions) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.dimensions.title,
-          description: t.profile.settings.avatar.dimensions.message,
+          title: t.profile.avatar.upload.error.title,
+          description: t.profile.avatar.upload.error.invalidType,
         });
         return;
       }
@@ -91,16 +91,16 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       onAvatarUpdate?.(publicUrl);
 
       toast({
-        title: t.profile.settings.avatar.success.title,
-        description: t.profile.settings.avatar.success.message,
+        title: t.profile.avatar.upload.success.title,
+        description: t.profile.avatar.upload.success.message,
       });
       
     } catch (error: any) {
       console.error('Upload error:', error);
       toast({
         variant: "destructive",
-        title: t.profile.settings.avatar.uploadError.title,
-        description: error.message || t.profile.settings.avatar.uploadError.message,
+        title: t.profile.avatar.upload.error.title,
+        description: error.message || t.profile.avatar.upload.error.message,
       });
     } finally {
       setIsUploading(false);
@@ -112,4 +112,3 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
     handleImageUpload
   };
 };
-
