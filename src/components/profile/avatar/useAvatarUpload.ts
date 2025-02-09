@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "@/lib/i18n";
 
 interface UseAvatarUploadProps {
   user: any;
@@ -11,6 +12,7 @@ interface UseAvatarUploadProps {
 export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const validateImageDimensions = (file: File): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -38,8 +40,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!validTypes.includes(file.type)) {
         toast({
           variant: "destructive",
-          title: "Type de fichier non valide",
-          description: "Veuillez sélectionner une image JPG ou GIF",
+          title: t.profile.settings.avatar.errors.invalidType.title,
+          description: t.profile.settings.avatar.errors.invalidType.message,
         });
         return;
       }
@@ -48,8 +50,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (file.size > maxSize) {
         toast({
           variant: "destructive",
-          title: "Fichier trop volumineux",
-          description: "L'image doit faire moins de 100KB",
+          title: t.profile.settings.avatar.errors.fileSize.title,
+          description: t.profile.settings.avatar.errors.fileSize.message,
         });
         return;
       }
@@ -58,8 +60,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!hasSufficientDimensions) {
         toast({
           variant: "destructive",
-          title: "Dimensions insuffisantes",
-          description: "L'image doit faire au minimum 200x200 pixels",
+          title: t.profile.settings.avatar.errors.dimensions.title,
+          description: t.profile.settings.avatar.errors.dimensions.message,
         });
         return;
       }
@@ -89,16 +91,16 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       onAvatarUpdate?.(publicUrl);
 
       toast({
-        title: "Image mise à jour",
-        description: "Votre photo de profil a été mise à jour avec succès",
+        title: t.profile.settings.avatar.errors.success.title,
+        description: t.profile.settings.avatar.errors.success.message,
       });
       
     } catch (error: any) {
       console.error('Upload error:', error);
       toast({
         variant: "destructive",
-        title: "Erreur lors de l'upload",
-        description: error.message || "Une erreur est survenue lors de l'upload de l'image",
+        title: t.profile.settings.avatar.errors.uploadError.title,
+        description: error.message || t.profile.settings.avatar.errors.uploadError.message,
       });
     } finally {
       setIsUploading(false);
@@ -110,3 +112,4 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
     handleImageUpload
   };
 };
+
