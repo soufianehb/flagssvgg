@@ -43,8 +43,8 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
           <div className="flex flex-col gap-1">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
             {displayId && (
-              <span className="text-sm font-medium bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent px-2 py-1 rounded border border-amber-200 inline-block w-fit">
-                {displayId}
+              <span className="text-sm font-medium bg-accent text-accent-foreground px-3 py-1.5 rounded-md inline-block w-fit">
+                ID: {displayId}
               </span>
             )}
           </div>
