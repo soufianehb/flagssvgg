@@ -5,8 +5,9 @@ import { useTranslation } from "@/lib/i18n";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, X } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useState } from "react";
 
 interface QuestionsSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -14,6 +15,7 @@ interface QuestionsSectionProps {
 
 export function QuestionsSection({ form }: QuestionsSectionProps) {
   const { t } = useTranslation();
+  const [openTooltip, setOpenTooltip] = useState<string | null>(null);
 
   const questions = [
     {
@@ -54,11 +56,26 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
                   </FormLabel>
                   {question.translation.hint && (
                     <TooltipProvider>
-                      <Tooltip>
+                      <Tooltip open={openTooltip === question.field}>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 cursor-help" />
+                          <button 
+                            type="button"
+                            onClick={() => setOpenTooltip(openTooltip === question.field ? null : question.field)}
+                            className="group"
+                          >
+                            <HelpCircle className="h-5 w-5 text-accent transition-colors group-hover:text-accent/80" />
+                          </button>
                         </TooltipTrigger>
-                        <TooltipContent side="right" className="max-w-[400px] p-4 text-sm whitespace-pre-line">
+                        <TooltipContent 
+                          side="right" 
+                          className="max-w-[400px] p-4 text-sm whitespace-pre-line relative"
+                        >
+                          <button
+                            onClick={() => setOpenTooltip(null)}
+                            className="absolute top-2 right-2 p-1 hover:bg-accent/10 rounded-full transition-colors"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
                           {question.translation.hint}
                         </TooltipContent>
                       </Tooltip>
