@@ -20,7 +20,7 @@ export const settings = {
         success: {
           title: "Success",
           message: "Email updated successfully",
-          confirmationSent: "Please check your new email for confirmation"
+          confirmationEmail: "Please check your new email for confirmation"
         },
         error: {
           title: "Error",
@@ -102,7 +102,7 @@ export const settings = {
         success: {
           title: "Succès",
           message: "Email mis à jour avec succès",
-          confirmationSent: "Veuillez vérifier votre nouvel email pour la confirmation"
+          confirmationEmail: "Veuillez vérifier votre nouvel email pour la confirmation"
         },
         error: {
           title: "Erreur",
@@ -184,7 +184,7 @@ export const settings = {
         success: {
           title: "Éxito",
           message: "Email actualizado con éxito",
-          confirmationSent: "Por favor, verifica tu nuevo email para la confirmación"
+          confirmationEmail: "Por favor, verifica tu nuevo email para la confirmación"
         },
         error: {
           title: "Error",

@@ -147,7 +147,7 @@ export function EmailForm() {
       
       toast({
         title: t.profile.settings.security.email.success.title,
-        description: t.profile.settings.security.email.confirmationSent,
+        description: t.profile.settings.security.email.success.confirmationEmail,
       });
       
       form.reset();
