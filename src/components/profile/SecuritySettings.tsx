@@ -99,16 +99,16 @@ export function SecuritySettings() {
   }, [user?.email]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === 'EMAIL_CHANGE_CONFIRM') {
+      if (event === AuthChangeEvent.EMAIL_CHANGE_CONFIRM) {
         console.log('Email change confirmed:', session?.user.email);
         setEmailUpdateStatus('updating_profile');
         
         if (session?.user.email) {
           setCurrentEmail(session.user.email);
-          await updateProfileEmail(session.user.email);
+          updateProfileEmail(session.user.email);
         }
         
         setEmailUpdateStatus('idle');
