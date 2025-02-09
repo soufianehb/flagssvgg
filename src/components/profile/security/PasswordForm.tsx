@@ -81,7 +81,7 @@ export function PasswordForm() {
             name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t.profile.settings.security.password.currentPassword}</FormLabel>
+                <FormLabel>{t.profile.settings.security.password.current}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" />
                 </FormControl>
@@ -95,7 +95,7 @@ export function PasswordForm() {
             name="newPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t.profile.settings.security.password.newPassword}</FormLabel>
+                <FormLabel>{t.profile.settings.security.password.new}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" />
                 </FormControl>
@@ -109,7 +109,7 @@ export function PasswordForm() {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t.profile.settings.security.password.confirmPassword}</FormLabel>
+                <FormLabel>{t.profile.settings.security.password.confirm}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" />
                 </FormControl>
@@ -126,7 +126,7 @@ export function PasswordForm() {
             {form.formState.isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t.profile.settings.security.password.updating}
+                {t.profile.settings.security.password.updateButton}
               </>
             ) : (
               t.profile.settings.security.password.updateButton

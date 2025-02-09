@@ -40,8 +40,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!validTypes.includes(file.type)) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.error.invalidType.title,
-          description: t.profile.settings.avatar.error.invalidType.message,
+          title: t.profile.settings.avatar.errors.invalidType.title,
+          description: t.profile.settings.avatar.errors.invalidType.message,
         });
         return;
       }
@@ -50,8 +50,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (file.size > maxSize) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.error.fileSize.title,
-          description: t.profile.settings.avatar.error.fileSize.message,
+          title: t.profile.settings.avatar.errors.fileSize.title,
+          description: t.profile.settings.avatar.errors.fileSize.message,
         });
         return;
       }
@@ -60,8 +60,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       if (!hasSufficientDimensions) {
         toast({
           variant: "destructive",
-          title: t.profile.settings.avatar.error.dimensions.title,
-          description: t.profile.settings.avatar.error.dimensions.message,
+          title: t.profile.settings.avatar.errors.dimensions.title,
+          description: t.profile.settings.avatar.errors.dimensions.message,
         });
         return;
       }
@@ -99,8 +99,8 @@ export const useAvatarUpload = ({ user, onAvatarUpdate }: UseAvatarUploadProps) 
       console.error('Upload error:', error);
       toast({
         variant: "destructive",
-        title: t.profile.settings.avatar.error.uploadError.title,
-        description: error.message || t.profile.settings.avatar.error.uploadError.message,
+        title: t.profile.settings.avatar.errors.uploadError.title,
+        description: error.message || t.profile.settings.avatar.errors.uploadError.message,
       });
     } finally {
       setIsUploading(false);

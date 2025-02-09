@@ -31,9 +31,9 @@ export const settings = {
       password: {
         title: "Password Settings",
         description: "Update your password to keep your account secure.",
-        currentPassword: "Current Password",
-        newPassword: "New Password",
-        confirmPassword: "Confirm New Password",
+        current: "Current Password",
+        new: "New Password",
+        confirm: "Confirm New Password",
         updateButton: "Update Password",
         updating: "Updating Password...",
         success: {
@@ -42,7 +42,8 @@ export const settings = {
         },
         error: {
           title: "Error",
-          message: "Failed to update password. Please try again."
+          message: "Failed to update password. Please try again.",
+          mismatch: "New passwords do not match"
         }
       }
     },
@@ -73,11 +74,11 @@ export const settings = {
         uploadError: {
           title: "Upload Failed",
           message: "Failed to upload image. Please try again."
-        },
-        success: {
-          title: "Upload Successful",
-          message: "Your profile picture has been updated."
         }
+      },
+      success: {
+        title: "Upload Successful",
+        message: "Your profile picture has been updated."
       }
     }
   },
