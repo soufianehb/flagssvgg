@@ -17,23 +17,26 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   
   return (
     <div className="space-y-8">
-      <AddressSection form={form} />
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.address}</h3>
+        <AddressSection form={form} />
+      </div>
       
-      <Separator className="my-8" />
+      <Separator />
       
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Contact</h3>
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
         <PhoneSection form={form} />
       </div>
       
-      <Separator className="my-8" />
+      <Separator />
       
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">{t.profile.general.sections.business}</h3>
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.business}</h3>
         <BusinessInfoSection form={form} />
       </div>
 
-      <Separator className="my-8" />
+      <Separator />
       
       <QuestionsSection form={form} />
     </div>

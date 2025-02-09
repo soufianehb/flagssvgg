@@ -56,9 +56,9 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          <HelpCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 cursor-help" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-[300px] text-sm">
+                        <TooltipContent side="right" className="max-w-[400px] p-4 text-sm whitespace-pre-line">
                           {question.translation.hint}
                         </TooltipContent>
                       </Tooltip>
@@ -90,4 +90,3 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
     </div>
   );
 }
-
