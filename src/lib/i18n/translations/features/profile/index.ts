@@ -13,9 +13,10 @@ export const profile = {
       ...general.en,
     },
     settings: {
-      ...security.en,
-      upload: {
-        ...avatar.en.upload,
+      security: {
+        ...security.en,
+      },
+      avatar: {
         ...avatar.en
       }
     },
@@ -30,9 +31,10 @@ export const profile = {
       ...general.fr,
     },
     settings: {
-      ...security.fr,
-      upload: {
-        ...avatar.fr.upload,
+      security: {
+        ...security.fr,
+      },
+      avatar: {
         ...avatar.fr
       }
     },
@@ -47,9 +49,10 @@ export const profile = {
       ...general.es,
     },
     settings: {
-      ...security.es,
-      upload: {
-        ...avatar.es.upload,
+      security: {
+        ...security.es,
+      },
+      avatar: {
         ...avatar.es
       }
     },
