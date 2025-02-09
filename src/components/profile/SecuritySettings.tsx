@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -17,6 +18,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
+import { AuthError } from "@supabase/supabase-js";
 
 const passwordFormSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -97,7 +99,7 @@ export function SecuritySettings() {
   }, [user?.email]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: 'EMAIL_CHANGE_CONFIRM' | string, session) => {
       console.log('Auth state change event:', event);
       
       if (event === 'EMAIL_CHANGE_CONFIRM') {
