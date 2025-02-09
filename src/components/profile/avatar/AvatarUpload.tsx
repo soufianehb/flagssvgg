@@ -8,10 +8,11 @@ import { useTranslation } from "@/lib/i18n";
 
 interface AvatarUploadProps {
   user: any;
-  onUploadSuccess?: () => void;
+  avatarUrl?: string | null;
+  onAvatarUpdate?: (url: string) => void;
 }
 
-export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
+export const AvatarUpload = ({ user, avatarUrl, onAvatarUpdate }: AvatarUploadProps) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
@@ -97,12 +98,12 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
 
       if (updateError) throw updateError;
 
+      onAvatarUpdate?.(publicUrl);
+
       toast({
         title: "Image mise à jour",
         description: "Votre photo de profil a été mise à jour avec succès",
       });
-
-      onUploadSuccess?.();
       
     } catch (error: any) {
       console.error('Upload error:', error);
@@ -127,9 +128,9 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
           htmlFor="avatar-upload"
           className="cursor-pointer block h-24 sm:h-32 w-24 sm:w-32 rounded-full bg-primary/10 overflow-hidden"
         >
-          {user?.user_metadata?.avatar_url ? (
+          {avatarUrl ? (
             <img 
-              src={user.user_metadata.avatar_url} 
+              src={avatarUrl} 
               alt="Profile" 
               className="h-full w-full object-cover"
             />
@@ -201,4 +202,3 @@ export const AvatarUpload = ({ user, onUploadSuccess }: AvatarUploadProps) => {
     </div>
   );
 };
-
