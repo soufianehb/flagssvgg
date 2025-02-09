@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -45,9 +46,22 @@ export const authService = {
   },
 
   logout: async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
-    return { error: null };
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      // If the error is session_not_found, we can safely ignore it
+      // as the user is effectively already logged out
+      if (error && error.message !== 'Session not found') {
+        throw error;
+      }
+      
+      return { error: null };
+    } catch (error) {
+      console.error('Logout error:', error);
+      // We still want to clear the local state even if the server 
+      // session removal failed
+      return { error: null };
+    }
   },
 
   getSession: async () => {
