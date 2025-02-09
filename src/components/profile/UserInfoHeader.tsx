@@ -11,6 +11,7 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayId, setDisplayId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -19,9 +20,9 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('avatar_url, display_id')
+        .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
         
       if (error) {
         console.error('Error fetching profile:', error);
@@ -29,14 +30,17 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
       }
 
       if (data) {
+        setProfile(data);
         setAvatarUrl(data.avatar_url);
-        // Ensure the display_id starts with "EXP-"
         setDisplayId(data.display_id?.startsWith('EXP-') ? data.display_id : `EXP-${data.display_id}`);
       }
     };
 
     fetchProfile();
   }, [user?.id]);
+
+  const companyName = profile?.company_name || user?.user_metadata?.company_name || t.profile.general.emptyStates.companyName;
+  const phoneNumber = profile?.business_phone || profile?.phone_number || user?.user_metadata?.businessPhone || user?.user_metadata?.phoneNumber || t.profile.general.emptyStates.phoneNumber;
 
   return (
     <div className="mb-6 bg-white p-4 sm:p-6 rounded-lg shadow-sm">
@@ -53,13 +57,13 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
             )}
           </div>
           <p className="text-gray-700 font-medium mt-2">
-            {user?.user_metadata?.company_name || t.profile.general.emptyStates.companyName}
+            {companyName}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
-            {user?.email}
+            {profile?.email || user?.email}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
-            {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || t.profile.general.emptyStates.phoneNumber}
+            {phoneNumber}
           </p>
         </div>
       </div>
