@@ -26,27 +26,57 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => {
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
   
+  const validateImageDimensions = (file: File): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const minDimension = 200; // Minimum width/height requirement
+        const isValid = img.width >= minDimension && img.height >= minDimension;
+        URL.revokeObjectURL(img.src);
+        resolve(isValid);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        resolve(false);
+      };
+    });
+  };
+  
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const file = event.target.files?.[0];
       if (!file) return;
       
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      const validTypes = ['image/jpeg', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
         toast({
           variant: "destructive",
           title: "Type de fichier non valide",
-          description: "Veuillez sélectionner une image (JPG, PNG)",
+          description: "Veuillez sélectionner une image JPG ou GIF",
         });
         return;
       }
       
-      // Validate file size (2MB)
-      if (file.size > 2 * 1024 * 1024) {
+      // Validate file size (100KB)
+      const maxSize = 100 * 1024; // 100KB in bytes
+      if (file.size > maxSize) {
         toast({
           variant: "destructive",
           title: "Fichier trop volumineux",
-          description: "L'image doit faire moins de 2MB",
+          description: "L'image doit faire moins de 100KB",
+        });
+        return;
+      }
+
+      // Validate image dimensions
+      const hasSufficientDimensions = await validateImageDimensions(file);
+      if (!hasSufficientDimensions) {
+        toast({
+          variant: "destructive",
+          title: "Dimensions insuffisantes",
+          description: "L'image doit faire au minimum 200x200 pixels",
         });
         return;
       }
@@ -103,7 +133,7 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => {
         >
           <label 
             htmlFor="avatar-upload"
-            className="cursor-pointer block h-12 sm:h-16 w-12 sm:w-16 rounded-full bg-primary/10 overflow-hidden"
+            className="cursor-pointer block h-24 sm:h-32 w-24 sm:w-32 rounded-full bg-primary/10 overflow-hidden"
           >
             {user?.user_metadata?.avatar_url ? (
               <img 
@@ -113,21 +143,21 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => {
               />
             ) : (
               <div className="h-full w-full flex items-center justify-center">
-                <User className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
+                <User className="h-12 sm:h-16 w-12 sm:w-16 text-primary" />
               </div>
             )}
             
             {/* Overlay on hover */}
             {isHovering && !isUploading && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
-                <Upload className="h-5 w-5 text-white" />
+                <Upload className="h-8 w-8 text-white" />
               </div>
             )}
             
             {/* Loading spinner */}
             {isUploading && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
-                <Loader2 className="h-5 w-5 text-white animate-spin" />
+                <Loader2 className="h-8 w-8 text-white animate-spin" />
               </div>
             )}
           </label>
@@ -135,7 +165,7 @@ const UserInfoHeader = memo(({ user, t }: { user: any; t: any }) => {
             type="file"
             id="avatar-upload"
             className="hidden"
-            accept="image/*"
+            accept=".jpg,.jpeg,.gif"
             onChange={handleImageUpload}
             disabled={isUploading}
           />
