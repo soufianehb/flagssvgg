@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [displayId, setDisplayId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -13,12 +14,13 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('avatar_url')
+        .select('avatar_url, display_id')
         .eq('user_id', user.id)
         .single();
         
-      if (data?.avatar_url) {
+      if (data) {
         setAvatarUrl(data.avatar_url);
+        setDisplayId(data.display_id);
       }
     };
 
@@ -30,7 +32,14 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
       <div className="flex items-start gap-4">
         <AvatarUpload user={user} avatarUrl={avatarUrl} onAvatarUpdate={setAvatarUrl} />
         <div className="space-y-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
+            {displayId && (
+              <span className="text-sm bg-gray-100 px-2 py-1 rounded text-gray-600">
+                {displayId}
+              </span>
+            )}
+          </div>
           <p className="text-gray-700 font-medium">
             {user?.user_metadata?.company_name || 'Company Name Not Set'}
           </p>
