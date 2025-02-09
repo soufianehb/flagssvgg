@@ -1,7 +1,7 @@
 
 import { UseFormReturn } from "react-hook-form";
 import { GeneralFormValues } from "../types/profile";
-import { AddressSection } from "./AddressSection";
+import { AddressSection } from "./company/AddressSection";
 import { PhoneSection } from "./company/PhoneSection";
 import { BusinessInfoSection } from "./company/BusinessInfoSection";
 import { QuestionsSection } from "./company/QuestionsSection";
