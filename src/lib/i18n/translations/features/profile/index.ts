@@ -22,6 +22,9 @@ export const profile = {
     },
     additionalInfo: {
       ...additionalInfo.en,
+    },
+    avatar: {
+      ...avatar.en
     }
   },
   fr: {
@@ -40,6 +43,9 @@ export const profile = {
     },
     additionalInfo: {
       ...additionalInfo.fr,
+    },
+    avatar: {
+      ...avatar.fr
     }
   },
   es: {
@@ -58,6 +64,10 @@ export const profile = {
     },
     additionalInfo: {
       ...additionalInfo.es,
+    },
+    avatar: {
+      ...avatar.es
     }
   }
 };
+
