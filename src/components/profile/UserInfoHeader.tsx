@@ -40,15 +40,15 @@ export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
       <div className="flex items-start gap-4">
         <AvatarUpload user={user} avatarUrl={avatarUrl} onAvatarUpdate={setAvatarUrl} />
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-1">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{t.profile.title}</h1>
             {displayId && (
-              <span className="text-sm bg-gray-100 px-2 py-1 rounded text-gray-600">
+              <span className="text-sm font-medium bg-gradient-to-r from-amber-200 to-amber-500 bg-clip-text text-transparent px-2 py-1 rounded border border-amber-200 inline-block w-fit">
                 {displayId}
               </span>
             )}
           </div>
-          <p className="text-gray-700 font-medium">
+          <p className="text-gray-700 font-medium mt-2">
             {user?.user_metadata?.company_name || 'Company Name Not Set'}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
