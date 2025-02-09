@@ -1,8 +1,9 @@
 
 import { tabs } from './tabs';
 import { general } from './general';
-import { settings } from './settings';
 import { additionalInfo } from './additional-info';
+import { security } from './security';
+import { avatar } from './avatar';
 
 export const profile = {
   en: {
@@ -11,7 +12,10 @@ export const profile = {
     general: {
       ...general.en,
     },
-    settings: settings.en,
+    settings: {
+      ...security.en,
+      ...avatar.en,
+    },
     additionalInfo: {
       ...additionalInfo.en,
     }
@@ -22,7 +26,10 @@ export const profile = {
     general: {
       ...general.fr,
     },
-    settings: settings.fr,
+    settings: {
+      ...security.fr,
+      ...avatar.fr,
+    },
     additionalInfo: {
       ...additionalInfo.fr,
     }
@@ -33,10 +40,12 @@ export const profile = {
     general: {
       ...general.es,
     },
-    settings: settings.es,
+    settings: {
+      ...security.es,
+      ...avatar.es,
+    },
     additionalInfo: {
       ...additionalInfo.es,
     }
   }
 };
-
