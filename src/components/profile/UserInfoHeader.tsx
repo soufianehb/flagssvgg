@@ -5,6 +5,8 @@ import { UserInfoHeaderProps } from "./types/profile-types";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
+type Profile = Database['public']['Tables']['profiles']['Row'];
+
 export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [displayId, setDisplayId] = useState<string | null>(null);

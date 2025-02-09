@@ -114,6 +114,7 @@ export type Database = {
           company_name: string
           country: string | null
           created_at: string
+          display_id: string | null
           email: string
           first_name: string
           is_profile_complete: boolean | null
@@ -136,6 +137,7 @@ export type Database = {
           company_name: string
           country?: string | null
           created_at?: string
+          display_id?: string | null
           email: string
           first_name: string
           is_profile_complete?: boolean | null
@@ -158,6 +160,7 @@ export type Database = {
           company_name?: string
           country?: string | null
           created_at?: string
+          display_id?: string | null
           email?: string
           first_name?: string
           is_profile_complete?: boolean | null
@@ -330,7 +333,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_display_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
