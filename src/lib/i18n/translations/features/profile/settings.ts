@@ -1,4 +1,3 @@
-
 export const settings = {
   en: {
     security: {
@@ -6,12 +5,28 @@ export const settings = {
       email: {
         title: "Email Settings",
         description: "Update your email address. A confirmation will be sent to the new address.",
+        current: "Current email",
         newEmail: "New Email Address",
+        newEmailPlaceholder: "Enter new email address",
         currentPassword: "Current Password",
+        passwordPlaceholder: "Enter your current password",
         updateButton: "Update Email",
-        updating: "Updating Email...",
-        success: "Please check your new email address for a confirmation link.",
-        error: "Failed to update email. Please try again."
+        synchronizing: "Synchronizing...",
+        status: {
+          pending: "Updating Email...",
+          confirming: "Waiting for Confirmation...",
+          updatingProfile: "Updating Profile..."
+        },
+        success: {
+          title: "Success",
+          message: "Email updated successfully",
+          confirmationSent: "Please check your new email for confirmation"
+        },
+        error: {
+          title: "Error",
+          message: "Failed to update email",
+          invalidPassword: "Invalid password"
+        }
       },
       password: {
         title: "Password Settings",
@@ -21,8 +36,14 @@ export const settings = {
         confirmPassword: "Confirm New Password",
         updateButton: "Update Password",
         updating: "Updating Password...",
-        success: "Your password has been updated successfully.",
-        error: "Failed to update password. Please try again."
+        success: {
+          title: "Success",
+          message: "Your password has been updated successfully."
+        },
+        error: {
+          title: "Error",
+          message: "Failed to update password. Please try again."
+        }
       }
     },
     avatar: {
@@ -66,12 +87,28 @@ export const settings = {
       email: {
         title: "Paramètres email",
         description: "Mettez à jour votre adresse email. Une confirmation sera envoyée à la nouvelle adresse.",
+        current: "Email actuel",
         newEmail: "Nouvelle adresse email",
+        newEmailPlaceholder: "Entrez la nouvelle adresse email",
         currentPassword: "Mot de passe actuel",
+        passwordPlaceholder: "Entrez votre mot de passe actuel",
         updateButton: "Mettre à jour l'email",
-        updating: "Mise à jour de l'email...",
-        success: "Veuillez vérifier votre nouvelle adresse email pour le lien de confirmation.",
-        error: "Échec de la mise à jour de l'email. Veuillez réessayer."
+        synchronizing: "Synchronisation...",
+        status: {
+          pending: "Mise à jour de l'email...",
+          confirming: "En attente de confirmation...",
+          updatingProfile: "Mise à jour du profil..."
+        },
+        success: {
+          title: "Succès",
+          message: "Email mis à jour avec succès",
+          confirmationSent: "Veuillez vérifier votre nouvel email pour la confirmation"
+        },
+        error: {
+          title: "Erreur",
+          message: "Échec de la mise à jour de l'email",
+          invalidPassword: "Mot de passe invalide"
+        }
       },
       password: {
         title: "Paramètres du mot de passe",
@@ -81,8 +118,14 @@ export const settings = {
         confirmPassword: "Confirmer le nouveau mot de passe",
         updateButton: "Mettre à jour le mot de passe",
         updating: "Mise à jour du mot de passe...",
-        success: "Votre mot de passe a été mis à jour avec succès.",
-        error: "Échec de la mise à jour du mot de passe. Veuillez réessayer."
+        success: {
+          title: "Succès",
+          message: "Votre mot de passe a été mis à jour avec succès."
+        },
+        error: {
+          title: "Erreur",
+          message: "Échec de la mise à jour du mot de passe. Veuillez réessayer."
+        }
       }
     },
     avatar: {
@@ -126,12 +169,28 @@ export const settings = {
       email: {
         title: "Configuración de email",
         description: "Actualiza tu dirección de email. Se enviará una confirmación a la nueva dirección.",
+        current: "Email actual",
         newEmail: "Nueva dirección de email",
+        newEmailPlaceholder: "Ingresa la nueva dirección de email",
         currentPassword: "Contraseña actual",
+        passwordPlaceholder: "Ingresa tu contraseña actual",
         updateButton: "Actualizar email",
-        updating: "Actualizando email...",
-        success: "Por favor, revisa tu nueva dirección de email para el enlace de confirmación.",
-        error: "Error al actualizar el email. Por favor, inténtalo de nuevo."
+        synchronizing: "Sincronizando...",
+        status: {
+          pending: "Actualizando email...",
+          confirming: "Esperando confirmación...",
+          updatingProfile: "Actualizando perfil..."
+        },
+        success: {
+          title: "Éxito",
+          message: "Email actualizado con éxito",
+          confirmationSent: "Por favor, verifica tu nuevo email para la confirmación"
+        },
+        error: {
+          title: "Error",
+          message: "Error al actualizar el email",
+          invalidPassword: "Contraseña inválida"
+        }
       },
       password: {
         title: "Configuración de contraseña",
@@ -141,8 +200,14 @@ export const settings = {
         confirmPassword: "Confirmar nueva contraseña",
         updateButton: "Actualizar contraseña",
         updating: "Actualizando contraseña...",
-        success: "Tu contraseña se ha actualizado correctamente.",
-        error: "Error al actualizar la contraseña. Por favor, inténtalo de nuevo."
+        success: {
+          title: "Éxito",
+          message: "Tu contraseña ha sido actualizada con éxito."
+        },
+        error: {
+          title: "Error",
+          message: "Error al actualizar la contraseña. Por favor, inténtalo de nuevo."
+        }
       }
     },
     avatar: {
