@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from "react";
 import { AvatarUpload } from "./avatar/AvatarUpload";
 import { UserInfoHeaderProps } from "./types/profile-types";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export const UserInfoHeader = memo(({ user, t }: UserInfoHeaderProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
