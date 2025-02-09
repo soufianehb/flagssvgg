@@ -38,7 +38,7 @@ export const settings = {
         format: "Format :",
         formatTypes: "JPG ou GIF",
         maxSize: "Taille maximale :",
-        maxSizeValue: "100KB",
+        maxSizeValue: "100Ko",
         minDimensions: "Dimensions minimales :",
         minDimensionsValue: "200x200 pixels"
       }
