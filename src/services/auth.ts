@@ -46,8 +46,6 @@ export const authService = {
 
         if (profileError) {
           console.error('Error creating profile:', profileError);
-          // Still return auth data even if profile creation fails
-          // The profile can be created later
           return { data: authData, error: null };
         }
       } catch (error) {
@@ -63,9 +61,14 @@ export const authService = {
       const { error } = await supabase.auth.signOut();
       
       if (error) {
-        // If the error is session_not_found, we can safely ignore it
-        if (error.message === 'session_not_found' || error.message.includes('JWT')) {
-          console.log('No active session found during logout');
+        console.log('Logout error:', error);
+        
+        // If the error is session_not_found or JWT related, consider it a successful logout
+        // since the session is already invalid/expired
+        if (error.message === 'session_not_found' || 
+            error.message.includes('JWT') || 
+            error.message.includes('Session from session_id')) {
+          console.log('Session already expired or invalid, considering logout successful');
           return { error: null };
         }
         throw error;
@@ -74,7 +77,7 @@ export const authService = {
       return { error: null };
     } catch (error) {
       console.error('Logout error:', error);
-      // Still clear local state even if server logout fails
+      // Still return success even if server logout fails, as we want to clear local state
       return { error: null };
     }
   },
