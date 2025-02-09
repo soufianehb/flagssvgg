@@ -53,13 +53,13 @@ export const UserInfoHeader = memo(({ user }: Omit<UserInfoHeaderProps, 't'>) =>
             )}
           </div>
           <p className="text-gray-700 font-medium mt-2">
-            {user?.user_metadata?.company_name || t.general.emptyStates.companyName}
+            {user?.user_metadata?.company_name || t.profile.general.emptyStates.companyName}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
             {user?.email}
           </p>
           <p className="text-sm sm:text-base text-gray-500">
-            {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || t.general.emptyStates.phoneNumber}
+            {user?.user_metadata?.phoneNumber || user?.user_metadata?.businessPhone || t.profile.general.emptyStates.phoneNumber}
           </p>
         </div>
       </div>
