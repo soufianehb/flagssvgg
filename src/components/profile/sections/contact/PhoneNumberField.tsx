@@ -26,7 +26,7 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
           render={({ field }) => (
             <FormItem>
               <CountrySelect
-                value={field.value}
+                value={countries?.find(c => c.dial_code === field.value)?.code || ''}
                 onValueChange={(newValue) => {
                   const selectedCountry = countries?.find(c => c.code === newValue);
                   if (selectedCountry) {
