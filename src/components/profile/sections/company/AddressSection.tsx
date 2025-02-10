@@ -73,7 +73,7 @@ export function AddressSection({ form }: AddressSectionProps) {
       />
 
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full md:w-[15%]">
+        <div className="w-full md:w-[10%]">
           <FormField
             control={form.control}
             name="zip_code"
@@ -88,7 +88,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[30%]">
+        <div className="w-full md:w-[35%]">
           <FormField
             control={form.control}
             name="city"
@@ -103,7 +103,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[30%]">
+        <div className="w-full md:w-[35%]">
           <FormField
             control={form.control}
             name="country"
@@ -126,12 +126,12 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[25%] md:self-end">
+        <div className="w-full md:w-[20%] md:self-end">
           <Button
             type="button"
             onClick={handleUpdateAddress}
             disabled={isSaving}
-            className="w-full h-10"
+            className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10"
           >
             {isSaving ? (
               <>
