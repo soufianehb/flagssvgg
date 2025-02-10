@@ -73,7 +73,7 @@ export function AddressSection({ form }: AddressSectionProps) {
       />
 
       <div className="flex items-end gap-6">
-        <div className="w-[267px]">
+        <div className="w-[122px]">
           <FormField
             control={form.control}
             name="zip_code"
