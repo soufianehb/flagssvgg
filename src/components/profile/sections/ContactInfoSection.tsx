@@ -26,6 +26,24 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
 
     setIsSaving(true);
     try {
+      // Get the current metadata value
+      const { data: currentProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('metadata')
+        .eq('user_id', user.id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Prepare the new metadata by preserving other metadata fields
+      const newMetadata = {
+        ...currentProfile.metadata,
+        contactPreferences: {
+          whatsappContact: form.getValues('metadata.contactPreferences.whatsappContact'),
+          whatsappBusinessContact: form.getValues('metadata.contactPreferences.whatsappBusinessContact')
+        }
+      };
+
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -33,13 +51,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           phone_code: form.getValues('phoneCode'),
           business_phone: form.getValues('businessPhone'),
           business_phone_code: form.getValues('businessPhoneCode'),
-          metadata: {
-            ...form.getValues('metadata'),
-            contactPreferences: {
-              whatsappContact: form.getValues('metadata.contactPreferences.whatsappContact'),
-              whatsappBusinessContact: form.getValues('metadata.contactPreferences.whatsappBusinessContact')
-            }
-          },
+          metadata: newMetadata,
           updated_at: new Date().toISOString(),
         })
         .eq('user_id', user.id);

@@ -27,6 +27,7 @@ export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                aria-label={t.profile.general.fields.whatsappContact}
               />
             </FormControl>
           </FormItem>
@@ -46,6 +47,7 @@ export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                aria-label={t.profile.general.fields.whatsappBusinessContact}
               />
             </FormControl>
           </FormItem>
