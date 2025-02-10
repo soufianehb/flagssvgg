@@ -4,7 +4,8 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/lib/i18n";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const calculatePasswordStrength = (password: string): number => {
   let strength = 0;
@@ -27,18 +28,11 @@ const getPasswordStrengthColor = (strength: number): string => {
 export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
   const { t } = useTranslation();
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const firstNameInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    // Only try to focus if the ref is attached to an element
-    if (firstNameInputRef.current) {
-      firstNameInputRef.current.focus();
-    }
-  }, []);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FormField
           control={form.control}
           name="firstName"
@@ -46,16 +40,7 @@ export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
             <FormItem>
               <FormLabel>{t.signup.labels.firstName}</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder={t.signup.placeholders.firstName} 
-                  {...field} 
-                  ref={(e) => {
-                    field.ref(e);
-                    if (firstNameInputRef) {
-                      firstNameInputRef.current = e;
-                    }
-                  }}
-                />
+                <Input placeholder={t.signup.placeholders.firstName} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,21 +82,32 @@ export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t.signup.labels.password}</FormLabel>
-            <FormControl>
-              <Input 
-                type="password" 
-                placeholder={t.signup.placeholders.password} 
-                {...field}
-                onChange={(e) => {
-                  field.onChange(e);
-                  setPasswordStrength(calculatePasswordStrength(e.target.value));
-                }}
-              />
-            </FormControl>
-            <Progress 
-              value={passwordStrength} 
-              className={`h-1 mt-2 ${getPasswordStrengthColor(passwordStrength)}`}
-            />
+            <div className="relative">
+              <FormControl>
+                <Input 
+                  type={showPassword ? "text" : "password"}
+                  placeholder={t.signup.placeholders.password} 
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setPasswordStrength(calculatePasswordStrength(e.target.value));
+                  }}
+                />
+              </FormControl>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+            <div className="mt-2 space-y-2">
+              <Progress value={passwordStrength} className={`h-1 ${getPasswordStrengthColor(passwordStrength)}`} />
+              <p className="text-sm text-gray-600">
+                {t.signup.validation.password.strength} {passwordStrength}%
+              </p>
+            </div>
             <FormMessage />
           </FormItem>
         )}
