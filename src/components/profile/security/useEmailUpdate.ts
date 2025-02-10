@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -9,7 +10,7 @@ import type { EmailFormValues, EmailUpdateStatus } from "./types";
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [currentEmail, setCurrentEmail] = useState('');
   const [isSyncingProfile, setSyncingProfile] = useState(false);
@@ -19,14 +20,16 @@ export const useEmailUpdate = () => {
 
   // Initialize and update current email when user changes
   useEffect(() => {
-    if (user?.email) {
+    if (user?.email && isAuthenticated) {
       setCurrentEmail(user.email);
       lastKnownEmail.current = user.email;
     }
-  }, [user?.email]);
+  }, [user?.email, isAuthenticated]);
 
   // Listen for email change confirmation
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state change event:', event);
       
@@ -68,9 +71,18 @@ export const useEmailUpdate = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [t, toast]);
+  }, [t, toast, isAuthenticated]);
 
   const validateEmailChange = (newEmail: string): boolean => {
+    if (!isAuthenticated) {
+      toast({
+        variant: "destructive",
+        title: t.profile.settings.security.email.error.title,
+        description: "You must be logged in to change your email",
+      });
+      return false;
+    }
+
     if (lastEmailAttempt) {
       const timeSinceLastAttempt = new Date().getTime() - lastEmailAttempt.getTime();
       if (timeSinceLastAttempt < 60000) { // 1 minute
@@ -96,8 +108,8 @@ export const useEmailUpdate = () => {
   };
 
   const verifyCurrentPassword = async (password: string): Promise<boolean> => {
-    if (!currentEmail) {
-      console.error('No current email available for verification');
+    if (!currentEmail || !isAuthenticated) {
+      console.error('No current email available for verification or user not authenticated');
       return false;
     }
 
@@ -135,6 +147,15 @@ export const useEmailUpdate = () => {
   };
 
   const handleEmailUpdate = async (data: EmailFormValues) => {
+    if (!isAuthenticated) {
+      toast({
+        variant: "destructive",
+        title: t.profile.settings.security.email.error.title,
+        description: "You must be logged in to change your email",
+      });
+      return false;
+    }
+
     console.log('Starting email update process');
     try {
       if (!validateEmailChange(data.newEmail)) {
