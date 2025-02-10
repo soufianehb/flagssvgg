@@ -1,4 +1,3 @@
-
 export const security = {
   en: {
     title: "Security Settings",
@@ -25,7 +24,9 @@ export const security = {
       error: {
         title: "Error",
         message: "Failed to update email",
-        invalidPassword: "Invalid password"
+        invalidPassword: "Invalid password",
+        rateLimited: "Please wait a minute before trying again",
+        sameEmail: "New email must be different from current email"
       }
     },
     password: {
@@ -72,7 +73,9 @@ export const security = {
       error: {
         title: "Erreur",
         message: "Échec de la mise à jour de l'email",
-        invalidPassword: "Mot de passe invalide"
+        invalidPassword: "Mot de passe invalide",
+        rateLimited: "Veuillez attendre une minute avant de réessayer",
+        sameEmail: "Le nouvel email doit être différent de l'email actuel"
       }
     },
     password: {
@@ -118,7 +121,9 @@ export const security = {
       error: {
         title: "Error",
         message: "Error al actualizar el email",
-        invalidPassword: "Contraseña inválida"
+        invalidPassword: "Contraseña inválida",
+        rateLimited: "Por favor, espera un minuto antes de intentarlo de nuevo",
+        sameEmail: "El nuevo email debe ser diferente del email actual"
       }
     },
     password: {
