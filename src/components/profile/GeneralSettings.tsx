@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -6,6 +7,7 @@ import { useTranslation } from "@/contexts/TranslationContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { z } from "zod";
+import { CompanyInfoSection } from "./sections/CompanyInfoSection";
 
 const formSchema = z.object({
   phoneCode: z.string(),
@@ -39,8 +41,7 @@ const GeneralSettings = () => {
   return (
     <Form {...form}>
       <form className="space-y-8">
-        <div className="space-y-4">
-        </div>
+        <CompanyInfoSection form={form} />
       </form>
     </Form>
   );
