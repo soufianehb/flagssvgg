@@ -80,7 +80,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 flex items-end">
           <NameModificationDialog
             initialTitle={form.getValues('title')}
             initialFirstName={form.getValues('firstName')}
@@ -107,7 +107,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 flex items-end">
           <Button 
             type="button"
             className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
