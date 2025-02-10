@@ -11,7 +11,6 @@ import { signupSchema } from "./validation/signupSchema";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
-import { CompanyInfoFields } from "./form-sections/CompanyInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -96,7 +95,6 @@ export const SignupForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <PersonalInfoFields form={form} />
-        <CompanyInfoFields form={form} />
 
         <Button
           type="submit"
@@ -116,3 +114,4 @@ export const SignupForm = () => {
     </Form>
   );
 };
+
