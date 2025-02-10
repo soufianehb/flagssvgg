@@ -72,8 +72,8 @@ export function AddressSection({ form }: AddressSectionProps) {
         )}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-        <div className="md:col-span-1">
+      <div className="flex items-end gap-6">
+        <div className="w-[267px]">
           <FormField
             control={form.control}
             name="zip_code"
@@ -88,7 +88,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-1">
+        <div className="w-[267px]">
           <FormField
             control={form.control}
             name="city"
@@ -103,7 +103,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-1">
+        <div className="w-[267px]">
           <FormField
             control={form.control}
             name="country"
@@ -126,25 +126,22 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-2 flex items-end">
-          <Button
-            type="button"
-            onClick={handleUpdateAddress}
-            disabled={isSaving}
-            className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10"
-          >
-            {isSaving ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              'Update Address'
-            )}
-          </Button>
-        </div>
+        <Button
+          type="button"
+          onClick={handleUpdateAddress}
+          disabled={isSaving}
+          className="w-[342px] font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10"
+        >
+          {isSaving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            'Update Address'
+          )}
+        </Button>
       </div>
     </div>
   );
 }
-
