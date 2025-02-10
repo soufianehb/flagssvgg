@@ -72,7 +72,7 @@ export function AddressSection({ form }: AddressSectionProps) {
         )}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-16 gap-4">
         <div className="md:col-span-2">
           <FormField
             control={form.control}
@@ -126,23 +126,24 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
+        <div className="md:col-span-4 md:self-end mb-[2px]">
+          <Button
+            type="button"
+            onClick={handleUpdateAddress}
+            disabled={isSaving}
+            className="w-full"
+          >
+            {isSaving ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              'Update Address'
+            )}
+          </Button>
+        </div>
       </div>
-
-      <Button
-        type="button"
-        onClick={handleUpdateAddress}
-        disabled={isSaving}
-        className="w-full"
-      >
-        {isSaving ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Saving...
-          </>
-        ) : (
-          'Update Address'
-        )}
-      </Button>
     </div>
   );
 }
