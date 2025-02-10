@@ -126,7 +126,7 @@ export function AddressSection({ form }: AddressSectionProps) {
         type="button"
         onClick={handleUpdateAddress}
         disabled={isSaving}
-        className="w-full sm:w-auto"
+        className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
       >
         {isSaving ? (
           <>
@@ -140,3 +140,4 @@ export function AddressSection({ form }: AddressSectionProps) {
     </div>
   );
 }
+
