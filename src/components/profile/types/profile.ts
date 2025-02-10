@@ -44,6 +44,8 @@ export const generalFormSchema = z.object({
   website: z.string().optional(),
   business_description: z.string().min(25, "Description must be at least 25 words"),
   capabilities_description: z.string().min(25, "Description must be at least 25 words"),
+  allow_whatsapp_contact: z.boolean().default(false),
+  allow_whatsapp_business_contact: z.boolean().default(false),
   metadata: z.object({
     questionnaire: z.object({
       hasCompanyRegistration: z.boolean().default(false),
@@ -55,13 +57,6 @@ export const generalFormSchema = z.object({
       acceptsDocumentSharing: false,
       acceptsReferences: false,
       hasFinancialCapacity: false
-    }),
-    contactPreferences: z.object({
-      whatsappContact: z.boolean().default(false),
-      whatsappBusinessContact: z.boolean().default(false)
-    }).default({
-      whatsappContact: false,
-      whatsappBusinessContact: false
     })
   }).default({
     questionnaire: {
@@ -69,10 +64,6 @@ export const generalFormSchema = z.object({
       acceptsDocumentSharing: false,
       acceptsReferences: false,
       hasFinancialCapacity: false
-    },
-    contactPreferences: {
-      whatsappContact: false,
-      whatsappBusinessContact: false
     }
   })
 });

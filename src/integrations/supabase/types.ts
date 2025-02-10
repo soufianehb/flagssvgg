@@ -107,6 +107,8 @@ export type Database = {
       profiles: {
         Row: {
           address: string | null
+          allow_whatsapp_business_contact: boolean
+          allow_whatsapp_contact: boolean
           avatar_url: string | null
           business_phone: string | null
           business_phone_code: string | null
@@ -131,6 +133,8 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          allow_whatsapp_business_contact?: boolean
+          allow_whatsapp_contact?: boolean
           avatar_url?: string | null
           business_phone?: string | null
           business_phone_code?: string | null
@@ -155,6 +159,8 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          allow_whatsapp_business_contact?: boolean
+          allow_whatsapp_contact?: boolean
           avatar_url?: string | null
           business_phone?: string | null
           business_phone_code?: string | null

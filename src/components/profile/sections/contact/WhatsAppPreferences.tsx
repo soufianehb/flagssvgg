@@ -16,7 +16,7 @@ export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormField
         control={form.control}
-        name="metadata.contactPreferences.whatsappContact"
+        name="allow_whatsapp_contact"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
@@ -36,7 +36,7 @@ export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
 
       <FormField
         control={form.control}
-        name="metadata.contactPreferences.whatsappBusinessContact"
+        name="allow_whatsapp_business_contact"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
