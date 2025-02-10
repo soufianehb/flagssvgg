@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
@@ -11,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import { countries } from "@/data/countries";
+import { useCountryCodes } from "@/hooks/useCountryCodes";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -22,6 +23,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const { data: countries } = useCountryCodes();
 
   const handleUpdateContactPreferences = async () => {
     if (!user?.id) return;
@@ -80,11 +82,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                     <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
-                      onValueChange={(code) => {
-                        field.onChange(code);
-                        const country = countries?.find(c => c.code === code);
-                        if (country) {
-                          form.setValue('phoneCode', country.dial_code);
+                      onValueChange={(newValue) => {
+                        const selectedCountry = countries?.find(c => c.code === newValue);
+                        if (selectedCountry) {
+                          field.onChange(selectedCountry.dial_code);
                         }
                       }}
                       showLabel={false}
@@ -121,11 +122,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                     <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
-                      onValueChange={(code) => {
-                        field.onChange(code);
-                        const country = countries?.find(c => c.code === code);
-                        if (country) {
-                          form.setValue('businessPhoneCode', country.dial_code);
+                      onValueChange={(newValue) => {
+                        const selectedCountry = countries?.find(c => c.code === newValue);
+                        if (selectedCountry) {
+                          field.onChange(selectedCountry.dial_code);
                         }
                       }}
                       showLabel={false}

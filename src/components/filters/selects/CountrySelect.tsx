@@ -22,7 +22,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     if (onValueChange) onValueChange(newValue);
     
     // Find the selected country and update the dial code
-    const selectedCountry = countries?.find(c => c.code === newValue || c.name === newValue);
+    const selectedCountry = countries?.find(c => c.code === newValue);
     if (selectedCountry && onCountryCodeChange) {
       onCountryCodeChange(selectedCountry.dial_code);
     }
@@ -49,16 +49,16 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     <div className="space-y-1">
       {showLabel && (
         <Label htmlFor="country-select" className="text-sm font-medium text-gray-700 block">
-          {t.filters.country.label}
+          Code
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger id="country-select" className="w-24 h-8 text-sm px-2">
+        <SelectTrigger id="country-select" className="w-20 h-8 text-sm px-2">
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
               <span className="flex items-center text-xs">
-                <FlagImage countryCode={countries.find(c => c.name === value || c.code === value)?.code || ''} />
-                {countries.find(c => c.name === value || c.code === value)?.dial_code}
+                <FlagImage countryCode={value} />
+                {countries.find(c => c.code === value)?.dial_code}
               </span>
             )}
           </SelectValue>
