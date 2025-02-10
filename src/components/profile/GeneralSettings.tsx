@@ -23,7 +23,7 @@ const MemoizedContactInfoSection = memo(ContactInfoSection);
 const fetchProfileData = async (userId: string) => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('*')
+    .select('company_name, address, city, country, zip_code, trade_register_number')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -40,9 +40,6 @@ export function GeneralSettings() {
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: user?.email || "",
       company_name: "",
       address: "",
       city: "",
@@ -62,14 +59,7 @@ export function GeneralSettings() {
   // Update form when profile data is fetched
   useEffect(() => {
     if (profileData) {
-      const title = profileData.title?.toLowerCase() as "mr" | "mrs" | undefined;
-      const validTitle = title === "mr" || title === "mrs" ? title : undefined;
-
       form.reset({
-        title: validTitle,
-        firstName: profileData.first_name || "",
-        lastName: profileData.last_name || "",
-        email: profileData.email || user?.email || "",
         company_name: profileData.company_name || "",
         address: profileData.address || "",
         city: profileData.city || "",
@@ -78,7 +68,7 @@ export function GeneralSettings() {
         trade_register_number: profileData.trade_register_number || "",
       });
     }
-  }, [profileData, user?.email, form]);
+  }, [profileData, form]);
 
   // Use react-query for mutations
   const mutation = useMutation({
@@ -86,9 +76,6 @@ export function GeneralSettings() {
       if (!user?.id) throw new Error("User not authenticated");
 
       const updateData = {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        title: data.title,
         company_name: data.company_name,
         address: data.address,
         city: data.city,
@@ -138,13 +125,13 @@ export function GeneralSettings() {
 
   return (
     <div className="space-y-8">
+      <MemoizedPersonalInfoSection />
       <MemoizedContactInfoSection />
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-6">
-            <MemoizedPersonalInfoSection form={form} />
-            <MemoizedCompanyInfoSection form={form} />
+            <MemoizedCompanyInfoSection />
           </div>
 
           <Button 
