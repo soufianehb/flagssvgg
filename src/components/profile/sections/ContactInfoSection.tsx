@@ -68,10 +68,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
     <div className="space-y-6">
       <div className="space-y-6">
         {/* Phone Numbers Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col md:flex-row gap-4">
           {/* Personal Phone */}
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="w-full md:w-1/2">
+          <div className="flex-1 flex flex-col md:flex-row gap-2">
+            <div className="w-full md:w-1/3">
               <FormField
                 control={form.control}
                 name="phoneCode"
@@ -88,7 +88,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 )}
               />
             </div>
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-2/3">
               <FormField
                 control={form.control}
                 name="phoneNumber"
@@ -106,8 +106,8 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           </div>
 
           {/* Business Phone */}
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="w-full md:w-1/2">
+          <div className="flex-1 flex flex-col md:flex-row gap-2">
+            <div className="w-full md:w-1/3">
               <FormField
                 control={form.control}
                 name="businessPhoneCode"
@@ -124,7 +124,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 )}
               />
             </div>
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-2/3">
               <FormField
                 control={form.control}
                 name="businessPhone"
