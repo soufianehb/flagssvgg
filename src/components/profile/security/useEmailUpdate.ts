@@ -108,40 +108,45 @@ export const useEmailUpdate = () => {
       setLastEmailAttempt(new Date());
       console.log('Starting email change process');
 
-      // First verify the password using signInWithPassword
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: currentEmail,
-        password: data.password,
-      });
+      // Verify the current password first
+      try {
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: currentEmail,
+          password: data.password,
+        });
 
-      if (signInError) {
-        console.error('Password verification failed:', signInError);
-        throw new Error(signInError.message);
+        if (signInError) {
+          console.error('Password verification failed:', signInError);
+          throw new Error('The current password is incorrect. Please verify and try again.');
+        }
+
+        if (!signInData.session) {
+          throw new Error('Failed to verify credentials');
+        }
+
+        // If password verification succeeds, proceed with email update
+        console.log('Password verified, proceeding with email update');
+        setEmailUpdateStatus('confirming');
+
+        const { error: updateError } = await supabase.auth.updateUser({
+          email: data.newEmail,
+        });
+
+        if (updateError) {
+          console.error('Email update error:', updateError);
+          throw updateError;
+        }
+        
+        toast({
+          title: t.profile.settings.security.email.success.title,
+          description: t.profile.settings.security.email.confirmationEmail,
+        });
+        
+        return true;
+      } catch (error: any) {
+        console.error('Authentication error:', error);
+        throw error;
       }
-
-      if (!signInData.session) {
-        throw new Error('Failed to verify credentials');
-      }
-
-      console.log('Password verified, proceeding with email update');
-      setEmailUpdateStatus('confirming');
-
-      // Update email using the verified session
-      const { error: updateError } = await supabase.auth.updateUser({
-        email: data.newEmail,
-      });
-
-      if (updateError) {
-        console.error('Email update error:', updateError);
-        throw updateError;
-      }
-      
-      toast({
-        title: t.profile.settings.security.email.success.title,
-        description: t.profile.settings.security.email.confirmationEmail,
-      });
-      
-      return true;
     } catch (error: any) {
       console.error('Email change error:', error);
       toast({
