@@ -1,7 +1,6 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useTranslation } from "@/lib/i18n";
 import { PhoneNumberField } from "./contact/PhoneNumberField";
 import { WhatsAppPreferences } from "./contact/WhatsAppPreferences";
@@ -12,17 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Form } from "@/components/ui/form";
-
-const contactFormSchema = z.object({
-  phoneNumber: z.string().optional(),
-  phoneCode: z.string().optional(),
-  businessPhone: z.string().optional(),
-  businessPhoneCode: z.string().optional(),
-  allow_whatsapp_contact: z.boolean().default(false),
-  allow_whatsapp_business_contact: z.boolean().default(false),
-});
-
-type ContactFormValues = z.infer<typeof contactFormSchema>;
+import { contactFormSchema, type ContactFormValues } from "../types/profile";
 
 export function ContactInfoSection() {
   const { t } = useTranslation();

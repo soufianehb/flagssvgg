@@ -15,7 +15,6 @@ import { CompanyInfoSection } from "./sections/CompanyInfoSection";
 import { ContactInfoSection } from "./sections/ContactInfoSection";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-// Memoize form sections
 const MemoizedPersonalInfoSection = memo(PersonalInfoSection);
 const MemoizedCompanyInfoSection = memo(CompanyInfoSection);
 const MemoizedContactInfoSection = memo(ContactInfoSection);
@@ -49,14 +48,12 @@ export function GeneralSettings() {
     },
   });
 
-  // Use react-query for data fetching
   const { data: profileData, isLoading } = useQuery({
     queryKey: ['profile', user?.id],
     queryFn: () => fetchProfileData(user?.id as string),
     enabled: !!user?.id,
   });
 
-  // Update form when profile data is fetched
   useEffect(() => {
     if (profileData) {
       form.reset({
@@ -70,7 +67,6 @@ export function GeneralSettings() {
     }
   }, [profileData, form]);
 
-  // Use react-query for mutations
   const mutation = useMutation({
     mutationFn: async (data: GeneralFormValues) => {
       if (!user?.id) throw new Error("User not authenticated");
@@ -131,7 +127,7 @@ export function GeneralSettings() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-6">
-            <MemoizedCompanyInfoSection />
+            <MemoizedCompanyInfoSection form={form} />
           </div>
 
           <Button 

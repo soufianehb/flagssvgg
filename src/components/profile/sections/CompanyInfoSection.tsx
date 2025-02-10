@@ -17,7 +17,9 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.address}</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          {t.profile.general.sections.address}
+        </h3>
         <AddressSection form={form} />
       </div>
       
@@ -30,7 +32,9 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
       <Separator />
       
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.business}</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          {t.profile.general.sections.business}
+        </h3>
         <BusinessInfoSection form={form} />
       </div>
 

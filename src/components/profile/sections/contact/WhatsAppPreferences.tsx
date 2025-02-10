@@ -2,11 +2,11 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { UseFormReturn } from "react-hook-form";
-import { GeneralFormValues } from "../../types/profile";
+import { ContactFormValues } from "../../types/profile";
 import { useTranslation } from "@/lib/i18n";
 
 interface WhatsAppPreferencesProps {
-  form: UseFormReturn<GeneralFormValues>;
+  form: UseFormReturn<ContactFormValues>;
 }
 
 export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
