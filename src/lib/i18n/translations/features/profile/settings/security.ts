@@ -1,3 +1,4 @@
+
 export const security = {
   en: {
     title: "Security Settings",

@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { useTranslation } from "@/lib/i18n";
 
-const createEmailFormSchema = () => {
+export const createEmailFormSchema = () => {
   const { t } = useTranslation();
   
   return z.object({

@@ -125,4 +125,3 @@ export function EmailForm() {
     </div>
   );
 }
-
