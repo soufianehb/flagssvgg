@@ -14,7 +14,7 @@ import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const COUNTRY_API_URL = 'https://restcountries.com/v3.1/translation';
+const COUNTRY_API_URL = 'https://restcountries.com/v3.1/name';
 const TIMEOUT_MS = 3000;
 
 export const SignupForm = () => {
@@ -22,8 +22,18 @@ export const SignupForm = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const getCountryFromLanguage = () => {
-    const language = navigator.language.split('-')[1]?.toUpperCase();
+  const getCountryFromLocale = () => {
+    const locale = navigator.language;
+    console.log('Browser locale:', locale);
+    
+    // Try to extract country code from locale (e.g., 'en-US' -> 'US')
+    const countryCode = locale.split('-')[1];
+    
+    if (!countryCode) {
+      console.log('No country code in locale, using default');
+      return 'United States';
+    }
+
     const commonCountries: Record<string, string> = {
       'US': 'United States',
       'GB': 'United Kingdom',
@@ -31,7 +41,10 @@ export const SignupForm = () => {
       'ES': 'Spain',
       'DE': 'Germany',
     };
-    return commonCountries[language] || 'United States'; // Default to US if no match
+
+    const countryName = commonCountries[countryCode];
+    console.log('Mapped country name:', countryName);
+    return countryName || 'United States';
   };
 
   const detectUserCountry = async () => {
@@ -39,25 +52,25 @@ export const SignupForm = () => {
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const userLang = navigator.language.split('-')[0].toLowerCase();
-      console.log('Attempting country detection for language:', userLang);
+      const countryName = getCountryFromLocale();
+      console.log('Attempting to fetch country details for:', countryName);
       
-      const response = await fetch(`${COUNTRY_API_URL}/${userLang}`, {
+      const response = await fetch(`${COUNTRY_API_URL}/${encodeURIComponent(countryName)}`, {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        console.warn('Country detection API failed:', {
+        console.warn('Country API request failed:', {
           status: response.status,
           statusText: response.statusText,
           url: response.url
         });
-        return getCountryFromLanguage();
+        return countryName; // Fall back to the simple name mapping
       }
 
       const countries = await response.json();
-      console.log('API response received:', countries);
+      console.log('API response:', countries);
       
       if (Array.isArray(countries) && countries.length > 0) {
         const detectedCountry = countries[0].name.common;
@@ -65,11 +78,11 @@ export const SignupForm = () => {
         return detectedCountry;
       }
       
-      console.log('No matching countries found, using fallback');
-      return getCountryFromLanguage();
+      console.log('No matching country found, using fallback');
+      return countryName;
     } catch (error) {
       console.warn('Country detection error:', error);
-      return getCountryFromLanguage();
+      return getCountryFromLocale(); // Fall back to locale-based detection
     } finally {
       clearTimeout(timeoutId);
     }
@@ -97,7 +110,7 @@ export const SignupForm = () => {
         status: 'pending',
         country: country,
         metadata: {
-          countryDetectionMethod: country ? 'api' : 'fallback',
+          countryDetectionMethod: country === getCountryFromLocale() ? 'locale' : 'api',
           detectionTimestamp: new Date().toISOString()
         }
       };
