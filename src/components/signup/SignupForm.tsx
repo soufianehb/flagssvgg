@@ -1,7 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod"; // Add this import
+import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +11,6 @@ import { signupSchema } from "./validation/signupSchema";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
-import { CompanyInfoFields } from "./form-sections/CompanyInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -38,7 +37,6 @@ export const SignupForm = () => {
       lastName: "",
       email: "",
       password: "",
-      companyName: "",
     },
   });
 
@@ -49,7 +47,6 @@ export const SignupForm = () => {
       const profileData = {
         first_name: data.firstName,
         last_name: data.lastName,
-        company_name: data.companyName,
         email: data.email,
         is_profile_complete: false,
         status: 'pending',
@@ -80,7 +77,6 @@ export const SignupForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <PersonalInfoFields form={form} />
-        <CompanyInfoFields form={form} />
 
         <Button
           type="submit"
@@ -100,4 +96,3 @@ export const SignupForm = () => {
     </Form>
   );
 };
-
