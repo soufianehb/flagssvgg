@@ -14,19 +14,47 @@ import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
+const COUNTRY_API_URL = 'http://ip-api.com/json';
+const TIMEOUT_MS = 3000;
+
 export const SignupForm = () => {
   const { t } = useTranslation();
   const { signup } = useAuth();
   const navigate = useNavigate();
 
+  const getCountryFromLanguage = () => {
+    const language = navigator.language.split('-')[1]?.toUpperCase();
+    const commonCountries: Record<string, string> = {
+      'US': 'United States',
+      'GB': 'United Kingdom',
+      'FR': 'France',
+      'ES': 'Spain',
+      'DE': 'Germany',
+    };
+    return commonCountries[language] || undefined;
+  };
+
   const detectUserCountry = async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
     try {
-      const response = await fetch('https://ipapi.co/json/');
+      const response = await fetch(COUNTRY_API_URL, {
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error('Country detection failed');
+      }
+
       const data = await response.json();
-      return data.country_name;
+      return data.country || getCountryFromLanguage();
     } catch (error) {
-      console.error('Error detecting country:', error);
-      return null;
+      console.warn('Country detection failed:', error);
+      return getCountryFromLanguage();
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
 
@@ -51,7 +79,9 @@ export const SignupForm = () => {
         is_profile_complete: false,
         status: 'pending',
         country: country || undefined,
-        metadata: {}
+        metadata: {
+          countryDetectionMethod: country ? 'api' : 'fallback'
+        }
       };
 
       await signup(data.email, data.password, profileData);
