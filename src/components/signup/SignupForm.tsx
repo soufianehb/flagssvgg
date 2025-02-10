@@ -1,6 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"; // Add this import
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -99,3 +100,4 @@ export const SignupForm = () => {
     </Form>
   );
 };
+
