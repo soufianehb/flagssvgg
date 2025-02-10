@@ -1,3 +1,4 @@
+
 export const security = {
   en: {
     title: "Security Settings",
@@ -81,9 +82,9 @@ export const security = {
     password: {
       title: "Paramètres du mot de passe",
       description: "Mettez à jour votre mot de passe pour sécuriser votre compte.",
-      currentPassword: "Mot de passe actuel",
-      newPassword: "Nouveau mot de passe",
-      confirmPassword: "Confirmer le nouveau mot de passe",
+      current: "Mot de passe actuel",
+      new: "Nouveau mot de passe",
+      confirm: "Confirmer le nouveau mot de passe",
       updateButton: "Mettre à jour le mot de passe",
       updating: "Mise à jour du mot de passe...",
       success: {
@@ -92,7 +93,8 @@ export const security = {
       },
       error: {
         title: "Erreur",
-        message: "Échec de la mise à jour du mot de passe. Veuillez réessayer."
+        message: "Échec de la mise à jour du mot de passe. Veuillez réessayer.",
+        mismatch: "Les nouveaux mots de passe ne correspondent pas"
       }
     }
   },
@@ -129,9 +131,9 @@ export const security = {
     password: {
       title: "Configuración de contraseña",
       description: "Actualiza tu contraseña para mantener tu cuenta segura.",
-      currentPassword: "Contraseña actual",
-      newPassword: "Nueva contraseña",
-      confirmPassword: "Confirmar nueva contraseña",
+      current: "Contraseña actual",
+      new: "Nueva contraseña",
+      confirm: "Confirmar nueva contraseña",
       updateButton: "Actualizar contraseña",
       updating: "Actualizando contraseña...",
       success: {
@@ -140,7 +142,8 @@ export const security = {
       },
       error: {
         title: "Error",
-        message: "Error al actualizar la contraseña. Por favor, inténtalo de nuevo."
+        message: "Error al actualizar la contraseña. Por favor, inténtalo de nuevo.",
+        mismatch: "Las nuevas contraseñas no coinciden"
       }
     }
   }
