@@ -1,4 +1,3 @@
-
 export const security = {
   en: {
     title: "Security Settings",
@@ -46,6 +45,12 @@ export const security = {
         title: "Error",
         message: "Failed to update password. Please try again.",
         mismatch: "New passwords do not match"
+      }
+    },
+    form: {
+      errors: {
+        invalidEmail: "Please enter a valid email address",
+        passwordRequired: "Password is required to change email"
       }
     }
   },
@@ -96,6 +101,12 @@ export const security = {
         message: "Échec de la mise à jour du mot de passe. Veuillez réessayer.",
         mismatch: "Les nouveaux mots de passe ne correspondent pas"
       }
+    },
+    form: {
+      errors: {
+        invalidEmail: "Veuillez entrer une adresse email valide",
+        passwordRequired: "Le mot de passe est requis pour changer l'email"
+      }
     }
   },
   es: {
@@ -144,6 +155,12 @@ export const security = {
         title: "Error",
         message: "Error al actualizar la contraseña. Por favor, inténtalo de nuevo.",
         mismatch: "Las nuevas contraseñas no coinciden"
+      }
+    },
+    form: {
+      errors: {
+        invalidEmail: "Por favor, introduzca una dirección de correo electrónico válida",
+        passwordRequired: "Se requiere contraseña para cambiar el correo electrónico"
       }
     }
   }

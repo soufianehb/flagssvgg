@@ -12,10 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
-import { Loader2 } from "lucide-react";
+import { Loader2, Info } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info } from "lucide-react";
-import { emailFormSchema, type EmailFormValues } from "./types";
+import { createEmailFormSchema, type EmailFormValues } from "./types";
 import { useEmailUpdate } from "./useEmailUpdate";
 
 export function EmailForm() {
@@ -30,7 +29,7 @@ export function EmailForm() {
   } = useEmailUpdate();
 
   const form = useForm<EmailFormValues>({
-    resolver: zodResolver(emailFormSchema),
+    resolver: zodResolver(createEmailFormSchema()),
     defaultValues: {
       newEmail: "",
       password: "",
@@ -126,3 +125,4 @@ export function EmailForm() {
     </div>
   );
 }
+
