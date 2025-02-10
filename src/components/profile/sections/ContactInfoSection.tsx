@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PhoneNumberField } from "./contact/PhoneNumberField";
 import { WhatsAppPreferences } from "./contact/WhatsAppPreferences";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -20,6 +21,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleUpdateContactPreferences = async () => {
     if (!user?.id) return;
@@ -40,6 +42,9 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         .eq('user_id', user.id);
 
       if (error) throw error;
+
+      // Invalidate and refetch profile data
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
 
       toast({
         title: t.profile.general.success.title,
