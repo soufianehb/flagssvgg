@@ -99,7 +99,7 @@ export function NameModificationDialog({
               onValueChange={(value: "mr" | "mrs") => setTitle(value)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={t.profile.general.fields.title} />
+                <SelectValue placeholder={t.profile.general.placeholders.chooseTitle} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="mr">{t.profile.general.titles.mr}</SelectItem>
@@ -143,4 +143,3 @@ export function NameModificationDialog({
     </Dialog>
   );
 }
-

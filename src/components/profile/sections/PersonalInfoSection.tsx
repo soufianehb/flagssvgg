@@ -30,7 +30,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
       <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.personal}</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-        <div className="md:col-span-5 grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div className="md:col-span-4 grid grid-cols-1 md:grid-cols-5 gap-6">
           <FormField
             control={form.control}
             name="title"
@@ -42,7 +42,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
                   onValueChange={(value: "mr" | "mrs") => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={t.profile.general.fields.title} />
+                    <SelectValue placeholder={t.profile.general.placeholders.chooseTitle} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="mr">{t.profile.general.titles.mr}</SelectItem>
@@ -80,7 +80,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-1 flex items-end">
+        <div className="md:col-span-2">
           <NameModificationDialog
             initialTitle={form.getValues('title')}
             initialFirstName={form.getValues('firstName')}
@@ -92,7 +92,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-        <div className="md:col-span-5">
+        <div className="md:col-span-4">
           <FormField
             control={form.control}
             name="email"
@@ -107,7 +107,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-1 flex items-end">
+        <div className="md:col-span-2">
           <Button 
             type="button"
             className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
@@ -120,4 +120,3 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
     </div>
   );
 }
-

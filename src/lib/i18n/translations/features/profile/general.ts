@@ -15,6 +15,9 @@ export const general = {
       address: "Address",
       contact: "Contact"
     },
+    placeholders: {
+      chooseTitle: "Choose title"
+    },
     emptyStates: {
       companyName: "Company Name Not Set",
       phoneNumber: "No Phone Number Set"
@@ -58,6 +61,9 @@ export const general = {
       address: "Adresse",
       contact: "Contact"
     },
+    placeholders: {
+      chooseTitle: "Choisir civilité"
+    },
     emptyStates: {
       companyName: "Nom de l'entreprise non défini",
       phoneNumber: "Aucun numéro de téléphone défini"
@@ -100,6 +106,9 @@ export const general = {
       personalPhone: "Teléfono personal",
       address: "Dirección",
       contact: "Contacto"
+    },
+    placeholders: {
+      chooseTitle: "Elegir título"
     },
     emptyStates: {
       companyName: "Nombre de empresa no establecido",
