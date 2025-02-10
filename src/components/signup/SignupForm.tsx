@@ -14,7 +14,7 @@ import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const COUNTRY_API_URL = 'https://restcountries.com/v3.1/lang';
+const COUNTRY_API_URL = 'https://restcountries.com/v3.1/translation';
 const TIMEOUT_MS = 3000;
 
 export const SignupForm = () => {
@@ -31,7 +31,7 @@ export const SignupForm = () => {
       'ES': 'Spain',
       'DE': 'Germany',
     };
-    return commonCountries[language] || undefined;
+    return commonCountries[language] || 'United States'; // Default to US if no match
   };
 
   const detectUserCountry = async () => {
@@ -39,8 +39,8 @@ export const SignupForm = () => {
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const userLang = navigator.language.split('-')[0].toLowerCase(); // Ensure lowercase
-      console.log('Detecting country for language:', userLang);
+      const userLang = navigator.language.split('-')[0].toLowerCase();
+      console.log('Attempting country detection for language:', userLang);
       
       const response = await fetch(`${COUNTRY_API_URL}/${userLang}`, {
         signal: controller.signal,
@@ -48,7 +48,7 @@ export const SignupForm = () => {
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        console.warn('Country detection failed:', {
+        console.warn('Country detection API failed:', {
           status: response.status,
           statusText: response.statusText,
           url: response.url
@@ -57,19 +57,18 @@ export const SignupForm = () => {
       }
 
       const countries = await response.json();
-      console.log('API response:', countries);
+      console.log('API response received:', countries);
       
       if (Array.isArray(countries) && countries.length > 0) {
-        // Get the first country that matches the language
         const detectedCountry = countries[0].name.common;
-        console.log('Detected country:', detectedCountry);
+        console.log('Successfully detected country:', detectedCountry);
         return detectedCountry;
       }
       
-      console.log('No countries found, using fallback');
+      console.log('No matching countries found, using fallback');
       return getCountryFromLanguage();
     } catch (error) {
-      console.warn('Country detection failed:', error);
+      console.warn('Country detection error:', error);
       return getCountryFromLanguage();
     } finally {
       clearTimeout(timeoutId);
@@ -96,7 +95,7 @@ export const SignupForm = () => {
         email: data.email,
         is_profile_complete: false,
         status: 'pending',
-        country: country || undefined,
+        country: country,
         metadata: {
           countryDetectionMethod: country ? 'api' : 'fallback',
           detectionTimestamp: new Date().toISOString()
