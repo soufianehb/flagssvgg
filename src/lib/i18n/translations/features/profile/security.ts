@@ -1,4 +1,3 @@
-
 export const security = {
   en: {
     title: "Security Settings",
@@ -20,12 +19,21 @@ export const security = {
       },
       success: {
         title: "Email Updated",
-        message: "Your email has been successfully updated"
+        message: "Your email has been successfully updated",
+        confirmationEmail: "Please check your new email for confirmation"
       },
       error: {
         title: "Update Failed",
         message: "Failed to update email. Please try again.",
-        invalidPassword: "Invalid password provided"
+        invalidPassword: "Invalid password provided",
+        rateLimited: "Please wait a minute before trying again",
+        sameEmail: "New email must be different from current email"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Please enter a valid email address",
+          passwordRequired: "Password is required to change email"
+        }
       }
     },
     password: {
@@ -66,12 +74,21 @@ export const security = {
       },
       success: {
         title: "Email mis à jour",
-        message: "Votre email a été mis à jour avec succès"
+        message: "Votre email a été mis à jour avec succès",
+        confirmationEmail: "Veuillez vérifier votre nouvel email pour la confirmation"
       },
       error: {
         title: "Échec de la mise à jour",
         message: "Échec de la mise à jour de l'email. Veuillez réessayer.",
-        invalidPassword: "Mot de passe invalide"
+        invalidPassword: "Mot de passe invalide",
+        rateLimited: "Veuillez attendre une minute avant de réessayer",
+        sameEmail: "Le nouvel email doit être différent de l'email actuel"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Veuillez entrer une adresse email valide",
+          passwordRequired: "Le mot de passe est requis pour changer l'email"
+        }
       }
     },
     password: {
@@ -112,12 +129,21 @@ export const security = {
       },
       success: {
         title: "Correo electrónico actualizado",
-        message: "Su correo electrónico ha sido actualizado exitosamente"
+        message: "Su correo electrónico ha sido actualizado exitosamente",
+        confirmationEmail: "Por favor, revise su nuevo correo electrónico para la confirmación"
       },
       error: {
         title: "Error de actualización",
         message: "Error al actualizar el correo electrónico. Por favor, intente de nuevo.",
-        invalidPassword: "Contraseña proporcionada inválida"
+        invalidPassword: "Contraseña proporcionada inválida",
+        rateLimited: "Por favor, espere un minuto antes de intentarlo de nuevo",
+        sameEmail: "El nuevo correo electrónico debe ser diferente del actual"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Por favor, introduzca una dirección de correo electrónico válida",
+          passwordRequired: "Se requiere contraseña para cambiar el correo electrónico"
+        }
       }
     },
     password: {
@@ -139,4 +165,3 @@ export const security = {
     }
   }
 };
-
