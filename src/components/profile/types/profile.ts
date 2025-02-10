@@ -2,7 +2,7 @@
 import { z } from "zod";
 
 export const generalFormSchema = z.object({
-  title: z.enum(["mr", "mrs"]),
+  title: z.enum(["mr", "mrs"]).optional(),
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
@@ -67,4 +67,3 @@ export const generalFormSchema = z.object({
 });
 
 export type GeneralFormValues = z.infer<typeof generalFormSchema>;
-

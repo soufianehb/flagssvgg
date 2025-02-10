@@ -38,7 +38,6 @@ export function GeneralSettings() {
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
     defaultValues: {
-      title: "mr",
       firstName: "",
       lastName: "",
       email: user?.email || "",
@@ -66,6 +65,7 @@ export function GeneralSettings() {
   useEffect(() => {
     if (profileData) {
       form.reset({
+        title: profileData.title || undefined,
         firstName: profileData.first_name || "",
         lastName: profileData.last_name || "",
         email: profileData.email || user?.email || "",
@@ -91,6 +91,7 @@ export function GeneralSettings() {
       const updateData = {
         first_name: data.firstName,
         last_name: data.lastName,
+        title: data.title,
         phone_number: data.phoneNumber,
         phone_code: data.phoneCode,
         business_phone: data.businessPhone,
