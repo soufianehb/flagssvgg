@@ -1,4 +1,3 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
@@ -77,7 +76,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 name="phoneCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t.profile.general.fields.phoneNumber} Code</FormLabel>
+                    <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
                       onValueChange={field.onChange}
@@ -113,7 +112,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 name="businessPhoneCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t.profile.general.fields.businessPhone} Code</FormLabel>
+                    <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
                       onValueChange={field.onChange}
@@ -152,9 +151,6 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 <div className="space-y-0.5">
                   <FormLabel>{t.profile.general.fields.whatsappContact}</FormLabel>
                   <FormMessage />
-                  <div className="text-sm text-muted-foreground">
-                    {t.profile.general.fields.whatsappContact}
-                  </div>
                 </div>
                 <FormControl>
                   <Switch
@@ -174,9 +170,6 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                 <div className="space-y-0.5">
                   <FormLabel>{t.profile.general.fields.whatsappBusinessContact}</FormLabel>
                   <FormMessage />
-                  <div className="text-sm text-muted-foreground">
-                    {t.profile.general.fields.whatsappBusinessContact}
-                  </div>
                 </div>
                 <FormControl>
                   <Switch

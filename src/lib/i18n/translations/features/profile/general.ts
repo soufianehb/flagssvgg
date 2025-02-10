@@ -1,4 +1,3 @@
-
 export const general = {
   en: {
     sections: {
@@ -14,8 +13,8 @@ export const general = {
       personalPhone: "Personal Phone",
       address: "Address",
       contact: "Contact",
-      whatsappContact: "Contact through WhatsApp",
-      whatsappBusinessContact: "Contact through WhatsApp Business"
+      whatsappContact: "Allow contact via WhatsApp",
+      whatsappBusinessContact: "Allow contact via WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Choose title"
@@ -69,8 +68,8 @@ export const general = {
       personalPhone: "Téléphone personnel",
       address: "Adresse",
       contact: "Contact",
-      whatsappContact: "Contact via WhatsApp",
-      whatsappBusinessContact: "Contact via WhatsApp Business"
+      whatsappContact: "J'accepte d'être contacté via WhatsApp",
+      whatsappBusinessContact: "J'accepte d'être contacté via WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Choisir civilité"
@@ -124,8 +123,8 @@ export const general = {
       personalPhone: "Teléfono personal",
       address: "Dirección",
       contact: "Contacto",
-      whatsappContact: "Contacto por WhatsApp",
-      whatsappBusinessContact: "Contacto por WhatsApp Business"
+      whatsappContact: "Acepto ser contactado por WhatsApp",
+      whatsappBusinessContact: "Acepto ser contactado por WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Elegir título"
