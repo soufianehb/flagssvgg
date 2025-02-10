@@ -13,10 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { Loader2 } from "lucide-react";
-import { emailFormSchema, type EmailFormValues } from "./types";
-import { useEmailUpdate } from "./useEmailUpdate";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
+import { emailFormSchema, type EmailFormValues } from "./types";
+import { useEmailUpdate } from "./useEmailUpdate";
 
 export function EmailForm() {
   const { t } = useTranslation();
