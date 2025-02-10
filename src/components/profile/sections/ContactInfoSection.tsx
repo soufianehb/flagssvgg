@@ -93,21 +93,21 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         <WhatsAppPreferences form={form} />
 
         {/* Update Contact Button */}
-        <div className="flex justify-end mt-4">
-          <Button
-            onClick={handleUpdateContact}
-            disabled={updateContactMutation.isPending}
-          >
-            {updateContactMutation.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t.profile.general.actions.saving}
-              </>
-            ) : (
-              t.profile.general.actions.updateContact
-            )}
-          </Button>
-        </div>
+        <Button
+          onClick={handleUpdateContact}
+          disabled={updateContactMutation.isPending}
+          variant="outline"
+          className="w-full"
+        >
+          {updateContactMutation.isPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {t.profile.general.actions.saving}
+            </>
+          ) : (
+            t.profile.general.actions.updateContact
+          )}
+        </Button>
       </div>
     </div>
   );
