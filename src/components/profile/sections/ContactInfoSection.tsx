@@ -73,7 +73,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl mx-auto">
       <div className="space-y-6">
         {/* Phone Numbers Section */}
         <div className="flex flex-col md:flex-row md:gap-6 gap-4">
@@ -96,8 +96,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         <Button
           onClick={handleUpdateContact}
           disabled={updateContactMutation.isPending}
-          variant="outline"
-          className="w-full"
+          className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
         >
           {updateContactMutation.isPending ? (
             <>
