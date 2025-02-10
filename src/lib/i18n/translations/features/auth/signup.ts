@@ -97,7 +97,7 @@ export const signupTranslations = {
     messages: {
       success: {
         title: "Account Created",
-        description: "Your account has been created successfully"
+        description: "Your account has been created successfully. Please check your email to confirm your address.",
       },
       error: {
         title: "Error",
@@ -202,7 +202,7 @@ export const signupTranslations = {
     messages: {
       success: {
         title: "Compte créé",
-        description: "Votre compte a été créé avec succès"
+        description: "Votre compte a été créé avec succès. Veuillez vérifier votre email pour confirmer votre adresse.",
       },
       error: {
         title: "Erreur",
@@ -307,7 +307,7 @@ export const signupTranslations = {
     messages: {
       success: {
         title: "Cuenta creada",
-        description: "Su cuenta ha sido creada con éxito"
+        description: "Su cuenta ha sido creada con éxito. Por favor, revise su correo electrónico para confirmar su dirección.",
       },
       error: {
         title: "Error",
@@ -316,3 +316,4 @@ export const signupTranslations = {
     }
   }
 };
+
