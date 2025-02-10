@@ -8,6 +8,7 @@ export const QuickLinks = () => {
   const { isAuthenticated } = useAuth();
 
   const quickLinks = [
+    { key: "home", label: "Home", path: "/home" },
     { key: "listings", label: t.footer.quickLinks.listings, path: "#" },
     { key: "directory", label: t.footer.quickLinks.directory, path: "#" },
     { key: "tools", label: t.footer.quickLinks.tools, path: "#" },
@@ -31,3 +32,4 @@ export const QuickLinks = () => {
     </div>
   );
 };
+

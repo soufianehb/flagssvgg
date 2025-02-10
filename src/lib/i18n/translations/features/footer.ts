@@ -4,6 +4,7 @@ export const footer = {
     tagline: "Your trusted partner for export and international trade",
     quickLinks: {
       title: "Quick Links",
+      home: "Home",
       listings: "Listings",
       directory: "Directory",
       tools: "Tools"
@@ -24,6 +25,7 @@ export const footer = {
     tagline: "Votre partenaire de confiance pour l'exportation et le commerce international",
     quickLinks: {
       title: "Liens Rapides",
+      home: "Accueil",
       listings: "Annonces",
       directory: "Répertoire",
       tools: "Outils"
@@ -44,6 +46,7 @@ export const footer = {
     tagline: "Su socio de confianza para la exportación y el comercio internacional",
     quickLinks: {
       title: "Enlaces Rápidos",
+      home: "Inicio",
       listings: "Anuncios",
       directory: "Directorio",
       tools: "Herramientas"
@@ -61,3 +64,4 @@ export const footer = {
     copyright: "Todos los derechos reservados"
   }
 };
+
