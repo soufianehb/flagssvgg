@@ -88,7 +88,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-1">
           <FormField
             control={form.control}
             name="city"
@@ -103,7 +103,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-1">
           <FormField
             control={form.control}
             name="country"
@@ -126,12 +126,12 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="md:col-span-1">
+        <div className="md:col-span-2 flex items-end">
           <Button
             type="button"
             onClick={handleUpdateAddress}
             disabled={isSaving}
-            className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10 mt-8"
+            className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10"
           >
             {isSaving ? (
               <>
