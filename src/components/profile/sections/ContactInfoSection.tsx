@@ -13,7 +13,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Form } from "@/components/ui/form";
 
-// Define a separate schema for contact information
 const contactFormSchema = z.object({
   phoneNumber: z.string().optional(),
   phoneCode: z.string().optional(),
@@ -43,7 +42,6 @@ export function ContactInfoSection() {
     },
   });
 
-  // Fetch contact data
   const { data: contactData } = useQuery({
     queryKey: ['profile-contact', user?.id],
     queryFn: async () => {
@@ -58,18 +56,20 @@ export function ContactInfoSection() {
       return data;
     },
     enabled: !!user?.id,
-    onSuccess: (data) => {
-      if (data) {
-        form.reset({
-          phoneNumber: data.phone_number || "",
-          phoneCode: data.phone_code || "",
-          businessPhone: data.business_phone || "",
-          businessPhoneCode: data.business_phone_code || "",
-          allow_whatsapp_contact: data.allow_whatsapp_contact || false,
-          allow_whatsapp_business_contact: data.allow_whatsapp_business_contact || false,
-        });
+    meta: {
+      onSuccess: (data: any) => {
+        if (data) {
+          form.reset({
+            phoneNumber: data.phone_number || "",
+            phoneCode: data.phone_code || "",
+            businessPhone: data.business_phone || "",
+            businessPhoneCode: data.business_phone_code || "",
+            allow_whatsapp_contact: data.allow_whatsapp_contact || false,
+            allow_whatsapp_business_contact: data.allow_whatsapp_business_contact || false,
+          });
+        }
       }
-    },
+    }
   });
 
   const updateContactMutation = useMutation({
@@ -123,7 +123,6 @@ export function ContactInfoSection() {
     <Form {...form}>
       <div className="space-y-6">
         <div className="space-y-6">
-          {/* Phone Numbers Section */}
           <div className="flex flex-col md:flex-row md:gap-6 gap-4">
             <PhoneNumberField
               form={form}
@@ -137,10 +136,8 @@ export function ContactInfoSection() {
             />
           </div>
 
-          {/* WhatsApp Preferences */}
           <WhatsAppPreferences form={form} />
 
-          {/* Update Contact Button */}
           <Button
             type="button"
             onClick={handleUpdateContact}
