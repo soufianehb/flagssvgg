@@ -70,6 +70,8 @@ export const authService = {
 
   signup: async (email: string, password: string, profileData: Record<string, any>) => {
     try {
+      console.log('Starting signup with data:', { email, profileData });
+      
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -83,10 +85,12 @@ export const authService = {
         }
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error('Signup auth error:', authError);
+        throw authError;
+      }
 
-      // Don't immediately try to create profile - let the trigger handle it
-      // Just return the auth data
+      console.log('Signup successful:', authData);
       return { data: authData, error: null };
     } catch (error) {
       console.error('Signup error:', error);

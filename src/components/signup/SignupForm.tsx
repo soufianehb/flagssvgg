@@ -11,6 +11,7 @@ import { signupSchema } from "./validation/signupSchema";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
+import { CompanyInfoFields } from "./form-sections/CompanyInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -49,6 +50,7 @@ export const SignupForm = () => {
       firstName: "",
       lastName: "",
       email: "",
+      companyName: "",
       password: "",
     },
   });
@@ -61,6 +63,7 @@ export const SignupForm = () => {
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
+        company_name: data.companyName,
         is_profile_complete: false,
         status: 'pending',
         country: country,
@@ -93,6 +96,7 @@ export const SignupForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <PersonalInfoFields form={form} />
+        <CompanyInfoFields form={form} />
 
         <Button
           type="submit"

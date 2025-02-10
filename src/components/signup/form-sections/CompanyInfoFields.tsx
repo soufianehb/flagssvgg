@@ -22,20 +22,6 @@ export const CompanyInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
           </FormItem>
         )}
       />
-
-      <FormField
-        control={form.control}
-        name="tradeRegisterNumber"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t.signup.labels.tradeRegisterNumber}</FormLabel>
-            <FormControl>
-              <Input placeholder={t.signup.placeholders.tradeRegisterNumber} {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 };
