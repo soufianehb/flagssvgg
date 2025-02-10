@@ -67,123 +67,127 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-6">
-        {/* Personal Phone Number */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="w-full md:w-1/3">
-            <FormField
-              control={form.control}
-              name="phoneCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.profile.general.fields.phoneNumber} Code</FormLabel>
-                  <CountrySelect
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    onCountryCodeChange={(code) => form.setValue('phoneCode', code)}
-                    showLabel={false}
-                  />
-                </FormItem>
-              )}
-            />
+        {/* Phone Numbers Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Personal Phone */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2">
+              <FormField
+                control={form.control}
+                name="phoneCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.profile.general.fields.phoneNumber} Code</FormLabel>
+                    <CountrySelect
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onCountryCodeChange={(code) => form.setValue('phoneCode', code)}
+                      showLabel={false}
+                    />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="tel" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
-          <div className="w-full md:w-2/3">
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="tel" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+          {/* Business Phone */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2">
+              <FormField
+                control={form.control}
+                name="businessPhoneCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.profile.general.fields.businessPhone} Code</FormLabel>
+                    <CountrySelect
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onCountryCodeChange={(code) => form.setValue('businessPhoneCode', code)}
+                      showLabel={false}
+                    />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <FormField
+                control={form.control}
+                name="businessPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="tel" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Business Phone Number */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="w-full md:w-1/3">
-            <FormField
-              control={form.control}
-              name="businessPhoneCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.profile.general.fields.businessPhone} Code</FormLabel>
-                  <CountrySelect
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    onCountryCodeChange={(code) => form.setValue('businessPhoneCode', code)}
-                    showLabel={false}
-                  />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full md:w-2/3">
-            <FormField
-              control={form.control}
-              name="businessPhone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="tel" />
-                  </FormControl>
+        {/* WhatsApp Preferences */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="metadata.contactPreferences.whatsappContact"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel>{t.profile.general.fields.whatsappContact}</FormLabel>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                  <div className="text-sm text-muted-foreground">
+                    {t.profile.general.fields.whatsappContact}
+                  </div>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="metadata.contactPreferences.whatsappBusinessContact"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel>{t.profile.general.fields.whatsappBusinessContact}</FormLabel>
+                  <FormMessage />
+                  <div className="text-sm text-muted-foreground">
+                    {t.profile.general.fields.whatsappBusinessContact}
+                  </div>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormField
-          control={form.control}
-          name="metadata.contactPreferences.whatsappContact"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel>{t.profile.general.fields.whatsappContact}</FormLabel>
-                <FormMessage />
-                <div className="text-sm text-muted-foreground">
-                  {t.profile.general.fields.whatsappContact}
-                </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="metadata.contactPreferences.whatsappBusinessContact"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel>{t.profile.general.fields.whatsappBusinessContact}</FormLabel>
-                <FormMessage />
-                <div className="text-sm text-muted-foreground">
-                  {t.profile.general.fields.whatsappBusinessContact}
-                </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
       </div>
 
       <Button
