@@ -129,4 +129,3 @@ export const PersonalInfoFields = ({ form }: { form: UseFormReturn<any> }) => {
     </div>
   );
 };
-
