@@ -4,6 +4,7 @@ import { AuthError } from "@supabase/supabase-js";
 export const authService = {
   login: async (email: string, password: string) => {
     try {
+      console.log('Starting login attempt for:', email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -11,12 +12,15 @@ export const authService = {
       
       if (error) {
         console.error('Login error:', error);
+        // Handle email not confirmed error specifically
+        if (error.message.includes('Email not confirmed') || error.message.includes('email_not_confirmed')) {
+          throw new Error('Please verify your email address before logging in. Check your inbox for the confirmation email.');
+        }
+        // Handle invalid credentials
         if (error.message.includes('Invalid login credentials')) {
           throw new Error('Invalid email or password. Please check your credentials and try again.');
         }
-        if (error.message.includes('Email not confirmed')) {
-          throw new Error('Please verify your email address before logging in.');
-        }
+        // Handle any other errors
         throw new Error(error.message || 'An error occurred during login');
       }
 
@@ -55,6 +59,7 @@ export const authService = {
 
       return { data, error: null };
     } catch (error) {
+      console.error('Login process error:', error);
       if (error instanceof Error) {
         throw error;
       }
