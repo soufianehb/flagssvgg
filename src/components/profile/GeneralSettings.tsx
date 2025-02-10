@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { z } from "zod";
 import { CompanyInfoSection } from "./sections/CompanyInfoSection";
+import { ContactInfoSection } from "./sections/ContactInfoSection";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   phoneCode: z.string(),
@@ -41,6 +43,13 @@ const GeneralSettings = () => {
   return (
     <Form {...form}>
       <form className="space-y-8">
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
+          <ContactInfoSection form={form} />
+        </div>
+
+        <Separator />
+        
         <CompanyInfoSection form={form} />
       </form>
     </Form>
