@@ -43,18 +43,12 @@ export function GeneralSettings() {
       firstName: "",
       lastName: "",
       email: user?.email || "",
-      phoneNumber: "",
-      phoneCode: "",
-      businessPhone: "",
-      businessPhoneCode: "",
       company_name: "",
       address: "",
       city: "",
       country: "",
       zip_code: "",
       trade_register_number: "",
-      allow_whatsapp_contact: false,
-      allow_whatsapp_business_contact: false,
     },
   });
 
@@ -68,7 +62,6 @@ export function GeneralSettings() {
   // Update form when profile data is fetched
   useEffect(() => {
     if (profileData) {
-      // Ensure title is either "mr", "mrs", or undefined
       const title = profileData.title?.toLowerCase() as "mr" | "mrs" | undefined;
       const validTitle = title === "mr" || title === "mrs" ? title : undefined;
 
@@ -77,18 +70,12 @@ export function GeneralSettings() {
         firstName: profileData.first_name || "",
         lastName: profileData.last_name || "",
         email: profileData.email || user?.email || "",
-        phoneNumber: profileData.phone_number || "",
-        phoneCode: profileData.phone_code || "",
-        businessPhone: profileData.business_phone || "",
-        businessPhoneCode: profileData.business_phone_code || "",
         company_name: profileData.company_name || "",
         address: profileData.address || "",
         city: profileData.city || "",
         country: profileData.country || "",
         zip_code: profileData.zip_code || "",
         trade_register_number: profileData.trade_register_number || "",
-        allow_whatsapp_contact: profileData.allow_whatsapp_contact || false,
-        allow_whatsapp_business_contact: profileData.allow_whatsapp_business_contact || false,
       });
     }
   }, [profileData, user?.email, form]);
@@ -102,18 +89,12 @@ export function GeneralSettings() {
         first_name: data.firstName,
         last_name: data.lastName,
         title: data.title,
-        phone_number: data.phoneNumber,
-        phone_code: data.phoneCode,
-        business_phone: data.businessPhone,
-        business_phone_code: data.businessPhoneCode,
         company_name: data.company_name,
         address: data.address,
         city: data.city,
         country: data.country,
         zip_code: data.zip_code,
         trade_register_number: data.trade_register_number,
-        allow_whatsapp_contact: data.allow_whatsapp_contact,
-        allow_whatsapp_business_contact: data.allow_whatsapp_business_contact,
         is_profile_complete: true,
         updated_at: new Date().toISOString(),
       };
@@ -156,29 +137,32 @@ export function GeneralSettings() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="space-y-6">
-          <MemoizedPersonalInfoSection form={form} />
-          <MemoizedCompanyInfoSection form={form} />
-          <MemoizedContactInfoSection form={form} />
-        </div>
+    <div className="space-y-8">
+      <MemoizedContactInfoSection />
+      
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="space-y-6">
+            <MemoizedPersonalInfoSection form={form} />
+            <MemoizedCompanyInfoSection form={form} />
+          </div>
 
-        <Button 
-          type="submit" 
-          disabled={mutation.isPending || !form.formState.isDirty}
-          className="w-full"
-        >
-          {mutation.isPending ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {t.profile.general.actions.saving}
-            </>
-          ) : (
-            t.profile.general.actions.save
-          )}
-        </Button>
-      </form>
-    </Form>
+          <Button 
+            type="submit" 
+            disabled={mutation.isPending || !form.formState.isDirty}
+            className="w-full"
+          >
+            {mutation.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t.profile.general.actions.saving}
+              </>
+            ) : (
+              t.profile.general.actions.save
+            )}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
