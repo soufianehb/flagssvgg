@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -14,7 +15,7 @@ export const authService = {
         console.error('Login error:', error);
         // Handle email not confirmed error specifically
         if (error.message.includes('Email not confirmed') || error.message.includes('email_not_confirmed')) {
-          throw new Error('Please verify your email address before logging in. Check your inbox for the confirmation email.');
+          throw new Error('email_not_confirmed');
         }
         // Handle invalid credentials
         if (error.message.includes('Invalid login credentials')) {

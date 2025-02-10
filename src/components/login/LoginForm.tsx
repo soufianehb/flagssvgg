@@ -39,8 +39,7 @@ export const LoginForm = () => {
       let errorTitle = t.login.error;
       let errorMessage = t.login.errorMessage;
       
-      if (error.message?.includes('Email not confirmed') || 
-          error.message?.includes('email_not_confirmed')) {
+      if (error.message === 'email_not_confirmed') {
         errorTitle = t.login.emailNotConfirmed.title;
         errorMessage = t.login.emailNotConfirmed.message;
       } else if (error.message?.includes('Invalid login credentials') || 
