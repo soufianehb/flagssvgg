@@ -25,6 +25,21 @@ export function AddressSection({ form }: AddressSectionProps) {
   const handleUpdateAddress = async () => {
     if (!user?.id) return;
 
+    // Validate required fields
+    const address = form.getValues('address');
+    const city = form.getValues('city');
+    const country = form.getValues('country');
+    const zipCode = form.getValues('zip_code');
+
+    if (!address || !city || !country || !zipCode) {
+      toast({
+        variant: "destructive",
+        title: t.profile.general.errors.requiredFields,
+        description: t.profile.general.errors.addressFieldsRequired,
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       const { error } = await supabase
@@ -41,15 +56,15 @@ export function AddressSection({ form }: AddressSectionProps) {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Address updated successfully",
+        title: t.profile.general.success.title,
+        description: t.profile.general.success.addressUpdated,
       });
     } catch (error: any) {
       console.error('Error updating address:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to update address",
+        title: t.profile.general.errors.addressUpdateFailed,
+        description: error.message || t.profile.general.errors.tryAgain,
       });
     } finally {
       setIsSaving(false);
@@ -135,14 +150,13 @@ export function AddressSection({ form }: AddressSectionProps) {
           {isSaving ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              {t.profile.general.actions.saving}
             </>
           ) : (
-            'Update Address'
+            t.profile.general.actions.updateAddress
           )}
         </Button>
       </div>
     </div>
   );
 }
-
