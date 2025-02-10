@@ -3,7 +3,7 @@ export const general = {
   en: {
     sections: {
       personal: "Interlocutor Info",
-      business: "Business Information",
+      business: "Business Information", 
       address: "Address"
     },
     fields: {
@@ -13,7 +13,9 @@ export const general = {
       businessPhone: "Business Phone",
       personalPhone: "Personal Phone",
       address: "Address",
-      contact: "Contact"
+      contact: "Contact",
+      whatsappContact: "Contact through WhatsApp",
+      whatsappBusinessContact: "Contact through WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Choose title"
@@ -27,7 +29,8 @@ export const general = {
       cancel: "Cancel",
       save: "Save",
       saving: "Saving...",
-      updateAddress: "Update Address"
+      updateAddress: "Update Address",
+      updateContact: "Update Contact Preferences"
     },
     dialogs: {
       modifyName: "Modify Personal Information"
@@ -42,12 +45,14 @@ export const general = {
       updateFailed: "Update Failed",
       tryAgain: "Please try again later",
       addressUpdateFailed: "Failed to update address information",
-      addressFieldsRequired: "Please fill in all required address fields"
+      addressFieldsRequired: "Please fill in all required address fields",
+      contactUpdateFailed: "Failed to update contact preferences"
     },
     success: {
       title: "Success",
       nameUpdated: "Personal information updated successfully",
-      addressUpdated: "Address information updated successfully"
+      addressUpdated: "Address information updated successfully",
+      contactUpdated: "Contact preferences updated successfully"
     }
   },
   fr: {
@@ -63,7 +68,9 @@ export const general = {
       businessPhone: "Téléphone professionnel",
       personalPhone: "Téléphone personnel",
       address: "Adresse",
-      contact: "Contact"
+      contact: "Contact",
+      whatsappContact: "Contact via WhatsApp",
+      whatsappBusinessContact: "Contact via WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Choisir civilité"
@@ -77,7 +84,8 @@ export const general = {
       cancel: "Annuler",
       save: "Enregistrer",
       saving: "Enregistrement...",
-      updateAddress: "Mettre à jour l'adresse"
+      updateAddress: "Mettre à jour l'adresse",
+      updateContact: "Mettre à jour les préférences de contact"
     },
     dialogs: {
       modifyName: "Modifier les informations personnelles"
@@ -92,12 +100,14 @@ export const general = {
       updateFailed: "Échec de la mise à jour",
       tryAgain: "Veuillez réessayer plus tard",
       addressUpdateFailed: "Échec de la mise à jour des informations d'adresse",
-      addressFieldsRequired: "Veuillez remplir tous les champs d'adresse requis"
+      addressFieldsRequired: "Veuillez remplir tous les champs d'adresse requis",
+      contactUpdateFailed: "Échec de la mise à jour des préférences de contact"
     },
     success: {
       title: "Succès",
       nameUpdated: "Informations personnelles mises à jour avec succès",
-      addressUpdated: "Informations d'adresse mises à jour avec succès"
+      addressUpdated: "Informations d'adresse mises à jour avec succès",
+      contactUpdated: "Préférences de contact mises à jour avec succès"
     }
   },
   es: {
@@ -113,7 +123,9 @@ export const general = {
       businessPhone: "Teléfono comercial",
       personalPhone: "Teléfono personal",
       address: "Dirección",
-      contact: "Contacto"
+      contact: "Contacto",
+      whatsappContact: "Contacto por WhatsApp",
+      whatsappBusinessContact: "Contacto por WhatsApp Business"
     },
     placeholders: {
       chooseTitle: "Elegir título"
@@ -127,7 +139,8 @@ export const general = {
       cancel: "Cancelar",
       save: "Guardar",
       saving: "Guardando...",
-      updateAddress: "Actualizar dirección"
+      updateAddress: "Actualizar dirección",
+      updateContact: "Actualizar preferencias de contacto"
     },
     dialogs: {
       modifyName: "Modificar información personal"
@@ -142,13 +155,14 @@ export const general = {
       updateFailed: "Error en la actualización",
       tryAgain: "Por favor, inténtelo más tarde",
       addressUpdateFailed: "Error al actualizar la información de dirección",
-      addressFieldsRequired: "Por favor, complete todos los campos de dirección requeridos"
+      addressFieldsRequired: "Por favor, complete todos los campos de dirección requeridos",
+      contactUpdateFailed: "Error al actualizar las preferencias de contacto"
     },
     success: {
       title: "Éxito",
       nameUpdated: "Información personal actualizada con éxito",
-      addressUpdated: "Información de dirección actualizada con éxito"
+      addressUpdated: "Información de dirección actualizada con éxito",
+      contactUpdated: "Preferencias de contacto actualizadas con éxito"
     }
   }
 };
-

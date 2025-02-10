@@ -46,15 +46,15 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Contact preferences updated successfully",
+        title: t.profile.general.success.title,
+        description: t.profile.general.success.contactUpdated,
       });
     } catch (error: any) {
       console.error('Error updating contact preferences:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to update contact preferences",
+        title: t.profile.general.errors.contactUpdateFailed,
+        description: error.message || t.profile.general.errors.tryAgain,
       });
     } finally {
       setIsSaving(false);
@@ -69,7 +69,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           name="phoneNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.phoneNumber}</FormLabel>
+              <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
               <FormControl>
                 <Input {...field} type="tel" />
               </FormControl>
@@ -82,7 +82,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           name="businessPhone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.signup.labels.businessPhone}</FormLabel>
+              <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
               <FormControl>
                 <Input {...field} type="tel" />
               </FormControl>
@@ -99,10 +99,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <FormLabel>WhatsApp Contact</FormLabel>
+                <FormLabel>{t.profile.general.fields.whatsappContact}</FormLabel>
                 <FormMessage />
                 <div className="text-sm text-muted-foreground">
-                  Allow contact through WhatsApp
+                  {t.profile.general.fields.whatsappContact}
                 </div>
               </div>
               <FormControl>
@@ -121,10 +121,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <FormLabel>WhatsApp Business Contact</FormLabel>
+                <FormLabel>{t.profile.general.fields.whatsappBusinessContact}</FormLabel>
                 <FormMessage />
                 <div className="text-sm text-muted-foreground">
-                  Allow contact through WhatsApp Business
+                  {t.profile.general.fields.whatsappBusinessContact}
                 </div>
               </div>
               <FormControl>
@@ -147,10 +147,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         {isSaving ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Saving...
+            {t.profile.general.actions.saving}
           </>
         ) : (
-          'Update Contact Preferences'
+          t.profile.general.actions.updateContact
         )}
       </Button>
     </div>
