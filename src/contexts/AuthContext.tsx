@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -32,11 +31,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const { data } = await authService.login(email, password);
-      setIsAuthenticated(!!data.session);
-      setUser(data.session?.user ?? null);
+      const { data, error } = await authService.login(email, password);
+      if (error) throw error;
+      
+      if (!data.session) {
+        throw new Error('No session returned after login');
+      }
+
+      setIsAuthenticated(true);
+      setUser(data.session.user);
       
       toast({
         title: "Success",
@@ -44,13 +49,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
       
       navigate('/');
+      return true;
     } catch (error: any) {
       console.error('Login error:', error);
-      toast({
-        variant: "destructive",
-        title: "Login Error",
-        description: error.message || "An error occurred during login.",
-      });
+      setIsAuthenticated(false);
+      setUser(null);
       throw error;
     }
   };

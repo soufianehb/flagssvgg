@@ -9,7 +9,13 @@ export const authService = {
       password,
     });
     
-    if (error) throw error;
+    if (error) {
+      console.error('Login error:', error);
+      if (error.message.includes('Invalid login credentials')) {
+        throw new Error('Invalid email or password');
+      }
+      throw error;
+    }
     return { data, error: null };
   },
 
@@ -137,3 +143,4 @@ export const authService = {
     }
   }
 };
+

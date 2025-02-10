@@ -74,7 +74,10 @@ const Login = () => {
     console.log("Login attempt started with email:", values.email);
     setIsLoading(true);
     try {
-      await login(values.email, values.password);
+      const result = await login(values.email, values.password);
+      if (!result) {
+        throw new Error('Login failed. Please check your credentials and try again.');
+      }
       console.log("Login successful");
       toast({
         title: t.login.success,
@@ -83,11 +86,24 @@ const Login = () => {
       navigate('/');
     } catch (error: any) {
       console.error("Login error:", error);
+      let errorMessage = t.login.errorMessage;
+      
+      // Handle specific error cases
+      if (error.message?.includes('Invalid login credentials') || 
+          error.message?.includes('invalid_credentials')) {
+        errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+      } else if (error.message?.includes('Email not confirmed')) {
+        errorMessage = 'Please verify your email address before logging in.';
+      }
+      
       toast({
         variant: "destructive",
         title: t.login.error,
-        description: error.message || t.login.errorMessage,
+        description: errorMessage,
       });
+      
+      // Reset password field on error
+      form.setValue('password', '');
     } finally {
       setIsLoading(false);
     }
