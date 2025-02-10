@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
+import { countries } from "@/data/countries";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -70,7 +71,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Personal Phone */}
           <div className="flex-1 flex flex-col md:flex-row gap-2">
-            <div className="w-full md:w-1/3">
+            <div className="w-32">
               <FormField
                 control={form.control}
                 name="phoneCode"
@@ -79,15 +80,20 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                     <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
-                      onValueChange={field.onChange}
-                      onCountryCodeChange={(code) => form.setValue('phoneCode', code)}
+                      onValueChange={(code) => {
+                        field.onChange(code);
+                        const country = countries?.find(c => c.code === code);
+                        if (country) {
+                          form.setValue('phoneCode', country.dial_code);
+                        }
+                      }}
                       showLabel={false}
                     />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-full md:w-2/3">
+            <div className="flex-1">
               <FormField
                 control={form.control}
                 name="phoneNumber"
@@ -95,7 +101,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                   <FormItem>
                     <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="tel" />
+                      <Input {...field} type="tel" className="h-8" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -106,7 +112,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
 
           {/* Business Phone */}
           <div className="flex-1 flex flex-col md:flex-row gap-2">
-            <div className="w-full md:w-1/3">
+            <div className="w-32">
               <FormField
                 control={form.control}
                 name="businessPhoneCode"
@@ -115,15 +121,20 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                     <FormLabel>Code</FormLabel>
                     <CountrySelect
                       value={field.value}
-                      onValueChange={field.onChange}
-                      onCountryCodeChange={(code) => form.setValue('businessPhoneCode', code)}
+                      onValueChange={(code) => {
+                        field.onChange(code);
+                        const country = countries?.find(c => c.code === code);
+                        if (country) {
+                          form.setValue('businessPhoneCode', country.dial_code);
+                        }
+                      }}
                       showLabel={false}
                     />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-full md:w-2/3">
+            <div className="flex-1">
               <FormField
                 control={form.control}
                 name="businessPhone"
@@ -131,7 +142,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                   <FormItem>
                     <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="tel" />
+                      <Input {...field} type="tel" className="h-8" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

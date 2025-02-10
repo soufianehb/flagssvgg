@@ -22,14 +22,14 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     if (onValueChange) onValueChange(newValue);
     
     // Find the selected country and update the dial code
-    const selectedCountry = countries?.find(c => c.name === newValue);
+    const selectedCountry = countries?.find(c => c.code === newValue || c.name === newValue);
     if (selectedCountry && onCountryCodeChange) {
       onCountryCodeChange(selectedCountry.dial_code);
     }
   };
 
   if (isLoading) {
-    return <Skeleton className="h-10 w-full" />;
+    return <Skeleton className="h-8 w-24" />;
   }
 
   const FlagImage = ({ countryCode }: { countryCode: string }) => {
@@ -37,7 +37,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
       <img
         src={`/flags/4x3/${countryCode.toLowerCase()}.svg`}
         alt={`${countryCode} flag`}
-        className="w-6 h-4 mr-2 inline-block object-cover"
+        className="w-4 h-3 mr-1 inline-block object-cover"
         onError={(e) => {
           e.currentTarget.style.display = 'none';
         }}
@@ -46,29 +46,30 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {showLabel && (
-        <Label htmlFor="country-select" className="text-sm font-semibold text-gray-700 block">
+        <Label htmlFor="country-select" className="text-sm font-medium text-gray-700 block">
           {t.filters.country.label}
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger id="country-select" className="w-full">
+        <SelectTrigger id="country-select" className="w-24 h-8 text-sm px-2">
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
-              <span className="flex items-center">
-                <FlagImage countryCode={countries.find(c => c.name === value)?.code || ''} />
-                {value}
+              <span className="flex items-center text-xs">
+                <FlagImage countryCode={countries.find(c => c.name === value || c.code === value)?.code || ''} />
+                {countries.find(c => c.name === value || c.code === value)?.dial_code}
               </span>
             )}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-h-[300px] w-fit min-w-[180px]">
           {countries?.map((country) => (
-            <SelectItem key={country.code} value={country.name}>
+            <SelectItem key={country.code} value={country.code} className="text-sm">
               <span className="flex items-center">
                 <FlagImage countryCode={country.code} />
-                {country.name}
+                <span className="ml-1">{country.name}</span>
+                <span className="ml-auto text-xs text-gray-500">{country.dial_code}</span>
               </span>
             </SelectItem>
           ))}
