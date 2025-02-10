@@ -14,7 +14,7 @@ import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const COUNTRY_API_URL = 'http://ip-api.com/json';
+const COUNTRY_API_URL = 'https://restcountries.com/v3.1/lang';
 const TIMEOUT_MS = 3000;
 
 export const SignupForm = () => {
@@ -39,17 +39,24 @@ export const SignupForm = () => {
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const response = await fetch(COUNTRY_API_URL, {
+      const userLang = navigator.language.split('-')[0];
+      const response = await fetch(`${COUNTRY_API_URL}/${userLang}`, {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        throw new Error('Country detection failed');
+        console.warn('Country detection failed:', response.statusText);
+        return getCountryFromLanguage();
       }
 
-      const data = await response.json();
-      return data.country || getCountryFromLanguage();
+      const countries = await response.json();
+      if (Array.isArray(countries) && countries.length > 0) {
+        // Get the first country that matches the language
+        return countries[0].name.common;
+      }
+      
+      return getCountryFromLanguage();
     } catch (error) {
       console.warn('Country detection failed:', error);
       return getCountryFromLanguage();
@@ -80,7 +87,8 @@ export const SignupForm = () => {
         status: 'pending',
         country: country || undefined,
         metadata: {
-          countryDetectionMethod: country ? 'api' : 'fallback'
+          countryDetectionMethod: country ? 'api' : 'fallback',
+          detectionTimestamp: new Date().toISOString()
         }
       };
 
@@ -126,3 +134,4 @@ export const SignupForm = () => {
     </Form>
   );
 };
+
