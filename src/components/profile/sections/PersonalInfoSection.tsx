@@ -111,7 +111,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           <Button 
             type="button"
             variant="outline"
-            className="w-full px-6 text-base font-medium"
+            className="w-[200px] text-base font-medium"
             onClick={() => navigate('/profile/security')}
           >
             {t.profile.general.fields.modifyEmail}
