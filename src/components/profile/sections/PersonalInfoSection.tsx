@@ -2,6 +2,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
 import { GeneralFormValues } from "../types/profile";
 import { useTranslation } from "@/contexts/TranslationContext";
@@ -36,9 +37,18 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
             render={({ field }) => (
               <FormItem className="md:col-span-1">
                 <FormLabel>{t.profile.general.fields.title}</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly className="bg-gray-50" />
-                </FormControl>
+                <Select 
+                  value={field.value} 
+                  onValueChange={(value: "mr" | "mrs") => field.onChange(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t.profile.general.fields.title} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mr">{t.profile.general.titles.mr}</SelectItem>
+                    <SelectItem value="mrs">{t.profile.general.titles.mrs}</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -101,7 +111,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           <Button 
             type="button"
             variant="outline"
-            className="w-full h-10"
+            className="w-full h-12 px-6 text-base font-medium"
             onClick={() => navigate('/profile/security')}
           >
             {t.profile.general.fields.modifyEmail}

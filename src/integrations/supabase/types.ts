@@ -123,6 +123,7 @@ export type Database = {
           phone_code: string | null
           phone_number: string | null
           status: string
+          title: string | null
           trade_register_number: string | null
           updated_at: string
           user_id: string
@@ -146,6 +147,7 @@ export type Database = {
           phone_code?: string | null
           phone_number?: string | null
           status?: string
+          title?: string | null
           trade_register_number?: string | null
           updated_at?: string
           user_id: string
@@ -169,6 +171,7 @@ export type Database = {
           phone_code?: string | null
           phone_number?: string | null
           status?: string
+          title?: string | null
           trade_register_number?: string | null
           updated_at?: string
           user_id?: string

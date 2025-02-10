@@ -16,7 +16,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NameModificationDialogProps {
-  initialTitle: "mr" | "mrs";
+  initialTitle: "mr" | "mrs" | undefined;
   initialFirstName: string;
   initialLastName: string;
   userId: string;
@@ -31,7 +31,7 @@ export function NameModificationDialog({
   onUpdate,
 }: NameModificationDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState<"mr" | "mrs">(initialTitle);
+  const [title, setTitle] = useState<"mr" | "mrs" | undefined>(initialTitle);
   const [firstName, setFirstName] = useState(initialFirstName);
   const [lastName, setLastName] = useState(initialLastName);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ export function NameModificationDialog({
   const { toast } = useToast();
 
   const handleSubmit = async () => {
-    if (!firstName.trim() || !lastName.trim()) {
+    if (!firstName.trim() || !lastName.trim() || !title) {
       toast({
         variant: "destructive",
         title: t.profile.general.errors.requiredFields,
@@ -55,6 +55,7 @@ export function NameModificationDialog({
         .update({
           first_name: firstName.trim(),
           last_name: lastName.trim(),
+          title: title,
         })
         .eq('user_id', userId);
 
@@ -81,7 +82,10 @@ export function NameModificationDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="h-10">
+        <Button 
+          variant="outline" 
+          className="w-full h-12 px-6 text-base font-medium"
+        >
           {t.profile.general.actions.modifyName}
         </Button>
       </DialogTrigger>
@@ -91,8 +95,11 @@ export function NameModificationDialog({
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Select value={title} onValueChange={(value: "mr" | "mrs") => setTitle(value)}>
-              <SelectTrigger>
+            <Select 
+              value={title} 
+              onValueChange={(value: "mr" | "mrs") => setTitle(value)}
+            >
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder={t.profile.general.fields.title} />
               </SelectTrigger>
               <SelectContent>
