@@ -55,6 +55,13 @@ export const generalFormSchema = z.object({
       acceptsDocumentSharing: false,
       acceptsReferences: false,
       hasFinancialCapacity: false
+    }),
+    contactPreferences: z.object({
+      whatsappContact: z.boolean().default(false),
+      whatsappBusinessContact: z.boolean().default(false)
+    }).default({
+      whatsappContact: false,
+      whatsappBusinessContact: false
     })
   }).default({
     questionnaire: {
@@ -62,6 +69,10 @@ export const generalFormSchema = z.object({
       acceptsDocumentSharing: false,
       acceptsReferences: false,
       hasFinancialCapacity: false
+    },
+    contactPreferences: {
+      whatsappContact: false,
+      whatsappBusinessContact: false
     }
   })
 });
