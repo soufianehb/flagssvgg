@@ -31,7 +31,7 @@ export const auth = {
       errorMessage: "Invalid email or password",
       emailNotConfirmed: {
         title: "Email Not Confirmed",
-        message: "Please check your inbox and confirm your email address before logging in."
+        message: "Please check your inbox and confirm your email address before logging in. If you haven't received the confirmation email, you can request a new one from your account settings."
       },
       noAccount: "Don't have an account?",
       signUp: "Sign up",
@@ -178,7 +178,7 @@ export const auth = {
       errorMessage: "Email ou mot de passe invalide",
       emailNotConfirmed: {
         title: "Email Non Confirmé",
-        message: "Veuillez vérifier votre boîte de réception et confirmer votre adresse email avant de vous connecter."
+        message: "Veuillez vérifier votre boîte de réception et confirmer votre adresse email avant de vous connecter. Si vous n'avez pas reçu l'email de confirmation, vous pouvez en demander un nouveau depuis les paramètres de votre compte."
       },
       noAccount: "Vous n'avez pas de compte ?",
       signUp: "S'inscrire",
@@ -325,7 +325,7 @@ export const auth = {
       errorMessage: "Correo electrónico o contraseña inválidos",
       emailNotConfirmed: {
         title: "Correo No Confirmado",
-        message: "Por favor, revise su bandeja de entrada y confirme su dirección de correo electrónico antes de iniciar sesión."
+        message: "Por favor, revise su bandeja de entrada y confirme su dirección de correo electrónico antes de iniciar sesión. Si no ha recibido el correo de confirmación, puede solicitar uno nuevo desde la configuración de su cuenta."
       },
       noAccount: "¿No tiene una cuenta?",
       signUp: "Registrarse",
