@@ -14,9 +14,6 @@ import { PersonalInfoFields } from "./form-sections/PersonalInfoFields";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const COUNTRY_API_URL = 'https://restcountries.com/v3.1/name';
-const TIMEOUT_MS = 3000;
-
 export const SignupForm = () => {
   const { t } = useTranslation();
   const { signup } = useAuth();
@@ -26,7 +23,6 @@ export const SignupForm = () => {
     const locale = navigator.language;
     console.log('Browser locale:', locale);
     
-    // Try to extract country code from locale (e.g., 'en-US' -> 'US')
     const countryCode = locale.split('-')[1];
     
     if (!countryCode) {
@@ -47,47 +43,6 @@ export const SignupForm = () => {
     return countryName || 'United States';
   };
 
-  const detectUserCountry = async () => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-    try {
-      const countryName = getCountryFromLocale();
-      console.log('Attempting to fetch country details for:', countryName);
-      
-      const response = await fetch(`${COUNTRY_API_URL}/${encodeURIComponent(countryName)}`, {
-        signal: controller.signal,
-      });
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        console.warn('Country API request failed:', {
-          status: response.status,
-          statusText: response.statusText,
-          url: response.url
-        });
-        return countryName; // Fall back to the simple name mapping
-      }
-
-      const countries = await response.json();
-      console.log('API response:', countries);
-      
-      if (Array.isArray(countries) && countries.length > 0) {
-        const detectedCountry = countries[0].name.common;
-        console.log('Successfully detected country:', detectedCountry);
-        return detectedCountry;
-      }
-      
-      console.log('No matching country found, using fallback');
-      return countryName;
-    } catch (error) {
-      console.warn('Country detection error:', error);
-      return getCountryFromLocale(); // Fall back to locale-based detection
-    } finally {
-      clearTimeout(timeoutId);
-    }
-  };
-
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -100,7 +55,7 @@ export const SignupForm = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      const country = await detectUserCountry();
+      const country = getCountryFromLocale();
       
       const profileData = {
         first_name: data.firstName,
@@ -110,7 +65,7 @@ export const SignupForm = () => {
         status: 'pending',
         country: country,
         metadata: {
-          countryDetectionMethod: country === getCountryFromLocale() ? 'locale' : 'api',
+          detectionMethod: 'locale',
           detectionTimestamp: new Date().toISOString()
         }
       };
