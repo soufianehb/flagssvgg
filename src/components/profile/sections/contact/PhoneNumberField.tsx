@@ -34,6 +34,7 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
                   }
                 }}
                 showLabel={false}
+                isPhoneSelect={true}
               />
             </FormItem>
           )}
@@ -57,3 +58,4 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
     </div>
   );
 }
+

@@ -12,9 +12,17 @@ interface CountrySelectProps {
   onValueChange?: (value: string) => void;
   onCountryCodeChange?: (dialCode: string) => void;
   showLabel?: boolean;
+  isPhoneSelect?: boolean;
 }
 
-export function CountrySelect({ value, onChange, onValueChange, onCountryCodeChange, showLabel = true }: CountrySelectProps) {
+export function CountrySelect({ 
+  value, 
+  onChange, 
+  onValueChange, 
+  onCountryCodeChange, 
+  showLabel = true,
+  isPhoneSelect = false 
+}: CountrySelectProps) {
   const { t } = useTranslation();
   const { data: countries, isLoading } = useCountryCodes();
   const isMobile = useIsMobile();
@@ -23,9 +31,11 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     if (onChange) onChange(newValue);
     if (onValueChange) onValueChange(newValue);
     
-    const selectedCountry = countries?.find(c => c.code === newValue);
-    if (selectedCountry && onCountryCodeChange) {
-      onCountryCodeChange(selectedCountry.dial_code);
+    if (isPhoneSelect) {
+      const selectedCountry = countries?.find(c => c.code === newValue);
+      if (selectedCountry && onCountryCodeChange) {
+        onCountryCodeChange(selectedCountry.dial_code);
+      }
     }
   };
 
@@ -50,18 +60,24 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     <div className="space-y-1">
       {showLabel && (
         <Label htmlFor="country-select" className="text-sm font-medium text-gray-700 block">
-          Code
+          {isPhoneSelect ? "Code" : t.filters.country.label}
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
         <SelectTrigger 
           id="country-select" 
-          className={`h-10 text-base ${isMobile ? 'w-[80px]' : 'w-[100px]'}`}
+          className={`h-10 text-base ${isPhoneSelect ? (isMobile ? 'w-[80px]' : 'w-[100px]') : 'w-full'}`}
         >
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
               <span className="text-base">
-                {countries.find(c => c.code === value)?.dial_code}
+                {isPhoneSelect 
+                  ? countries.find(c => c.code === value)?.dial_code
+                  : <span className="flex items-center">
+                      <FlagImage countryCode={value} />
+                      {countries.find(c => c.code === value)?.name}
+                    </span>
+                }
               </span>
             )}
           </SelectValue>
@@ -72,7 +88,9 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
               <span className="flex items-center">
                 <FlagImage countryCode={country.code} />
                 <span className="ml-1">{country.name}</span>
-                <span className="ml-auto text-sm font-medium">{country.dial_code}</span>
+                {isPhoneSelect && (
+                  <span className="ml-auto text-sm font-medium">{country.dial_code}</span>
+                )}
               </span>
             </SelectItem>
           ))}
@@ -81,3 +99,4 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
     </div>
   );
 }
+

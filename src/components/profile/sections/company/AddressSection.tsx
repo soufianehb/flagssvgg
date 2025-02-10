@@ -129,11 +129,8 @@ export function AddressSection({ form }: AddressSectionProps) {
                   <CountrySelect
                     value={field.value}
                     onChange={field.onChange}
-                    onCountryCodeChange={(dialCode) => {
-                      form.setValue("phoneCode", dialCode);
-                      form.setValue("businessPhoneCode", dialCode);
-                    }}
                     showLabel={false}
+                    isPhoneSelect={false}
                   />
                 </FormControl>
                 <FormMessage />
@@ -160,3 +157,4 @@ export function AddressSection({ form }: AddressSectionProps) {
     </div>
   );
 }
+
