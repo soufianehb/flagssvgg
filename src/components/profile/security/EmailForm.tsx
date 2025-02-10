@@ -28,8 +28,13 @@ export function EmailForm() {
     getEmailButtonText,
   } = useEmailUpdate();
 
+  const emailFormSchema = createEmailFormSchema({
+    invalidEmail: t.profile.settings.security.email.form.errors.invalidEmail,
+    passwordRequired: t.profile.settings.security.email.form.errors.passwordRequired,
+  });
+
   const form = useForm<EmailFormValues>({
-    resolver: zodResolver(createEmailFormSchema()),
+    resolver: zodResolver(emailFormSchema),
     defaultValues: {
       newEmail: "",
       password: "",
@@ -125,3 +130,4 @@ export function EmailForm() {
     </div>
   );
 }
+
