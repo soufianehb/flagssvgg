@@ -29,7 +29,7 @@ export const useEmailUpdate = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === 'USER_UPDATED' || event === 'EMAIL_CHANGE_CONFIRMED') {
+      if (event === 'USER_UPDATED' || event === 'SIGNED_IN') {
         console.log('Email change confirmed:', session?.user.email);
         setEmailUpdateStatus('updating_profile');
         
