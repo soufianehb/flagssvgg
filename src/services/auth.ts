@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -64,47 +63,29 @@ export const authService = {
   },
 
   signup: async (email: string, password: string, profileData: Record<string, any>) => {
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: {
-          first_name: profileData.first_name,
-          last_name: profileData.last_name,
-          company_name: profileData.company_name
-        }
-      }
-    });
-
-    if (authError) throw authError;
-
-    if (authData.user) {
-      try {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([{
-            user_id: authData.user.id,
-            email,
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: {
             first_name: profileData.first_name,
             last_name: profileData.last_name,
-            company_name: profileData.company_name,
-            is_profile_complete: false,
-            status: 'active',
-            metadata: profileData.metadata || {}
-          }]);
-
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-          // Continue even if profile creation fails - the trigger should handle it
-          return { data: authData, error: null };
+            company_name: profileData.company_name
+          }
         }
-      } catch (error) {
-        console.error('Error in profile creation:', error);
-      }
+      });
+
+      if (authError) throw authError;
+
+      // Don't immediately try to create profile - let the trigger handle it
+      // Just return the auth data
+      return { data: authData, error: null };
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
     }
-    
-    return { data: authData, error: null };
   },
 
   logout: async () => {
