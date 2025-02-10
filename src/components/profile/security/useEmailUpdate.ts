@@ -78,8 +78,8 @@ export const useEmailUpdate = () => {
       if (timeSinceLastAttempt < 60000) { // 1 minute
         toast({
           variant: "destructive",
-          title: "Rate Limited",
-          description: "Please wait a minute before trying again",
+          title: t.profile.settings.security.email.error.title,
+          description: t.profile.settings.security.email.error.rateLimited,
         });
         return false;
       }
@@ -88,8 +88,8 @@ export const useEmailUpdate = () => {
     if (newEmail === currentEmail) {
       toast({
         variant: "destructive",
-        title: "Invalid Email",
-        description: "New email must be different from current email",
+        title: t.profile.settings.security.email.error.title,
+        description: t.profile.settings.security.email.error.sameEmail,
       });
       return false;
     }
@@ -118,8 +118,8 @@ export const useEmailUpdate = () => {
         console.error('Password verification failed:', signInError);
         toast({
           variant: "destructive",
-          title: "Authentication Error",
-          description: "The current password is incorrect. Please verify and try again.",
+          title: t.profile.settings.security.email.error.title,
+          description: t.profile.settings.security.email.error.invalidPassword,
         });
         setEmailUpdateStatus('idle');
         return false;
@@ -137,16 +137,16 @@ export const useEmailUpdate = () => {
         console.error('Email update error:', updateError);
         toast({
           variant: "destructive",
-          title: "Update Failed",
-          description: updateError.message || "Failed to update email. Please try again.",
+          title: t.profile.settings.security.email.error.title,
+          description: updateError.message || t.profile.settings.security.email.error.message,
         });
         setEmailUpdateStatus('idle');
         return false;
       }
       
       toast({
-        title: "Confirmation Required",
-        description: "Please check your new email address for a confirmation link.",
+        title: t.profile.settings.security.email.success.title,
+        description: t.profile.settings.security.email.success.confirmationEmail,
       });
       
       return true;
@@ -154,8 +154,8 @@ export const useEmailUpdate = () => {
       console.error('Email change error:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "An unexpected error occurred. Please try again.",
+        title: t.profile.settings.security.email.error.title,
+        description: error.message || t.profile.settings.security.email.error.message,
       });
       setEmailUpdateStatus('idle');
       return false;
