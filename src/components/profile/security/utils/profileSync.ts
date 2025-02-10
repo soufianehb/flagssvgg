@@ -1,9 +1,12 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-export const updateProfileEmail = async (userId: string, newEmail: string, retryCount = 0, maxRetries = 3) => {
+const INITIAL_RETRY_DELAY = 1000; // 1 second
+const MAX_RETRIES = 3;
+
+export const updateProfileEmail = async (userId: string, newEmail: string, retryCount = 0) => {
   try {
-    console.log('Updating profile email:', { userId, newEmail });
+    console.log('Updating profile email:', { userId, newEmail, retryAttempt: retryCount + 1 });
     
     const { data, error } = await supabase
       .from('profiles')
@@ -22,10 +25,12 @@ export const updateProfileEmail = async (userId: string, newEmail: string, retry
   } catch (error: any) {
     console.error(`Error updating profile email (attempt ${retryCount + 1}):`, error);
     
-    if (retryCount < maxRetries - 1) {
-      console.log(`Retrying profile update (attempt ${retryCount + 2} of ${maxRetries})...`);
-      await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
-      return updateProfileEmail(userId, newEmail, retryCount + 1, maxRetries);
+    if (retryCount < MAX_RETRIES - 1) {
+      // Exponential backoff: 1s, 2s, 4s
+      const delayMs = INITIAL_RETRY_DELAY * Math.pow(2, retryCount);
+      console.log(`Retrying profile update in ${delayMs}ms (attempt ${retryCount + 2} of ${MAX_RETRIES})...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+      return updateProfileEmail(userId, newEmail, retryCount + 1);
     }
     
     return { error, success: false, data: null };

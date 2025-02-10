@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,11 +15,13 @@ export const useEmailUpdate = () => {
   const [isSyncingProfile, setSyncingProfile] = useState(false);
   const [emailUpdateStatus, setEmailUpdateStatus] = useState<EmailUpdateStatus>('idle');
   const [lastEmailAttempt, setLastEmailAttempt] = useState<Date | null>(null);
+  const lastKnownEmail = useRef<string>('');
 
   // Initialize and update current email when user changes
   useEffect(() => {
     if (user?.email) {
       setCurrentEmail(user.email);
+      lastKnownEmail.current = user.email;
     }
   }, [user?.email]);
 
@@ -30,9 +31,13 @@ export const useEmailUpdate = () => {
       console.log('Auth state change event:', event);
       
       if (event === 'USER_UPDATED' && session?.user) {
-        console.log('Email update event detected:', session.user.email);
+        console.log('Email update event detected:', {
+          newEmail: session.user.email,
+          lastKnownEmail: lastKnownEmail.current
+        });
         
-        if (session.user.email && session.user.email !== currentEmail) {
+        if (session.user.email && session.user.email !== lastKnownEmail.current) {
+          lastKnownEmail.current = session.user.email;
           setCurrentEmail(session.user.email);
           setEmailUpdateStatus('updating_profile');
           setSyncingProfile(true);
@@ -63,7 +68,7 @@ export const useEmailUpdate = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [currentEmail, t, toast]);
+  }, [t, toast]);
 
   const validateEmailChange = (newEmail: string): boolean => {
     if (lastEmailAttempt) {
