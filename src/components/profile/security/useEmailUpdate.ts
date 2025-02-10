@@ -73,7 +73,6 @@ export const useEmailUpdate = () => {
   };
 
   const validateEmailChange = (newEmail: string): boolean => {
-    // Rate limiting check
     if (lastEmailAttempt) {
       const timeSinceLastAttempt = new Date().getTime() - lastEmailAttempt.getTime();
       if (timeSinceLastAttempt < 60000) { // 1 minute
@@ -86,7 +85,6 @@ export const useEmailUpdate = () => {
       }
     }
 
-    // Current email check
     if (newEmail === currentEmail) {
       toast({
         variant: "destructive",
@@ -110,24 +108,25 @@ export const useEmailUpdate = () => {
       setLastEmailAttempt(new Date());
       console.log('Starting email change process');
 
-      // Use signInWithPassword with the current email
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      // First verify the password using signInWithPassword
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: currentEmail,
         password: data.password,
       });
 
       if (signInError) {
         console.error('Password verification failed:', signInError);
-        if (signInError.message.includes('Invalid login credentials')) {
-          throw new Error('The current password is incorrect. Please verify and try again.');
-        }
-        throw signInError;
+        throw new Error(signInError.message);
+      }
+
+      if (!signInData.session) {
+        throw new Error('Failed to verify credentials');
       }
 
       console.log('Password verified, proceeding with email update');
       setEmailUpdateStatus('confirming');
 
-      // Update email
+      // Update email using the verified session
       const { error: updateError } = await supabase.auth.updateUser({
         email: data.newEmail,
       });
