@@ -72,61 +72,67 @@ export function AddressSection({ form }: AddressSectionProps) {
         )}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <FormField
-          control={form.control}
-          name="zip_code"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.signup.labels.zipCode}</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="city"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.signup.labels.city}</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.signup.labels.country}</FormLabel>
-              <FormControl>
-                <CountrySelect
-                  value={field.value}
-                  onChange={field.onChange}
-                  onCountryCodeChange={(dialCode) => {
-                    form.setValue("phoneCode", dialCode);
-                    form.setValue("businessPhoneCode", dialCode);
-                  }}
-                  showLabel={false}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-2">
+          <FormField
+            control={form.control}
+            name="zip_code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.signup.labels.zipCode}</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="md:col-span-5">
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.signup.labels.city}</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="md:col-span-5">
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.signup.labels.country}</FormLabel>
+                <FormControl>
+                  <CountrySelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    onCountryCodeChange={(dialCode) => {
+                      form.setValue("phoneCode", dialCode);
+                      form.setValue("businessPhoneCode", dialCode);
+                    }}
+                    showLabel={false}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
 
       <Button
         type="button"
         onClick={handleUpdateAddress}
         disabled={isSaving}
-        className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
+        className="w-full"
       >
         {isSaving ? (
           <>
@@ -140,4 +146,3 @@ export function AddressSection({ form }: AddressSectionProps) {
     </div>
   );
 }
-
