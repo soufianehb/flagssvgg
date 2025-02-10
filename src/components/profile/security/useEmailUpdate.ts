@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
+import type { AuthError, AuthResponse, AuthChangeEvent } from '@supabase/supabase-js';
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -25,10 +26,10 @@ export const useEmailUpdate = () => {
 
   // Listen for email change confirmation
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === 'EMAIL_CHANGE' || event === 'USER_UPDATED') {
+      if (event === 'USER_UPDATED' || event === 'EMAIL_CHANGE_CONFIRMED') {
         console.log('Email change confirmed:', session?.user.email);
         setEmailUpdateStatus('updating_profile');
         
