@@ -38,10 +38,10 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
               <FormItem className="md:col-span-1">
                 <FormLabel>{t.profile.general.fields.title}</FormLabel>
                 <Select 
-                  value={field.value || ''} 
+                  value={field.value ?? ''} 
                   onValueChange={(value: "mr" | "mrs") => field.onChange(value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue placeholder={t.profile.general.placeholders.chooseTitle} />
                   </SelectTrigger>
                   <SelectContent>
