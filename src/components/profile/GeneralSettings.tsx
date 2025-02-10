@@ -64,8 +64,12 @@ export function GeneralSettings() {
   // Update form when profile data is fetched
   useEffect(() => {
     if (profileData) {
+      // Ensure title is either "mr", "mrs", or undefined
+      const title = profileData.title?.toLowerCase() as "mr" | "mrs" | undefined;
+      const validTitle = title === "mr" || title === "mrs" ? title : undefined;
+
       form.reset({
-        title: profileData.title || undefined,
+        title: validTitle,
         firstName: profileData.first_name || "",
         lastName: profileData.last_name || "",
         email: profileData.email || user?.email || "",
@@ -169,3 +173,4 @@ export function GeneralSettings() {
     </Form>
   );
 }
+
