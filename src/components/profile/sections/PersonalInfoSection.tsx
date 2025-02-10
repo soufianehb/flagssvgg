@@ -38,7 +38,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
               <FormItem className="md:col-span-1">
                 <FormLabel>{t.profile.general.fields.title}</FormLabel>
                 <Select 
-                  value={field.value} 
+                  value={field.value || ''} 
                   onValueChange={(value: "mr" | "mrs") => field.onChange(value)}
                 >
                   <SelectTrigger>
@@ -111,7 +111,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
           <Button 
             type="button"
             variant="outline"
-            className="w-full h-12 px-6 text-base font-medium"
+            className="w-full px-6 text-base font-medium"
             onClick={() => navigate('/profile/security')}
           >
             {t.profile.general.fields.modifyEmail}

@@ -84,7 +84,7 @@ export function NameModificationDialog({
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
-          className="w-full h-12 px-6 text-base font-medium"
+          className="w-[200px] text-base font-medium"
         >
           {t.profile.general.actions.modifyName}
         </Button>
@@ -96,7 +96,7 @@ export function NameModificationDialog({
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Select 
-              value={title} 
+              value={title || ''} 
               onValueChange={(value: "mr" | "mrs") => setTitle(value)}
             >
               <SelectTrigger className="w-full">
