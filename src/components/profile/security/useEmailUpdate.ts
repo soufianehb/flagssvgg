@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,34 +15,6 @@ export const useEmailUpdate = () => {
   const [isSyncingProfile, setSyncingProfile] = useState(false);
   const [emailUpdateStatus, setEmailUpdateStatus] = useState<EmailUpdateStatus>('idle');
   const [lastEmailAttempt, setLastEmailAttempt] = useState<Date | null>(null);
-
-  useEffect(() => {
-    if (user?.email) {
-      setCurrentEmail(user.email);
-    }
-  }, [user?.email]);
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session) => {
-      console.log('Auth state change event:', event);
-      
-      if (event === 'EMAIL_CHANGE_CONFIRM') {
-        console.log('Email change confirmed:', session?.user.email);
-        setEmailUpdateStatus('updating_profile');
-        
-        if (session?.user.email) {
-          setCurrentEmail(session.user.email);
-          handleProfileUpdate(session.user.email);
-        }
-        
-        setEmailUpdateStatus('idle');
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   const handleProfileUpdate = async (newEmail: string) => {
     if (!user?.id) return;
@@ -97,6 +69,34 @@ export const useEmailUpdate = () => {
     return true;
   };
 
+  const verifyCurrentPassword = async (password: string): Promise<boolean> => {
+    if (!currentEmail) return false;
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: currentEmail,
+        password: password,
+      });
+
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            variant: "destructive",
+            title: t.profile.settings.security.email.error.title,
+            description: t.profile.settings.security.email.error.invalidPassword,
+          });
+          return false;
+        }
+        throw error;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Password verification error:', error);
+      return false;
+    }
+  };
+
   const handleEmailUpdate = async (data: EmailFormValues) => {
     try {
       if (!validateEmailChange(data.newEmail)) {
@@ -106,27 +106,15 @@ export const useEmailUpdate = () => {
       setIsChangingEmail(true);
       setEmailUpdateStatus('pending');
       setLastEmailAttempt(new Date());
-      console.log('Starting email change process');
 
       // First verify the current password
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: currentEmail,
-        password: data.password,
-      });
-
-      if (signInError) {
-        console.error('Password verification failed:', signInError);
-        toast({
-          variant: "destructive",
-          title: t.profile.settings.security.email.error.title,
-          description: t.profile.settings.security.email.error.invalidPassword,
-        });
+      const isPasswordValid = await verifyCurrentPassword(data.password);
+      if (!isPasswordValid) {
         setEmailUpdateStatus('idle');
         return false;
       }
 
       // If password verification succeeds, proceed with email update
-      console.log('Password verified, proceeding with email update');
       setEmailUpdateStatus('confirming');
 
       const { error: updateError } = await supabase.auth.updateUser({
