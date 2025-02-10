@@ -4,6 +4,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useCountryCodes } from "@/hooks/useCountryCodes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CountrySelectProps {
   value?: string;
@@ -16,12 +17,12 @@ interface CountrySelectProps {
 export function CountrySelect({ value, onChange, onValueChange, onCountryCodeChange, showLabel = true }: CountrySelectProps) {
   const { t } = useTranslation();
   const { data: countries, isLoading } = useCountryCodes();
+  const isMobile = useIsMobile();
 
   const handleValueChange = (newValue: string) => {
     if (onChange) onChange(newValue);
     if (onValueChange) onValueChange(newValue);
     
-    // Find the selected country and update the dial code
     const selectedCountry = countries?.find(c => c.code === newValue);
     if (selectedCountry && onCountryCodeChange) {
       onCountryCodeChange(selectedCountry.dial_code);
@@ -29,7 +30,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
   };
 
   if (isLoading) {
-    return <Skeleton className="h-12 w-[120px]" />;
+    return <Skeleton className="h-10 w-[80px] md:w-[100px]" />;
   }
 
   const FlagImage = ({ countryCode }: { countryCode: string }) => {
@@ -53,7 +54,10 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger id="country-select" className="w-[120px] h-12 text-base">
+        <SelectTrigger 
+          id="country-select" 
+          className={`h-10 text-base ${isMobile ? 'w-[80px]' : 'w-[100px]'}`}
+        >
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
               <span className="text-base">

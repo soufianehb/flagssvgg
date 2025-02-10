@@ -1,17 +1,15 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { UseFormReturn } from "react-hook-form";
 import { GeneralFormValues } from "../types/profile";
 import { useTranslation } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import { useCountryCodes } from "@/hooks/useCountryCodes";
+import { PhoneNumberField } from "./contact/PhoneNumberField";
+import { WhatsAppPreferences } from "./contact/WhatsAppPreferences";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -22,7 +20,6 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
-  const { data: countries } = useCountryCodes();
 
   const handleUpdateContactPreferences = async () => {
     if (!user?.id) return;
@@ -69,132 +66,21 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
     <div className="space-y-6">
       <div className="space-y-6">
         {/* Phone Numbers Section */}
-        <div className="flex flex-col gap-4">
-          {/* Personal Phone */}
-          <div className="flex flex-col space-y-4">
-            <div className="flex flex-row items-end gap-2">
-              <div className="w-[120px]">
-                <FormField
-                  control={form.control}
-                  name="phoneCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Code</FormLabel>
-                      <CountrySelect
-                        value={field.value}
-                        onValueChange={(newValue) => {
-                          const selectedCountry = countries?.find(c => c.code === newValue);
-                          if (selectedCountry) {
-                            field.onChange(selectedCountry.dial_code);
-                          }
-                        }}
-                        showLabel={false}
-                      />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="tel" className="h-12 w-full min-w-[250px]" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Business Phone */}
-          <div className="flex flex-col space-y-4">
-            <div className="flex flex-row items-end gap-2">
-              <div className="w-[120px]">
-                <FormField
-                  control={form.control}
-                  name="businessPhoneCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Code</FormLabel>
-                      <CountrySelect
-                        value={field.value}
-                        onValueChange={(newValue) => {
-                          const selectedCountry = countries?.find(c => c.code === newValue);
-                          if (selectedCountry) {
-                            field.onChange(selectedCountry.dial_code);
-                          }
-                        }}
-                        showLabel={false}
-                      />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="businessPhone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="tel" className="h-12 w-full min-w-[250px]" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col md:flex-row md:gap-6 gap-4">
+          <PhoneNumberField
+            form={form}
+            type="personal"
+            label={t.profile.general.fields.phoneNumber}
+          />
+          <PhoneNumberField
+            form={form}
+            type="business"
+            label={t.profile.general.fields.businessPhone}
+          />
         </div>
 
         {/* WhatsApp Preferences */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="metadata.contactPreferences.whatsappContact"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel>{t.profile.general.fields.whatsappContact}</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="metadata.contactPreferences.whatsappBusinessContact"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel>{t.profile.general.fields.whatsappBusinessContact}</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
+        <WhatsAppPreferences form={form} />
       </div>
 
       {/* Submit Button */}
