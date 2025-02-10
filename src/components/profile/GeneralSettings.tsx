@@ -12,11 +12,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { generalFormSchema, GeneralFormValues } from "./types/profile";
 import { PersonalInfoSection } from "./sections/PersonalInfoSection";
 import { CompanyInfoSection } from "./sections/CompanyInfoSection";
+import { ContactInfoSection } from "./sections/ContactInfoSection";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Memoize form sections
 const MemoizedPersonalInfoSection = memo(PersonalInfoSection);
 const MemoizedCompanyInfoSection = memo(CompanyInfoSection);
+const MemoizedContactInfoSection = memo(ContactInfoSection);
 
 const fetchProfileData = async (userId: string) => {
   const { data, error } = await supabase
@@ -51,6 +53,8 @@ export function GeneralSettings() {
       country: "",
       zip_code: "",
       trade_register_number: "",
+      allow_whatsapp_contact: false,
+      allow_whatsapp_business_contact: false,
     },
   });
 
@@ -83,6 +87,8 @@ export function GeneralSettings() {
         country: profileData.country || "",
         zip_code: profileData.zip_code || "",
         trade_register_number: profileData.trade_register_number || "",
+        allow_whatsapp_contact: profileData.allow_whatsapp_contact || false,
+        allow_whatsapp_business_contact: profileData.allow_whatsapp_business_contact || false,
       });
     }
   }, [profileData, user?.email, form]);
@@ -106,6 +112,8 @@ export function GeneralSettings() {
         country: data.country,
         zip_code: data.zip_code,
         trade_register_number: data.trade_register_number,
+        allow_whatsapp_contact: data.allow_whatsapp_contact,
+        allow_whatsapp_business_contact: data.allow_whatsapp_business_contact,
         is_profile_complete: true,
         updated_at: new Date().toISOString(),
       };
@@ -121,16 +129,16 @@ export function GeneralSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       toast({
-        title: "Success",
-        description: "Your profile has been updated successfully.",
+        title: t.profile.general.success.title,
+        description: t.profile.general.success.nameUpdated,
       });
     },
     onError: (error: Error) => {
       console.error('Error updating profile:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to update profile. Please try again.",
+        title: t.profile.general.errors.updateFailed,
+        description: error.message || t.profile.general.errors.tryAgain,
       });
     },
   });
@@ -153,6 +161,7 @@ export function GeneralSettings() {
         <div className="space-y-6">
           <MemoizedPersonalInfoSection form={form} />
           <MemoizedCompanyInfoSection form={form} />
+          <MemoizedContactInfoSection form={form} />
         </div>
 
         <Button 
@@ -163,14 +172,13 @@ export function GeneralSettings() {
           {mutation.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              {t.profile.general.actions.saving}
             </>
           ) : (
-            'Save Changes'
+            t.profile.general.actions.save
           )}
         </Button>
       </form>
     </Form>
   );
 }
-

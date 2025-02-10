@@ -2,15 +2,8 @@
 import { UseFormReturn } from "react-hook-form";
 import { GeneralFormValues } from "../types/profile";
 import { useTranslation } from "@/lib/i18n";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { PhoneNumberField } from "./contact/PhoneNumberField";
 import { WhatsAppPreferences } from "./contact/WhatsAppPreferences";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -18,49 +11,6 @@ interface ContactInfoSectionProps {
 
 export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false);
-  const queryClient = useQueryClient();
-
-  const handleUpdateContactPreferences = async () => {
-    if (!user?.id) return;
-
-    setIsSaving(true);
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          phone_number: form.getValues('phoneNumber'),
-          phone_code: form.getValues('phoneCode'),
-          business_phone: form.getValues('businessPhone'),
-          business_phone_code: form.getValues('businessPhoneCode'),
-          allow_whatsapp_contact: form.getValues('allow_whatsapp_contact'),
-          allow_whatsapp_business_contact: form.getValues('allow_whatsapp_business_contact'),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-
-      // Invalidate and refetch profile data
-      await queryClient.invalidateQueries({ queryKey: ['profile'] });
-
-      toast({
-        title: t.profile.general.success.title,
-        description: t.profile.general.success.contactUpdated,
-      });
-    } catch (error: any) {
-      console.error('Error updating contact preferences:', error);
-      toast({
-        variant: "destructive",
-        title: t.profile.general.errors.contactUpdateFailed,
-        description: error.message || t.profile.general.errors.tryAgain,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -82,23 +32,6 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         {/* WhatsApp Preferences */}
         <WhatsAppPreferences form={form} />
       </div>
-
-      {/* Submit Button */}
-      <Button
-        type="button"
-        onClick={handleUpdateContactPreferences}
-        disabled={isSaving}
-        className="w-full mt-4 md:mt-0 font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary h-10"
-      >
-        {isSaving ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {t.profile.general.actions.saving}
-          </>
-        ) : (
-          t.profile.general.actions.updateContact
-        )}
-      </Button>
     </div>
   );
 }
