@@ -2,6 +2,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { GeneralFormValues } from "../types/profile";
 import { AddressSection } from "./company/AddressSection";
+import { ContactInfoSection } from "../sections/ContactInfoSection";
 import { BusinessInfoSection } from "./company/BusinessInfoSection";
 import { QuestionsSection } from "./company/QuestionsSection";
 import { useTranslation } from "@/lib/i18n";
@@ -17,9 +18,7 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-gray-900">
-          {t.profile.general.sections.address}
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.address}</h3>
         <AddressSection form={form} />
       </div>
       
@@ -27,14 +26,13 @@ export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
       
       <div className="space-y-6">
         <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
+        <ContactInfoSection form={form} />
       </div>
       
       <Separator />
       
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-gray-900">
-          {t.profile.general.sections.business}
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900">{t.profile.general.sections.business}</h3>
         <BusinessInfoSection form={form} />
       </div>
 

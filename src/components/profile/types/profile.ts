@@ -1,16 +1,15 @@
 
 import { z } from "zod";
 
-export const contactFormSchema = z.object({
+export const generalFormSchema = z.object({
+  title: z.enum(["mr", "mrs"]).optional(),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
   phoneNumber: z.string().optional(),
   phoneCode: z.string().optional(),
   businessPhone: z.string().optional(),
   businessPhoneCode: z.string().optional(),
-  allow_whatsapp_contact: z.boolean().default(false),
-  allow_whatsapp_business_contact: z.boolean().default(false),
-});
-
-export const generalFormSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),
   address: z.string().optional(),
   city: z.string().optional(),
@@ -45,6 +44,8 @@ export const generalFormSchema = z.object({
   website: z.string().optional(),
   business_description: z.string().min(25, "Description must be at least 25 words"),
   capabilities_description: z.string().min(25, "Description must be at least 25 words"),
+  allow_whatsapp_contact: z.boolean().default(false),
+  allow_whatsapp_business_contact: z.boolean().default(false),
   metadata: z.object({
     questionnaire: z.object({
       hasCompanyRegistration: z.boolean().default(false),
@@ -67,5 +68,4 @@ export const generalFormSchema = z.object({
   })
 });
 
-export type ContactFormValues = z.infer<typeof contactFormSchema>;
 export type GeneralFormValues = z.infer<typeof generalFormSchema>;

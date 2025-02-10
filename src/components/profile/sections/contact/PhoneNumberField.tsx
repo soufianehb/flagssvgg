@@ -2,16 +2,18 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
+import { GeneralFormValues } from "../../types/profile";
 import { CountrySelect } from "@/components/filters/selects/CountrySelect";
-import { ContactFormValues } from "../../types/profile";
+import { useCountryCodes } from "@/hooks/useCountryCodes";
 
 interface PhoneNumberFieldProps {
-  form: UseFormReturn<ContactFormValues>;
+  form: UseFormReturn<GeneralFormValues>;
   type: "personal" | "business";
   label: string;
 }
 
 export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
+  const { data: countries } = useCountryCodes();
   const codeField = type === "personal" ? "phoneCode" : "businessPhoneCode";
   const numberField = type === "personal" ? "phoneNumber" : "businessPhone";
 
@@ -24,8 +26,13 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
           render={({ field }) => (
             <FormItem>
               <CountrySelect
-                value={field.value}
-                onChange={field.onChange}
+                value={countries?.find(c => c.dial_code === field.value)?.code || ''}
+                onValueChange={(newValue) => {
+                  const selectedCountry = countries?.find(c => c.code === newValue);
+                  if (selectedCountry) {
+                    field.onChange(selectedCountry.dial_code);
+                  }
+                }}
                 showLabel={false}
                 isPhoneSelect={true}
               />
@@ -51,3 +58,4 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
     </div>
   );
 }
+

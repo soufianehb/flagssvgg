@@ -15,6 +15,7 @@ import { CompanyInfoSection } from "./sections/CompanyInfoSection";
 import { ContactInfoSection } from "./sections/ContactInfoSection";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+// Memoize form sections
 const MemoizedPersonalInfoSection = memo(PersonalInfoSection);
 const MemoizedCompanyInfoSection = memo(CompanyInfoSection);
 const MemoizedContactInfoSection = memo(ContactInfoSection);
@@ -22,7 +23,7 @@ const MemoizedContactInfoSection = memo(ContactInfoSection);
 const fetchProfileData = async (userId: string) => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('company_name, address, city, country, zip_code, trade_register_number')
+    .select('*')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -39,45 +40,80 @@ export function GeneralSettings() {
   const form = useForm<GeneralFormValues>({
     resolver: zodResolver(generalFormSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: user?.email || "",
+      phoneNumber: "",
+      phoneCode: "",
+      businessPhone: "",
+      businessPhoneCode: "",
       company_name: "",
       address: "",
       city: "",
       country: "",
       zip_code: "",
       trade_register_number: "",
+      allow_whatsapp_contact: false,
+      allow_whatsapp_business_contact: false,
     },
   });
 
+  // Use react-query for data fetching
   const { data: profileData, isLoading } = useQuery({
     queryKey: ['profile', user?.id],
     queryFn: () => fetchProfileData(user?.id as string),
     enabled: !!user?.id,
   });
 
+  // Update form when profile data is fetched
   useEffect(() => {
     if (profileData) {
+      // Ensure title is either "mr", "mrs", or undefined
+      const title = profileData.title?.toLowerCase() as "mr" | "mrs" | undefined;
+      const validTitle = title === "mr" || title === "mrs" ? title : undefined;
+
       form.reset({
+        title: validTitle,
+        firstName: profileData.first_name || "",
+        lastName: profileData.last_name || "",
+        email: profileData.email || user?.email || "",
+        phoneNumber: profileData.phone_number || "",
+        phoneCode: profileData.phone_code || "",
+        businessPhone: profileData.business_phone || "",
+        businessPhoneCode: profileData.business_phone_code || "",
         company_name: profileData.company_name || "",
         address: profileData.address || "",
         city: profileData.city || "",
         country: profileData.country || "",
         zip_code: profileData.zip_code || "",
         trade_register_number: profileData.trade_register_number || "",
+        allow_whatsapp_contact: profileData.allow_whatsapp_contact || false,
+        allow_whatsapp_business_contact: profileData.allow_whatsapp_business_contact || false,
       });
     }
-  }, [profileData, form]);
+  }, [profileData, user?.email, form]);
 
+  // Use react-query for mutations
   const mutation = useMutation({
     mutationFn: async (data: GeneralFormValues) => {
       if (!user?.id) throw new Error("User not authenticated");
 
       const updateData = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        title: data.title,
+        phone_number: data.phoneNumber,
+        phone_code: data.phoneCode,
+        business_phone: data.businessPhone,
+        business_phone_code: data.businessPhoneCode,
         company_name: data.company_name,
         address: data.address,
         city: data.city,
         country: data.country,
         zip_code: data.zip_code,
         trade_register_number: data.trade_register_number,
+        allow_whatsapp_contact: data.allow_whatsapp_contact,
+        allow_whatsapp_business_contact: data.allow_whatsapp_business_contact,
         is_profile_complete: true,
         updated_at: new Date().toISOString(),
       };
@@ -120,32 +156,29 @@ export function GeneralSettings() {
   }
 
   return (
-    <div className="space-y-8">
-      <MemoizedPersonalInfoSection />
-      <MemoizedContactInfoSection />
-      
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="space-y-6">
-            <MemoizedCompanyInfoSection form={form} />
-          </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="space-y-6">
+          <MemoizedPersonalInfoSection form={form} />
+          <MemoizedCompanyInfoSection form={form} />
+          <MemoizedContactInfoSection form={form} />
+        </div>
 
-          <Button 
-            type="submit" 
-            disabled={mutation.isPending || !form.formState.isDirty}
-            className="w-full"
-          >
-            {mutation.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t.profile.general.actions.saving}
-              </>
-            ) : (
-              t.profile.general.actions.save
-            )}
-          </Button>
-        </form>
-      </Form>
-    </div>
+        <Button 
+          type="submit" 
+          disabled={mutation.isPending || !form.formState.isDirty}
+          className="w-full"
+        >
+          {mutation.isPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {t.profile.general.actions.saving}
+            </>
+          ) : (
+            t.profile.general.actions.save
+          )}
+        </Button>
+      </form>
+    </Form>
   );
 }
