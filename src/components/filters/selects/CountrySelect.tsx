@@ -29,7 +29,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
   };
 
   if (isLoading) {
-    return <Skeleton className="h-8 w-24" />;
+    return <Skeleton className="h-10 w-[100px]" />;
   }
 
   const FlagImage = ({ countryCode }: { countryCode: string }) => {
@@ -53,7 +53,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger id="country-select" className="w-20 h-8 text-sm px-2">
+        <SelectTrigger id="country-select" className="w-[100px] h-10 text-sm px-2">
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
               <span className="flex items-center text-xs">

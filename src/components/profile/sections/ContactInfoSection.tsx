@@ -102,7 +102,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                   <FormItem>
                     <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="tel" className="h-8" />
+                      <Input {...field} type="tel" className="h-10 w-[200px]" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +142,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                   <FormItem>
                     <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="tel" className="h-8" />
+                      <Input {...field} type="tel" className="h-10 w-[200px]" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
