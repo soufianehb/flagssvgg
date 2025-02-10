@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { CountrySelect } from "@/components/filters/selects/CountrySelect";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -31,7 +32,9 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         .from('profiles')
         .update({
           phone_number: form.getValues('phoneNumber'),
+          phone_code: form.getValues('phoneCode'),
           business_phone: form.getValues('businessPhone'),
+          business_phone_code: form.getValues('businessPhoneCode'),
           metadata: {
             ...form.getValues('metadata'),
             contactPreferences: {
@@ -63,6 +66,62 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
 
   return (
     <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="phoneCode"
+            render={({ field }) => (
+              <CountrySelect
+                value={field.value}
+                onValueChange={field.onChange}
+                onCountryCodeChange={(code) => form.setValue('phoneCode', code)}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
+                <FormControl>
+                  <Input {...field} type="tel" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="businessPhoneCode"
+            render={({ field }) => (
+              <CountrySelect
+                value={field.value}
+                onValueChange={field.onChange}
+                onCountryCodeChange={(code) => form.setValue('businessPhoneCode', code)}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="businessPhone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
+                <FormControl>
+                  <Input {...field} type="tel" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
           control={form.control}
@@ -104,35 +163,6 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-            </FormItem>
-          )}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <FormField
-          control={form.control}
-          name="phoneNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
-              <FormControl>
-                <Input {...field} type="tel" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="businessPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
-              <FormControl>
-                <Input {...field} type="tel" />
-              </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
