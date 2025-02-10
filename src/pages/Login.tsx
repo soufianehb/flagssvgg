@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,19 +79,22 @@ const LoginContent = () => {
       console.log("Login successful");
     } catch (error: any) {
       console.error("Login error:", error);
+      let errorTitle = t.login.error;
       let errorMessage = t.login.errorMessage;
       
       // Handle specific error cases
-      if (error.message?.includes('Invalid login credentials') || 
-          error.message?.includes('invalid_credentials')) {
+      if (error.message?.includes('Email not confirmed') || 
+          error.message?.includes('email_not_confirmed')) {
+        errorTitle = t.login.emailNotConfirmed.title;
+        errorMessage = t.login.emailNotConfirmed.message;
+      } else if (error.message?.includes('Invalid login credentials') || 
+                 error.message?.includes('invalid_credentials')) {
         errorMessage = 'Invalid email or password. Please check your credentials and try again.';
-      } else if (error.message?.includes('Email not confirmed')) {
-        errorMessage = 'Please verify your email address before logging in.';
       }
       
       toast({
         variant: "destructive",
-        title: t.login.error,
+        title: errorTitle,
         description: errorMessage,
       });
       

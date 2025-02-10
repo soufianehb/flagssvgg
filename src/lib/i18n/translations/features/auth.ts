@@ -29,6 +29,10 @@ export const auth = {
       successMessage: "You have successfully logged in",
       error: "Login Failed",
       errorMessage: "Invalid email or password",
+      emailNotConfirmed: {
+        title: "Email Not Confirmed",
+        message: "Please check your inbox and confirm your email address before logging in."
+      },
       noAccount: "Don't have an account?",
       signUp: "Sign up",
       legal: {
@@ -172,6 +176,10 @@ export const auth = {
       successMessage: "Vous êtes connecté avec succès",
       error: "Échec de la connexion",
       errorMessage: "Email ou mot de passe invalide",
+      emailNotConfirmed: {
+        title: "Email Non Confirmé",
+        message: "Veuillez vérifier votre boîte de réception et confirmer votre adresse email avant de vous connecter."
+      },
       noAccount: "Vous n'avez pas de compte ?",
       signUp: "S'inscrire",
       legal: {
@@ -315,6 +323,10 @@ export const auth = {
       successMessage: "Has iniciado sesión correctamente",
       error: "Error de inicio de sesión",
       errorMessage: "Correo electrónico o contraseña inválidos",
+      emailNotConfirmed: {
+        title: "Correo No Confirmado",
+        message: "Por favor, revise su bandeja de entrada y confirme su dirección de correo electrónico antes de iniciar sesión."
+      },
       noAccount: "¿No tiene una cuenta?",
       signUp: "Registrarse",
       legal: {
