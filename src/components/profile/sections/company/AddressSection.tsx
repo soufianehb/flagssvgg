@@ -88,7 +88,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[25%]">
+        <div className="w-full md:w-[22%]">
           <FormField
             control={form.control}
             name="city"
@@ -103,7 +103,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[25%]">
+        <div className="w-full md:w-[22%]">
           <FormField
             control={form.control}
             name="country"
@@ -126,7 +126,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[35%] md:self-end">
+        <div className="w-full md:w-[31%] md:self-end">
           <Button
             type="button"
             onClick={handleUpdateAddress}
