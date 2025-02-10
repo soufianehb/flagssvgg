@@ -60,7 +60,10 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
     },
   });
 
-  const handleUpdateContact = () => {
+  const handleUpdateContact = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent form submission and scroll
+    e.stopPropagation(); // Stop event bubbling
+    
     const contactData = {
       phoneNumber: form.getValues('phoneNumber'),
       phoneCode: form.getValues('phoneCode'),
@@ -73,7 +76,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-6">
       <div className="space-y-6">
         {/* Phone Numbers Section */}
         <div className="flex flex-col md:flex-row md:gap-6 gap-4">
@@ -94,6 +97,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
 
         {/* Update Contact Button */}
         <Button
+          type="button"
           onClick={handleUpdateContact}
           disabled={updateContactMutation.isPending}
           className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
