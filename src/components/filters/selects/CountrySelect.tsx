@@ -29,7 +29,7 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
   };
 
   if (isLoading) {
-    return <Skeleton className="h-10 w-[100px]" />;
+    return <Skeleton className="h-12 w-[120px]" />;
   }
 
   const FlagImage = ({ countryCode }: { countryCode: string }) => {
@@ -53,23 +53,22 @@ export function CountrySelect({ value, onChange, onValueChange, onCountryCodeCha
         </Label>
       )}
       <Select value={value} onValueChange={handleValueChange}>
-        <SelectTrigger id="country-select" className="w-[100px] h-10 text-sm px-2">
+        <SelectTrigger id="country-select" className="w-[120px] h-12 text-base">
           <SelectValue placeholder={t.filters.country.placeholder}>
             {value && countries && (
-              <span className="flex items-center text-xs">
-                <FlagImage countryCode={value} />
+              <span className="text-base">
                 {countries.find(c => c.code === value)?.dial_code}
               </span>
             )}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent className="max-h-[300px] w-fit min-w-[180px]">
+        <SelectContent className="max-h-[300px] w-fit min-w-[200px]">
           {countries?.map((country) => (
             <SelectItem key={country.code} value={country.code} className="text-sm">
               <span className="flex items-center">
                 <FlagImage countryCode={country.code} />
                 <span className="ml-1">{country.name}</span>
-                <span className="ml-auto text-xs text-gray-500">{country.dial_code}</span>
+                <span className="ml-auto text-sm font-medium">{country.dial_code}</span>
               </span>
             </SelectItem>
           ))}

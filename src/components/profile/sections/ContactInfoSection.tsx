@@ -1,4 +1,3 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
@@ -70,84 +69,88 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
     <div className="space-y-6">
       <div className="space-y-6">
         {/* Phone Numbers Section */}
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col gap-4">
           {/* Personal Phone */}
-          <div className="flex-1 flex flex-col md:flex-row gap-2">
-            <div className="w-32">
-              <FormField
-                control={form.control}
-                name="phoneCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Code</FormLabel>
-                    <CountrySelect
-                      value={field.value}
-                      onValueChange={(newValue) => {
-                        const selectedCountry = countries?.find(c => c.code === newValue);
-                        if (selectedCountry) {
-                          field.onChange(selectedCountry.dial_code);
-                        }
-                      }}
-                      showLabel={false}
-                    />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="tel" className="h-10 w-[200px]" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className="flex flex-col space-y-4">
+            <div className="flex flex-row items-end gap-2">
+              <div className="w-[120px]">
+                <FormField
+                  control={form.control}
+                  name="phoneCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Code</FormLabel>
+                      <CountrySelect
+                        value={field.value}
+                        onValueChange={(newValue) => {
+                          const selectedCountry = countries?.find(c => c.code === newValue);
+                          if (selectedCountry) {
+                            field.onChange(selectedCountry.dial_code);
+                          }
+                        }}
+                        showLabel={false}
+                      />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex-1">
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.profile.general.fields.phoneNumber}</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="tel" className="h-12 w-full min-w-[250px]" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
 
           {/* Business Phone */}
-          <div className="flex-1 flex flex-col md:flex-row gap-2">
-            <div className="w-32">
-              <FormField
-                control={form.control}
-                name="businessPhoneCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Code</FormLabel>
-                    <CountrySelect
-                      value={field.value}
-                      onValueChange={(newValue) => {
-                        const selectedCountry = countries?.find(c => c.code === newValue);
-                        if (selectedCountry) {
-                          field.onChange(selectedCountry.dial_code);
-                        }
-                      }}
-                      showLabel={false}
-                    />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name="businessPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="tel" className="h-10 w-[200px]" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className="flex flex-col space-y-4">
+            <div className="flex flex-row items-end gap-2">
+              <div className="w-[120px]">
+                <FormField
+                  control={form.control}
+                  name="businessPhoneCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Code</FormLabel>
+                      <CountrySelect
+                        value={field.value}
+                        onValueChange={(newValue) => {
+                          const selectedCountry = countries?.find(c => c.code === newValue);
+                          if (selectedCountry) {
+                            field.onChange(selectedCountry.dial_code);
+                          }
+                        }}
+                        showLabel={false}
+                      />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex-1">
+                <FormField
+                  control={form.control}
+                  name="businessPhone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.profile.general.fields.businessPhone}</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="tel" className="h-12 w-full min-w-[250px]" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -194,6 +197,7 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
         </div>
       </div>
 
+      {/* Submit Button */}
       <Button
         type="button"
         onClick={handleUpdateContactPreferences}
