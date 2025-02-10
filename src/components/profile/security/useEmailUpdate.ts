@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
+import type { AuthChangeEvent } from '@supabase/supabase-js';
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ export const useEmailUpdate = () => {
 
   // Listen for email change confirmation
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
       console.log('Auth state change event:', event);
       
       if (event === 'EMAIL_CHANGE_CONFIRM') {
