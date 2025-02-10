@@ -74,16 +74,8 @@ const Login = () => {
     console.log("Login attempt started with email:", values.email);
     setIsLoading(true);
     try {
-      const result = await login(values.email, values.password);
-      if (!result) {
-        throw new Error('Login failed. Please check your credentials and try again.');
-      }
+      await login(values.email, values.password);
       console.log("Login successful");
-      toast({
-        title: t.login.success,
-        description: t.login.successMessage,
-      });
-      navigate('/');
     } catch (error: any) {
       console.error("Login error:", error);
       let errorMessage = t.login.errorMessage;

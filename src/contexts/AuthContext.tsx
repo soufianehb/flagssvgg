@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<void> => {
     try {
       const { data, error } = await authService.login(email, password);
       if (error) throw error;
@@ -49,7 +50,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
       
       navigate('/');
-      return true;
     } catch (error: any) {
       console.error('Login error:', error);
       setIsAuthenticated(false);
