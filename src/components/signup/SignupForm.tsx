@@ -48,6 +48,18 @@ export const SignupForm = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(true);
 
+  // Detect user's country based on their IP
+  const detectUserCountry = async () => {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      return data.country_name;
+    } catch (error) {
+      console.error('Error detecting country:', error);
+      return null;
+    }
+  };
+
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -61,6 +73,8 @@ export const SignupForm = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
+      const country = await detectUserCountry();
+      
       const profileData = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -68,6 +82,7 @@ export const SignupForm = () => {
         email: data.email,
         is_profile_complete: false,
         status: 'pending',
+        country: country || undefined,
         metadata: {}
       };
 
