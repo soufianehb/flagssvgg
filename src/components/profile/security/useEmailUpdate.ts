@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
-import type { AuthError, AuthResponse, AuthChangeEvent } from '@supabase/supabase-js';
+import type { AuthError, AuthResponse } from '@supabase/supabase-js';
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -26,26 +26,29 @@ export const useEmailUpdate = () => {
 
   // Listen for email change confirmation
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === 'USER_UPDATED' || event === 'SIGNED_IN') {
-        console.log('Email change confirmed:', session?.user.email);
-        setEmailUpdateStatus('updating_profile');
-        
-        if (session?.user.email) {
+      if (event === 'USER_UPDATED') {
+        console.log('Email update event detected:', session?.user.email);
+        if (session?.user.email && session.user.email !== currentEmail) {
           setCurrentEmail(session.user.email);
+          setEmailUpdateStatus('updating_profile');
           await handleProfileUpdate(session.user.email);
+          setEmailUpdateStatus('idle');
+          
+          toast({
+            title: t.profile.settings.security.email.success.title,
+            description: t.profile.settings.security.email.success.message,
+          });
         }
-        
-        setEmailUpdateStatus('idle');
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [currentEmail]);
 
   const handleProfileUpdate = async (newEmail: string) => {
     if (!user?.id) return;
@@ -58,11 +61,6 @@ export const useEmailUpdate = () => {
         .eq('user_id', user.id);
 
       if (error) throw error;
-
-      toast({
-        title: t.profile.settings.security.email.success.title,
-        description: t.profile.settings.security.email.success.message,
-      });
     } catch (error: any) {
       console.error('Profile update error:', error);
       toast({
