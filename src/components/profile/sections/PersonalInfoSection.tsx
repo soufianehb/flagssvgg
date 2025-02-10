@@ -110,8 +110,7 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
         <div className="md:col-span-1 flex items-end">
           <Button 
             type="button"
-            variant="outline"
-            className="w-full md:w-[300px] h-10 text-base font-medium bg-white hover:bg-accent hover:text-accent-foreground"
+            className="w-full font-open-sans transition-all duration-300 bg-accent text-white hover:bg-primary active:bg-primary/90 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
             onClick={() => navigate('/profile/security')}
           >
             {t.profile.general.fields.modifyEmail}
@@ -121,3 +120,4 @@ export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {
     </div>
   );
 }
+
