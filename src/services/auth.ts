@@ -1,22 +1,32 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
 export const authService = {
   login: async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
-      console.error('Login error:', error);
-      if (error.message.includes('Invalid login credentials')) {
-        throw new Error('Invalid email or password');
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        console.error('Login error:', error);
+        if (error.message.includes('Invalid login credentials')) {
+          throw new Error('Invalid email or password. Please check your credentials and try again.');
+        }
+        if (error.message.includes('Email not confirmed')) {
+          throw new Error('Please verify your email address before logging in.');
+        }
+        throw new Error(error.message || 'An error occurred during login');
       }
-      throw error;
+
+      return { data, error: null };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('An unexpected error occurred during login');
     }
-    return { data, error: null };
   },
 
   signup: async (email: string, password: string, profileData: Record<string, any>) => {
@@ -143,4 +153,3 @@ export const authService = {
     }
   }
 };
-
