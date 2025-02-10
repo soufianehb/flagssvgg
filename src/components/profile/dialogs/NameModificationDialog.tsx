@@ -84,7 +84,7 @@ export function NameModificationDialog({
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
-          className="w-[200px] text-base font-medium"
+          className="w-full md:w-[300px] h-10 text-base font-medium bg-white hover:bg-accent hover:text-accent-foreground"
         >
           {t.profile.general.actions.modifyName}
         </Button>
