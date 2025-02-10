@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -18,6 +19,39 @@ export const authService = {
           throw new Error('Please verify your email address before logging in.');
         }
         throw new Error(error.message || 'An error occurred during login');
+      }
+
+      // After successful login, verify profile exists
+      if (data.user) {
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', data.user.id)
+          .single();
+          
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+        }
+        
+        // If no profile exists, create one
+        if (!profileData) {
+          const { error: createProfileError } = await supabase
+            .from('profiles')
+            .insert([{
+              user_id: data.user.id,
+              email: data.user.email,
+              first_name: data.user.user_metadata.first_name || '',
+              last_name: data.user.user_metadata.last_name || '',
+              company_name: data.user.user_metadata.company_name || '',
+              is_profile_complete: false,
+              status: 'active',
+              metadata: {}
+            }]);
+            
+          if (createProfileError) {
+            console.error('Error creating profile:', createProfileError);
+          }
+        }
       }
 
       return { data, error: null };
@@ -62,6 +96,7 @@ export const authService = {
 
         if (profileError) {
           console.error('Error creating profile:', profileError);
+          // Continue even if profile creation fails - the trigger should handle it
           return { data: authData, error: null };
         }
       } catch (error) {
