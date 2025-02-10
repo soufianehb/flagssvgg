@@ -4,8 +4,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/lib/i18n";
+import { updateProfileEmail } from "./utils/profileSync";
 import type { EmailFormValues, EmailUpdateStatus } from "./types";
-import type { AuthError, AuthResponse } from '@supabase/supabase-js';
 
 export const useEmailUpdate = () => {
   const { t } = useTranslation();
@@ -29,18 +29,33 @@ export const useEmailUpdate = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state change event:', event);
       
-      if (event === 'USER_UPDATED') {
-        console.log('Email update event detected:', session?.user.email);
-        if (session?.user.email && session.user.email !== currentEmail) {
+      if (event === 'USER_UPDATED' && session?.user) {
+        console.log('Email update event detected:', session.user.email);
+        
+        if (session.user.email && session.user.email !== currentEmail) {
           setCurrentEmail(session.user.email);
           setEmailUpdateStatus('updating_profile');
-          await handleProfileUpdate(session.user.email);
-          setEmailUpdateStatus('idle');
+          setSyncingProfile(true);
           
-          toast({
-            title: t.profile.settings.security.email.success.title,
-            description: t.profile.settings.security.email.success.message,
-          });
+          try {
+            const { error } = await updateProfileEmail(session.user.id, session.user.email);
+            if (error) throw error;
+            
+            toast({
+              title: t.profile.settings.security.email.success.title,
+              description: t.profile.settings.security.email.success.message,
+            });
+          } catch (error) {
+            console.error('Profile update error:', error);
+            toast({
+              variant: "destructive",
+              title: t.profile.settings.security.email.error.title,
+              description: t.profile.settings.security.email.error.message,
+            });
+          } finally {
+            setSyncingProfile(false);
+            setEmailUpdateStatus('idle');
+          }
         }
       }
     });
@@ -48,30 +63,7 @@ export const useEmailUpdate = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [currentEmail]);
-
-  const handleProfileUpdate = async (newEmail: string) => {
-    if (!user?.id) return;
-    
-    setSyncingProfile(true);
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ email: newEmail })
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-    } catch (error: any) {
-      console.error('Profile update error:', error);
-      toast({
-        variant: "destructive",
-        title: t.profile.settings.security.email.error.title,
-        description: t.profile.settings.security.email.error.message,
-      });
-    } finally {
-      setSyncingProfile(false);
-    }
-  };
+  }, [currentEmail, t, toast]);
 
   const validateEmailChange = (newEmail: string): boolean => {
     if (lastEmailAttempt) {
