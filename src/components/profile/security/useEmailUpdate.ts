@@ -108,51 +108,54 @@ export const useEmailUpdate = () => {
       setLastEmailAttempt(new Date());
       console.log('Starting email change process');
 
-      // Verify the current password first
-      try {
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email: currentEmail,
-          password: data.password,
-        });
+      // First verify the current password
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: currentEmail,
+        password: data.password,
+      });
 
-        if (signInError) {
-          console.error('Password verification failed:', signInError);
-          throw new Error('The current password is incorrect. Please verify and try again.');
-        }
-
-        if (!signInData.session) {
-          throw new Error('Failed to verify credentials');
-        }
-
-        // If password verification succeeds, proceed with email update
-        console.log('Password verified, proceeding with email update');
-        setEmailUpdateStatus('confirming');
-
-        const { error: updateError } = await supabase.auth.updateUser({
-          email: data.newEmail,
-        });
-
-        if (updateError) {
-          console.error('Email update error:', updateError);
-          throw updateError;
-        }
-        
+      if (signInError) {
+        console.error('Password verification failed:', signInError);
         toast({
-          title: t.profile.settings.security.email.success.title,
-          description: t.profile.settings.security.email.confirmationEmail,
+          variant: "destructive",
+          title: "Authentication Error",
+          description: "The current password is incorrect. Please verify and try again.",
         });
-        
-        return true;
-      } catch (error: any) {
-        console.error('Authentication error:', error);
-        throw error;
+        setEmailUpdateStatus('idle');
+        return false;
       }
+
+      // If password verification succeeds, proceed with email update
+      console.log('Password verified, proceeding with email update');
+      setEmailUpdateStatus('confirming');
+
+      const { error: updateError } = await supabase.auth.updateUser({
+        email: data.newEmail,
+      });
+
+      if (updateError) {
+        console.error('Email update error:', updateError);
+        toast({
+          variant: "destructive",
+          title: "Update Failed",
+          description: updateError.message || "Failed to update email. Please try again.",
+        });
+        setEmailUpdateStatus('idle');
+        return false;
+      }
+      
+      toast({
+        title: "Confirmation Required",
+        description: "Please check your new email address for a confirmation link.",
+      });
+      
+      return true;
     } catch (error: any) {
       console.error('Email change error:', error);
       toast({
         variant: "destructive",
-        title: t.profile.settings.security.email.error.title,
-        description: error.message || t.profile.settings.security.email.error.message,
+        title: "Error",
+        description: error.message || "An unexpected error occurred. Please try again.",
       });
       setEmailUpdateStatus('idle');
       return false;
