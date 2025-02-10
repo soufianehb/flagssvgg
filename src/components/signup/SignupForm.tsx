@@ -39,23 +39,34 @@ export const SignupForm = () => {
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
     try {
-      const userLang = navigator.language.split('-')[0];
+      const userLang = navigator.language.split('-')[0].toLowerCase(); // Ensure lowercase
+      console.log('Detecting country for language:', userLang);
+      
       const response = await fetch(`${COUNTRY_API_URL}/${userLang}`, {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        console.warn('Country detection failed:', response.statusText);
+        console.warn('Country detection failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: response.url
+        });
         return getCountryFromLanguage();
       }
 
       const countries = await response.json();
+      console.log('API response:', countries);
+      
       if (Array.isArray(countries) && countries.length > 0) {
         // Get the first country that matches the language
-        return countries[0].name.common;
+        const detectedCountry = countries[0].name.common;
+        console.log('Detected country:', detectedCountry);
+        return detectedCountry;
       }
       
+      console.log('No countries found, using fallback');
       return getCountryFromLanguage();
     } catch (error) {
       console.warn('Country detection failed:', error);
@@ -134,4 +145,3 @@ export const SignupForm = () => {
     </Form>
   );
 };
-
