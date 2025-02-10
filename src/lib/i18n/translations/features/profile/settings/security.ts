@@ -12,6 +12,7 @@ export const security = {
       passwordPlaceholder: "Enter your current password",
       updateButton: "Update Email",
       synchronizing: "Synchronizing...",
+      confirmationEmail: "Please check your new email for confirmation",
       status: {
         pending: "Updating Email...",
         confirming: "Waiting for Confirmation...",
@@ -28,6 +29,12 @@ export const security = {
         invalidPassword: "Invalid password",
         rateLimited: "Please wait a minute before trying again",
         sameEmail: "New email must be different from current email"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Por favor, introduzca una dirección de correo electrónico válida",
+          passwordRequired: "Se requiere contraseña para cambiar el correo electrónico"
+        }
       }
     },
     password: {
@@ -67,6 +74,7 @@ export const security = {
       passwordPlaceholder: "Entrez votre mot de passe actuel",
       updateButton: "Mettre à jour l'email",
       synchronizing: "Synchronisation...",
+      confirmationEmail: "Veuillez vérifier votre nouvel email pour la confirmation",
       status: {
         pending: "Mise à jour de l'email...",
         confirming: "En attente de confirmation...",
@@ -83,6 +91,12 @@ export const security = {
         invalidPassword: "Mot de passe invalide",
         rateLimited: "Veuillez attendre une minute avant de réessayer",
         sameEmail: "Le nouvel email doit être différent de l'email actuel"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Veuillez entrer une adresse email valide",
+          passwordRequired: "Le mot de passe est requis pour changer l'email"
+        }
       }
     },
     password: {
@@ -122,6 +136,7 @@ export const security = {
       passwordPlaceholder: "Ingresa tu contraseña actual",
       updateButton: "Actualizar email",
       synchronizing: "Sincronizando...",
+      confirmationEmail: "Por favor, verifica tu nuevo email para la confirmación",
       status: {
         pending: "Actualizando email...",
         confirming: "Esperando confirmación...",
@@ -138,6 +153,12 @@ export const security = {
         invalidPassword: "Contraseña inválida",
         rateLimited: "Por favor, espera un minuto antes de intentarlo de nuevo",
         sameEmail: "El nuevo email debe ser diferente del email actual"
+      },
+      form: {
+        errors: {
+          invalidEmail: "Por favor, introduzca una dirección de correo electrónico válida",
+          passwordRequired: "Se requiere contraseña para cambiar el correo electrónico"
+        }
       }
     },
     password: {
