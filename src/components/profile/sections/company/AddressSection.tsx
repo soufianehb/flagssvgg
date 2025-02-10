@@ -126,7 +126,7 @@ export function AddressSection({ form }: AddressSectionProps) {
             )}
           />
         </div>
-        <div className="w-full md:w-[31%] md:self-end flex md:justify-end">
+        <div className="w-full md:w-[31%] flex items-end justify-end">
           <Button
             type="button"
             onClick={handleUpdateAddress}
@@ -147,4 +147,3 @@ export function AddressSection({ form }: AddressSectionProps) {
     </div>
   );
 }
-
