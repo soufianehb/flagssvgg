@@ -12,6 +12,11 @@ interface WhatsAppPreferencesProps {
 export function WhatsAppPreferences({ form }: WhatsAppPreferencesProps) {
   const { t } = useTranslation();
 
+  if (!form || !form.control) {
+    console.error('Form or form.control is undefined in WhatsAppPreferences');
+    return null;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <FormField

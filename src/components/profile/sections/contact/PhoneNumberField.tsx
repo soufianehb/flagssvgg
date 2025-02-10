@@ -13,6 +13,11 @@ interface PhoneNumberFieldProps {
 }
 
 export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
+  if (!form || !form.control) {
+    console.error('Form or form.control is undefined in PhoneNumberField');
+    return null;
+  }
+
   const { data: countries } = useCountryCodes();
   const codeField = type === "personal" ? "phoneCode" : "businessPhoneCode";
   const numberField = type === "personal" ? "phoneNumber" : "businessPhone";
@@ -58,4 +63,3 @@ export function PhoneNumberField({ form, type, label }: PhoneNumberFieldProps) {
     </div>
   );
 }
-

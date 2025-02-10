@@ -61,8 +61,8 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   });
 
   const handleUpdateContact = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent form submission and scroll
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     
     const contactData = {
       phoneNumber: form.getValues('phoneNumber'),
@@ -74,6 +74,11 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
     };
     updateContactMutation.mutate(contactData);
   };
+
+  if (!form) {
+    console.error('Form is undefined in ContactInfoSection');
+    return null;
+  }
 
   return (
     <div className="space-y-6">
