@@ -36,14 +36,18 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
       if (fetchError) throw fetchError;
 
       // Ensure metadata is treated as an object and preserve existing fields
-      const currentMetadata = currentProfile?.metadata as Record<string, unknown> || {};
+      const currentMetadata = (currentProfile?.metadata || {}) as Record<string, unknown>;
       
-      // Prepare the new metadata by preserving other metadata fields
+      // Get the WhatsApp preferences from the form
+      const whatsappContact = form.getValues('metadata.contactPreferences.whatsappContact');
+      const whatsappBusinessContact = form.getValues('metadata.contactPreferences.whatsappBusinessContact');
+
+      // Construct the new metadata object with the required structure
       const newMetadata = {
         ...currentMetadata,
         contactPreferences: {
-          whatsappContact: form.getValues('metadata.contactPreferences.whatsappContact'),
-          whatsappBusinessContact: form.getValues('metadata.contactPreferences.whatsappBusinessContact')
+          whatsappContact: Boolean(whatsappContact),
+          whatsappBusinessContact: Boolean(whatsappBusinessContact)
         }
       };
 
