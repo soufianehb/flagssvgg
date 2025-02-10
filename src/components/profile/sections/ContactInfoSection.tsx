@@ -4,6 +4,12 @@ import { GeneralFormValues } from "../types/profile";
 import { useTranslation } from "@/lib/i18n";
 import { PhoneNumberField } from "./contact/PhoneNumberField";
 import { WhatsAppPreferences } from "./contact/WhatsAppPreferences";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<GeneralFormValues>;
@@ -11,6 +17,60 @@ interface ContactInfoSectionProps {
 
 export function ContactInfoSection({ form }: ContactInfoSectionProps) {
   const { t } = useTranslation();
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const updateContactMutation = useMutation({
+    mutationFn: async (data: Partial<GeneralFormValues>) => {
+      if (!user?.id) throw new Error("User not authenticated");
+
+      const updateData = {
+        phone_number: data.phoneNumber,
+        phone_code: data.phoneCode,
+        business_phone: data.businessPhone,
+        business_phone_code: data.businessPhoneCode,
+        allow_whatsapp_contact: data.allow_whatsapp_contact,
+        allow_whatsapp_business_contact: data.allow_whatsapp_business_contact,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      return updateData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      toast({
+        title: t.profile.general.success.title,
+        description: t.profile.general.success.contactUpdated,
+      });
+    },
+    onError: (error: Error) => {
+      console.error('Error updating contact info:', error);
+      toast({
+        variant: "destructive",
+        title: t.profile.general.errors.contactUpdateFailed,
+        description: error.message || t.profile.general.errors.tryAgain,
+      });
+    },
+  });
+
+  const handleUpdateContact = () => {
+    const contactData = {
+      phoneNumber: form.getValues('phoneNumber'),
+      phoneCode: form.getValues('phoneCode'),
+      businessPhone: form.getValues('businessPhone'),
+      businessPhoneCode: form.getValues('businessPhoneCode'),
+      allow_whatsapp_contact: form.getValues('allow_whatsapp_contact'),
+      allow_whatsapp_business_contact: form.getValues('allow_whatsapp_business_contact'),
+    };
+    updateContactMutation.mutate(contactData);
+  };
 
   return (
     <div className="space-y-6">
@@ -31,6 +91,23 @@ export function ContactInfoSection({ form }: ContactInfoSectionProps) {
 
         {/* WhatsApp Preferences */}
         <WhatsAppPreferences form={form} />
+
+        {/* Update Contact Button */}
+        <div className="flex justify-end mt-4">
+          <Button
+            onClick={handleUpdateContact}
+            disabled={updateContactMutation.isPending}
+          >
+            {updateContactMutation.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t.profile.general.actions.saving}
+              </>
+            ) : (
+              t.profile.general.actions.updateContact
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );
