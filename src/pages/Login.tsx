@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,8 +29,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { loginSchema } from "@/schemas/validation";
+import { AuthProvider } from "@/contexts/AuthContext";
 
-const Login = () => {
+const LoginContent = () => {
   const { t, language, setLanguage } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -309,6 +311,15 @@ const Login = () => {
 
       <Footer />
     </div>
+  );
+};
+
+// Wrap the login content with AuthProvider
+const Login = () => {
+  return (
+    <AuthProvider>
+      <LoginContent />
+    </AuthProvider>
   );
 };
 
